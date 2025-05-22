@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from products.models import DepositProduct, SavingProduct
 from products.serializers import DepositProductSerializer, SavingProductSerializer
 from products.utils.update_checker import should_update, mark_updated
-from products.swaggers import deposit_list_view, saving_list_view
+from swaggers.products_swaggers import deposit_list_view, saving_list_view
 
 from .api.fin_api import get_deposit_api, get_saving_api
 

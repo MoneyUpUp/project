@@ -1,3 +1,8 @@
+# dj-rest-auth 패키지 내부 코드의 문제 무시
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="dj_rest_auth")
+# ---
+
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
