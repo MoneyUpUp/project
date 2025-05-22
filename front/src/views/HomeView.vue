@@ -27,8 +27,8 @@
 
 <script setup>
 import homeService from '@/components/home/homeService.vue'
-import homehotarticle from '@/components/home/homehotarticle.vue'
-import homefooter from '@/components/home/homefooter.vue'
+import homehotarticle from '@/components/home/homeHotArticle.vue'
+import homefooter from '@/components/home/homeFooter.vue'
 import img1 from '@/assets/banner1.png'
 import img2 from '@/assets/banner2.png'
 
