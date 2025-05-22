@@ -1,45 +1,62 @@
 <template>
-  <div class="product-header">
-    <!-- 은행 드롭다운 -->
-    <select v-model="selectedBank">
-      <option v-for="bank in banks" :key="bank">{{ bank }}</option>
-    </select>
+  <div>
+    <div class="product-header">
+      <!-- 은행 드롭다운 -->
+        <select v-model="selectedBank">
+          <option v-for="bank in banks" :key="bank">{{ bank }}</option>
+        </select>
 
-    <!-- 예금/적금 토글 -->
-    <div class="toggle-bg">
-    <div class="toggle-labels">
-      <RouterLink
-        to="/product/deposit"
-        class="label"
-        :class="{ active: type === 'deposit' }"
-        @click.prevent="setType('deposit')"
-      >예금</RouterLink>
-      <RouterLink
-        to="/product/saving"
-        class="label"
-        :class="{ active: type === 'saving' }"
-        @click.prevent="setType('saving')"
-      >적금</RouterLink>
+        <!-- 예금/적금 토글 -->
+        <div class="toggle-bg">
+          <div class="toggle-labels">
+            <RouterLink
+              to="/product/deposit"
+              class="label"
+              :class="{ active: type === 'deposit' }"
+              @click.prevent="setType('deposit')"
+            >예금</RouterLink>
+            <RouterLink
+              to="/product/saving"
+              class="label"
+              :class="{ active: type === 'saving' }"
+              @click.prevent="setType('saving')"
+            >적금</RouterLink>
+          </div>
+          <div class="toggle-circle" :class="type"></div>
+      </div>
     </div>
-    <div class="toggle-circle" :class="type"></div>
-  </div>
+    <hr>
+      <!-- 기간 선택 슬라이더 -->
+      <div class="slider-container">
+        <input
+          type="range"
+          min="0"
+          max="3"
+          step="1"
+          v-model="selectedIndex"
+          class="range-input"
+          :style="{ background: getSliderBackground }"
+        />
+        <div class="labels">
+          <span :class="{ active: selectedIndex === 0 }">전체</span>
+          <span :class="{ active: selectedIndex === 1 }">6개월</span>
+          <span :class="{ active: selectedIndex === 2 }">12개월</span>
+          <span :class="{ active: selectedIndex === 3 }">24개월</span>
+        </div>
+      </div>
 
-    <!-- 기간 선택 슬라이더 -->
-    <div class="period-slider">
-      <label>기간 선택</label>
-      <input type="range" min="0" max="24" v-model="period" />
-    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 
 const selectedBank = ref('우리은행')
-const period = ref(6)
+const selectedIndex = ref(1) // 기본값: 6개월
 
 const banks = [
   '국민은행', '우리은행', '신한은행', '하나은행', '카카오뱅크', '토스뱅크',
@@ -54,6 +71,11 @@ const setType = (value) => {
   type.value = value
   router.push(`/product/${value}`)
 }
+
+const getSliderBackground = computed(() => {
+  const percent = (selectedIndex.value / 3) * 100
+  return `linear-gradient(to right, #43B883 0%, #43B883 ${percent}%, #D9F1E6 ${percent}%, #D9F1E6 100%)`
+})
 </script>
 
 <style scoped>
@@ -68,14 +90,52 @@ select {
   padding: 8px;
 }
 
-.period-slider {
-  flex: 1;
+.slider-container {
+  width: 955px;
+  margin: 50px auto;
+}
+
+.range-input {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #43B883 0%, #43B883 33.3%, #D9F1E6 33.3%, #D9F1E6 100%);
+  outline: none;
+  transition: background 0.3s;
+}
+
+.range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #43B883;
+  cursor: pointer;
+  margin-top: -4px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.labels {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.labels span {
+  font-size: 14px;
+  color: #999;
+}
+
+.labels .active {
+  color: #43B883;
+  font-weight: bold;
 }
 
 .toggle-bg {
-  width: 120px;
+  width: 110px;
   height: 30px;
   background-color: #43B883;
   border-radius: 15px;
