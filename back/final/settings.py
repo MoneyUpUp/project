@@ -158,17 +158,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Custom User Setting
 AUTH_USER_MODEL = "accounts.User"
 
-ACCOUNT_EMAIL_REQUIRED = False
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_LOGIN_METHODS = {"username"}  # 혹은 {"email"} 또는 {"username", "email"}
 ACCOUNT_SIGNUP_FIELDS = {
     "username": {"required": True},
-    "email": {"required": False},  # 개발 중이면 False
+    "email": {"required": True},
+    "nickname": {"required": False},
+    "password1": {"required": True},
+    "password2": {"required": True},
 }
 
+# 비밀번호 재설정 이후 자동 로그인
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+# django-allauth 경고 무시
+SILENCED_SYSTEM_CHECKS = ["account.W001"]
