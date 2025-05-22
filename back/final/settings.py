@@ -61,9 +61,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 추가
     "django.contrib.sites",
-    # cors
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 # allauth가 요구
 SITE_ID = 1
@@ -80,6 +77,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # dj-rest-auth
     "allauth.account.middleware.AccountMiddleware",
+    # cors
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = "final.urls"
