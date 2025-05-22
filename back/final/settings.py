@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",  # 소셜 로그인
+    "corsheaders",
     # ---
     "django.contrib.admin",
     "django.contrib.auth",
@@ -60,9 +61,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 추가
     "django.contrib.sites",
+    # cors
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 # allauth가 요구
 SITE_ID = 1
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
