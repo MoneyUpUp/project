@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h3>메뉴리스트</h3>
+		<h1>hotArticle</h1>
 	</div>
 </template>
 

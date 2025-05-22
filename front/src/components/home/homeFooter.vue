@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>예금 페이지</h1>
+		<h1>hotArticle</h1>
 	</div>
 </template>
 

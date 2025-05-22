@@ -8,9 +8,8 @@ import SignUpView from '@/views/SignUpView.vue'
 import MapView from '@/views/MapView.vue'
 import SpotAssetView from '@/views/SpotAssetView.vue'
 
-import depositView from '@/components/deposit/depositView.vue'
+import depositList from '@/components/deposit/depositList.vue'
 import savingView from '@/components/saving/savingView.vue'
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -46,7 +45,7 @@ const router = createRouter({
       children: [{
         path: 'deposit',
         name: 'deposit',
-        component:depositView
+        component:depositList
       },
       {
         path: 'saving',
