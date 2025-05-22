@@ -2,9 +2,7 @@
 	<div>
 		<h1>예적금 리스트 페이지</h1>
 		<div class="test">
-			<productSelect/>
-			<RouterLink to="/product/deposit">예금</RouterLink>
-			<RouterLink to="/product/saving">적금</RouterLink>
+			<productHeader/>
 		</div>
 		<RouterView/>
 	</div>
@@ -12,7 +10,7 @@
 
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import productSelect from '@/components/products/productSelect.vue'
+import productHeader from '@/components/products/productHeader.vue'
 
 </script>
 
