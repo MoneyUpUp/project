@@ -1,7 +1,7 @@
 # accounts/urls.py
 from django.urls import path
-from .views import AuthCheckView
+from .views import AboutUser
 
 urlpatterns = [
-    path("check/", AuthCheckView.as_view()),
+    path("update/", AboutUser.as_view(), name="about-user"),
 ]

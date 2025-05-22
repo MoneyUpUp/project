@@ -1,29 +1,33 @@
-
-from rest_framework.permissions import IsAuthenticated
-from .swaggers import products_list_view  # swagger 설정 분리 import
-    
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from products.models import DepositProduct
-from products.serializers import DepositProductSerializer
+from products.models import DepositProduct, SavingProduct
+from products.serializers import DepositProductSerializer, SavingProductSerializer
+from products.utils.update_checker import should_update, mark_updated
+from products.swaggers import deposit_list_view, saving_list_view
 
-from .api.fin_api import get_deposit_api
+from .api.fin_api import get_deposit_api, get_saving_api
 
-class ProductListView(APIView):
-    # get_deposit_api()
 
-    @products_list_view
+class DepositListView(APIView):
+    @deposit_list_view
     def get(self, request):
+        if should_update("deposit"):
+            get_deposit_api()
+            mark_updated("deposit")
+
         products = DepositProduct.objects.all().prefetch_related("options", "bank")
         serializer = DepositProductSerializer(products, many=True)
         return Response(serializer.data)
-    
-class DepositListView(APIView):
-    # get_deposit_api()
 
-    @products_list_view
+
+class SavingListView(APIView):
+    @saving_list_view
     def get(self, request):
-        products = DepositProduct.objects.all().prefetch_related("options", "bank")
-        serializer = DepositProductSerializer(products, many=True)
+        if should_update("saving"):
+            get_saving_api()
+            mark_updated("saving")
+
+        products = SavingProduct.objects.all().prefetch_related("options", "bank")
+        serializer = SavingProductSerializer(products, many=True)
         return Response(serializer.data)

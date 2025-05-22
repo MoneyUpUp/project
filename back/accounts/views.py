@@ -2,24 +2,34 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 
-class AuthCheckView(APIView):
+
+from .swaggers import (
+    about_user_patch,
+    about_user_put,
+    about_user_delete,
+)
+
+
+class AboutUser(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(
-        operation_description="현재 로그인된 사용자인지 확인합니다.",
-        responses={200: openapi.Response("성공", schema=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                'is_authenticated': openapi.Schema(type=openapi.TYPE_BOOLEAN),
-                'user': openapi.Schema(type=openapi.TYPE_STRING),
-            }
-        ))}
-    )
-    def get(self, request):
-        return Response({
-            "is_authenticated": True,
-            "user": request.user.username
-        })
+    @about_user_patch
+    def patch(self, request):
+        user = request.user
+        user.nickname = request.data.get("nickname", user.nickname)
+        user.save()
+        return Response({"message": "정보 수정 완료 (일부)"})
+
+    @about_user_put
+    def put(self, request):
+        user = request.user
+        user.nickname = request.data.get("nickname", "")
+        user.save()
+        return Response({"message": "정보 수정 완료 (전체)"})
+
+    @about_user_delete
+    def delete(self, request):
+        user = request.user
+        user.delete()
+        return Response({"message": "회원 탈퇴 완료"})
