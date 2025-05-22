@@ -6,11 +6,11 @@ from rest_framework.response import Response
 
 from .swaggers import (
     about_user_patch,
-    about_user_put,
     about_user_delete,
 )
 
 
+# views.py
 class AboutUser(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -19,14 +19,7 @@ class AboutUser(APIView):
         user = request.user
         user.nickname = request.data.get("nickname", user.nickname)
         user.save()
-        return Response({"message": "정보 수정 완료 (일부)"})
-
-    @about_user_put
-    def put(self, request):
-        user = request.user
-        user.nickname = request.data.get("nickname", "")
-        user.save()
-        return Response({"message": "정보 수정 완료 (전체)"})
+        return Response({"message": "정보 수정 완료"})
 
     @about_user_delete
     def delete(self, request):
