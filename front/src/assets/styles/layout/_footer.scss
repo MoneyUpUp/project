@@ -1,0 +1,14 @@
+@use "../utils/variables" as *;
+
+/* =========================
+   Footer Layout
+   ========================= */
+
+.footer {
+  background-color: $gray-100;
+  padding: $space-md;
+  text-align: center;
+  font-size: $font-size-sm;
+  color: $gray-600;
+  border-top: 1px solid $gray-200;
+}
