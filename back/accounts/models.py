@@ -6,8 +6,8 @@ from .constants import INVEST_TYPE_CHOICES, PREFERRED_TERM_CHOICES
 class User(AbstractUser):
     # 필수 정보
     name = models.CharField(max_length=30)
-    nickname = models.CharField(max_length=20, unique=True)
-    email = models.EmailField(unique=True)
+    nickname = models.CharField(max_length=20)
+    email = models.EmailField()
     age = models.PositiveIntegerField(null=True, blank=True)
     profile_image = models.ImageField(
         upload_to="profile_images/", null=True, blank=True
