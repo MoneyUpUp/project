@@ -1,0 +1,12 @@
+@use '@/assets/styles/utils/themes' as *;
+
+:root,
+.light {
+  --bg-color: map-get($light-theme, background);
+  --text-color: map-get($light-theme, text);
+}
+
+.dark {
+  --bg-color: map-get($dark-theme, background);
+  --text-color: map-get($dark-theme, text);
+}

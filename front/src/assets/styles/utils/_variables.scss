@@ -27,7 +27,8 @@ $gray-900: #212529 !default;
 /* =========================
    배경 그라디언트
    ========================= */
-$bg-gradient-main: linear-gradient(to top, #B4E3CD, #FFFFFF) !default;
+// $bg-gradient-main: linear-gradient(to top, #B4E3CD, #FFFFFF) !default;
+$bg-gradient-main: linear-gradient(to top, primary-100, #FFFFFF) !default;
 
 /* =========================
    폰트
