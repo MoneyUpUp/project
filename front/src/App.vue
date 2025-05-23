@@ -23,6 +23,9 @@
       </div>
 
       <div class="right-section">
+        <button class="login-btn">
+          <RouterLink to="/login" class="signup-btn-link">로그인</RouterLink>
+        </button>
         <button class="signup-btn">
           <RouterLink to="/signup" class="signup-btn-link">가입하기</RouterLink>
         </button>
@@ -41,6 +44,34 @@ import { RouterLink, RouterView } from 'vue-router'
 
 
 <style scoped>
+.login-btn{
+  background-color: #43B883;
+  color: #fff;
+  font-weight: 300;
+  font-size: 14px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-btn-link {
+  text-decoration: none;
+  /* 밑줄 제거 */
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #369f6d;
+}
+
+.right-section {
+  display: flex;
+  gap: 12px; /* 버튼 간격 추가 */
+  align-items: center;
+}
+
 .navbar {
   width: 100%;
   height: 60px;
