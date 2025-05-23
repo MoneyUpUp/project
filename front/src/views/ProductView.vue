@@ -1,10 +1,10 @@
 <template>
-	<div class="back">
-		<div class="container">
-			<!-- <h1>예적금 리스트 페이지</h1> -->
-			
-			<div class="product-header">
-      <!-- 은행 드롭다운 -->
+  <div class="back">
+    <div class="container">
+      <!-- <h1>예적금 리스트 페이지</h1> -->
+
+      <div class="product-header">
+        <!-- 은행 드롭다운 -->
         <select v-model="selectedBank" class="custom-select">
           <option v-for="bank in banks" :key="bank">{{ bank }}</option>
         </select>
@@ -12,34 +12,19 @@
         <!-- 예금/적금 토글 -->
         <div class="toggle-bg">
           <div class="toggle-labels">
-            <RouterLink
-              :to="{path: '/product/deposit', query: {bank:selectedBank, period: selectedIndex}}"
-              class="label"
-              :class="{ active: type === 'deposit' }"
-              @click.prevent="setType('deposit')"
-            >예금</RouterLink>
-            <RouterLink
-              to="/product/saving"
-              class="label"
-              :class="{ active: type === 'saving' }"
-              @click.prevent="setType('saving')"
-            >적금</RouterLink>
+            <RouterLink :to="{ path: '/product/deposit', query: { bank: selectedBank, period: selectedIndex } }"
+              class="label" :class="{ active: type === 'deposit' }" @click.prevent="setType('deposit')">예금</RouterLink>
+            <RouterLink to="/product/saving" class="label" :class="{ active: type === 'saving' }"
+              @click.prevent="setType('saving')">적금</RouterLink>
           </div>
           <div class="toggle-circle" :class="type"></div>
+        </div>
       </div>
-    </div>
-    <hr>
+      <hr>
       <!-- 기간 선택 슬라이더 -->
       <div class="slider-container">
-        <input
-          type="range"
-          min="0"
-          max="3"
-          step="1"
-          v-model="selectedIndex"
-          class="range-input"
-          :style="{ background: getSliderBackground }"
-        />
+        <input type="range" min="0" max="3" step="1" v-model="selectedIndex" class="range-input"
+          :style="{ background: getSliderBackground }" />
         <div class="labels">
           <span :class="{ active: selectedIndex === 0 }">전체</span>
           <span :class="{ active: selectedIndex === 1 }">6개월</span>
@@ -47,9 +32,9 @@
           <span :class="{ active: selectedIndex === 3 }">24개월</span>
         </div>
       </div>
-			<RouterView/>
-		</div>
-	</div>
+      <RouterView />
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -90,10 +75,6 @@ const getSliderBackground = computed(() => {
 </script>
 
 <style scoped>
-.back{
-	background: linear-gradient(to top, #d6f3e5, #ffffff);
-}
-
 .product-header {
   display: flex;
   align-items: center;
@@ -214,5 +195,4 @@ select {
   background-position: right 0.75rem center;
   padding-right: 2rem;
 }
-
 </style>

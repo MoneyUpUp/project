@@ -1,22 +1,31 @@
 <template>
   <div>
-    <nav class="navbar" >
+    <nav class="navbar">
       <div class="left-section">
         <RouterLink to="/" class="logo-link">
           <div class="logo">MoneyUp</div>
         </RouterLink>
 
         <ul class="nav-links">
-          <li><RouterLink to="/product">상품</RouterLink></li>
-          <li><RouterLink to="/spotAsset">현물</RouterLink></li>
-          <li><RouterLink to="/map">지도</RouterLink></li>
-          <li><RouterLink to="/article">커뮤니티</RouterLink></li>
+          <li>
+            <RouterLink to="/product">상품</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/spotAsset">현물</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/map">지도</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/article">커뮤니티</RouterLink>
+          </li>
         </ul>
       </div>
 
       <div class="right-section">
         <button class="signup-btn">
-          <RouterLink to="/signup" class="signup-btn-link">가입하기</RouterLink></button>
+          <RouterLink to="/signup" class="signup-btn-link">가입하기</RouterLink>
+        </button>
       </div>
     </nav>
 
@@ -28,6 +37,8 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 </script>
+
+
 
 <style scoped>
 .navbar {
@@ -43,7 +54,8 @@ import { RouterLink, RouterView } from 'vue-router'
 
 .wrapper {
   max-width: 1200px;
-  padding: 0 24px; /* 모바일에선 좌우 여백 확보 */
+  padding: 0 24px;
+  /* 모바일에선 좌우 여백 확보 */
   height: 60px;
   margin: 0 auto;
   display: flex;
@@ -54,7 +66,8 @@ import { RouterLink, RouterView } from 'vue-router'
 .left-section {
   display: flex;
   align-items: center;
-  gap: 40px; /* 로고와 메뉴 사이 간격 */
+  gap: 40px;
+  /* 로고와 메뉴 사이 간격 */
 }
 
 .logo {
@@ -67,7 +80,8 @@ import { RouterLink, RouterView } from 'vue-router'
 }
 
 .logo-link {
-  text-decoration: none; /* 밑줄 제거 */
+  text-decoration: none;
+  /* 밑줄 제거 */
 }
 
 .nav-links {
@@ -104,12 +118,12 @@ import { RouterLink, RouterView } from 'vue-router'
 }
 
 .signup-btn-link {
-  text-decoration: none; /* 밑줄 제거 */
+  text-decoration: none;
+  /* 밑줄 제거 */
   color: white;
 }
 
 .signup-btn:hover {
   background-color: #369f6d;
 }
-
 </style>
