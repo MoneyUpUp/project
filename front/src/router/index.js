@@ -7,6 +7,7 @@ import ProfileView from '@/views/ProfileView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import MapView from '@/views/MapView.vue'
 import SpotAssetView from '@/views/SpotAssetView.vue'
+import searchProductView from '@/views/searchProductView.vue'
 
 import depositList from '@/components/deposit/depositList.vue'
 import savingView from '@/components/saving/savingView.vue'
@@ -63,6 +64,11 @@ const router = createRouter({
       name: 'signup',
       component: SignUpView
     },
+    {
+      path: '/searchproduct',
+      name: 'searchproduct',
+      component: searchProductView
+    }
   ],
 })
 

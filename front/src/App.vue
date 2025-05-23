@@ -19,6 +19,9 @@
           <li>
             <RouterLink to="/article">커뮤니티</RouterLink>
           </li>
+          <li>
+            <RouterLink to="/searchproduct">관심종목검색</RouterLink>
+          </li>
         </ul>
       </div>
 
