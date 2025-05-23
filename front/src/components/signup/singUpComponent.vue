@@ -3,17 +3,19 @@
     <div class="signup-left">
       <img src="@/assets/signup.png" alt="signup mascot" class="signup-image" />
     </div>
-    <div class="signup-right">
-      <label>Name</label>
-      <input type="text" placeholder="Value" v-model="username"/>
-      <label>Email</label>
-      <input type="email" placeholder="Value" v-model="email"/>
-      <label>Password</label>
-      <input type="password" placeholder="Value" v-model="password"/>
-      <label>Age</label>
-      <input type="number" placeholder="Value" v-model="age"/>
-      <button>Sign in</button>
-    </div>
+    <form @submit.prevent="onSignup">
+        <div class="signup-right">
+          <label>Name</label>
+          <input type="text" placeholder="Value" v-model="username"/>
+          <label>Email</label>
+          <input type="email" placeholder="Value" v-model="email"/>
+          <label>Password</label>
+          <input type="password" placeholder="Value" v-model="password"/>
+          <label>Age</label>
+          <input type="number" placeholder="Value" v-model="age"/>
+          <button>Sign in</button>
+      </div>
+      </form>
   </div>
 </template>
 
@@ -40,6 +42,15 @@ const onSignup = function() {
 </script>
 
 <style scoped>
+form {
+  width: 395px;
+  margin: 0;
+  padding-top: 3%;
+  padding-right: 3%;
+  border: none;
+  background: none;
+}
+
 .signup-box {
   display: flex;
   background-color: white;
