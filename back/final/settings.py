@@ -17,11 +17,9 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(DEBUG=(bool, True)) 
-environ.Env.read_env(
-    env_file=os.path.join(BASE_DIR, '.env')
-)
-FIN_API_KEY = env('FIN_API_KEY')
+env = environ.Env(DEBUG=(bool, True))
+environ.Env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
+FIN_API_KEY = env("FIN_API_KEY")
 
 
 # Quick-start development settings - unsuitable for production
@@ -45,7 +43,7 @@ INSTALLED_APPS = [
     # library
     "rest_framework",
     "rest_framework.authtoken",
-    'drf_yasg', # swagger
+    "drf_yasg",  # swagger
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "allauth",
@@ -78,8 +76,8 @@ MIDDLEWARE = [
     # dj-rest-auth
     "allauth.account.middleware.AccountMiddleware",
     # cors
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "final.urls"
@@ -158,23 +156,30 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Custom User Setting
 AUTH_USER_MODEL = "accounts.User"
 
-ACCOUNT_LOGIN_METHODS = {"username"}  # 혹은 {"email"} 또는 {"username", "email"}
-ACCOUNT_SIGNUP_FIELDS = {
-    "username": {"required": True},
-    "email": {"required": True},
-    "nickname": {"required": False},
-    "password1": {"required": True},
-    "password2": {"required": True},
-}
+# ACCOUNT_LOGIN_METHODS = {"username"}  # 혹은 {"email"} 또는 {"username", "email"}
+# ACCOUNT_SIGNUP_FIELDS = {
+#     "username": {"required": True},
+#     "email": {"required": True},
+#     "nickname": {"required": False},
+#     "password1": {"required": True},
+#     "password2": {"required": False},
+# }
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
 
 # 비밀번호 재설정 이후 자동 로그인
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
     ],
 }
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer"
+}
+ACCOUNT_SIGNUP_FIELDS = ["username", "email", "password1", "age"]
+
 
 # django-allauth 경고 무시
 SILENCED_SYSTEM_CHECKS = ["account.W001"]
