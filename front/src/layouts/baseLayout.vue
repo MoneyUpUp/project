@@ -31,6 +31,7 @@ const ui = useUiStore()
   color: var(--text-color);
 }
 
+
 .theme-toggle-btn {
   position: fixed;
   bottom: 1.5rem;
