@@ -5,20 +5,38 @@
     </div>
     <div class="signup-right">
       <label>Name</label>
-      <input type="text" placeholder="Value" />
+      <input type="text" placeholder="Value" v-model="username"/>
       <label>Email</label>
-      <input type="email" placeholder="Value" />
+      <input type="email" placeholder="Value" v-model="email"/>
       <label>Password</label>
-      <input type="password" placeholder="Value" />
+      <input type="password" placeholder="Value" v-model="password"/>
       <label>Age</label>
-      <input type="number" placeholder="Value" />
+      <input type="number" placeholder="Value" v-model="age"/>
       <button>Sign in</button>
     </div>
   </div>
 </template>
 
 <script setup>
-// props나 emits 필요 시 여기 추가
+import { ref } from 'vue'
+import { useAccountStore } from '@/stores/accounts'
+
+const username = ref('')
+const email = ref('')
+const password = ref('')
+const age= ref(0)
+
+const store = useAccountStore()
+const onSignup = function() {
+    const userInfo = {
+        username : username.value,
+        email : email.value,
+        password : password.value,
+        age: age.value
+    }
+
+    store.createUser(userInfo)
+}
 </script>
 
 <style scoped>
