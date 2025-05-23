@@ -8,7 +8,7 @@ from rest_framework import status
 from accounts.serializers import UserSerializer
 from swaggers.accounts_swaggers import *
 
-
+# test
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
