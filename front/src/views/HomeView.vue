@@ -22,7 +22,7 @@
       <homehotarticle/>
     </main>
     <footer>
-      <homefooter/>
+      <homefooter class="footer"/>
     </footer>
   </div>
 </template>
@@ -41,5 +41,15 @@ const images = [img1, img2]
 <style scoped>
 .carousel-indicators [data-bs-target] {
   background-color: #43B883;
+}
+
+.footer {
+  background-color: #43B883;
+  color: black;
+  height: 195px;
+  left: 0;
+  width: 100%;
+  position: relative;
+  transform: translateY(+10%);
 }
 </style>

@@ -3,20 +3,36 @@
     <div class="left">
       <img src="" alt="은행로고" />
       <div class="info">
-        <h4>Sh첫만남우대예금</h4>
-        <p>Sh수협은행 · 누구나가입</p>
+        <h4>{{ item.fin_prdt_nm }}</h4>
+        <p>{{ item.bank.kor_co_rm }} · {{ item.join_member}}</p>
         <span class="tag">방문없이가입</span>
       </div>
     </div>
     <div class="right">
-      <p class="rate">최고 <strong>3.10%</strong></p>
-      <p class="base">기본 2.05%</p>
+      <p class="rate">최고 <strong>{{ maxRate}}</strong></p>
+      <p class="base">기본 {{ baseRate}}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-// props 처리 필요시 확장 가능
+import { computed } from 'vue';
+
+const props = defineProps({
+  item:Object
+})
+
+// 기본금리 : options[0]
+const baseRate = computed(() => {
+  return parseFloat(props.item.options?.[0]?.intr_rate || 0).toFixed(2)
+})
+
+// 최고 금리: options에서 intr_rate2중 가장 큰 값
+const maxRate = computed(()=> {
+  const rates = props.item.options?.map(opt => parseFloat(opt.intr_rate2)) || []
+  return rates.length ? Math.max(...rates).toFixed(2) : '0.00'
+})
+
 </script>
 
 <style scoped>

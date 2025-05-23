@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<h3 style="margin-bottom: 30px; margin-top: 60px;">Service</h3>
+		<h3 style="margin-bottom: 30px; margin-top: 8%;">Service</h3>
 		<div class="row row-cols-1 row-cols-md-3 g-5" >
 			<div class="col" v-for="(service, idx) in serviceList" :key="idx">
 				<homeServiceItem :service="service" />
