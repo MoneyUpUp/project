@@ -1,11 +1,5 @@
 from rest_framework import serializers
-from products.models import (
-    Bank,
-    DepositProduct,
-    DepositOption,
-    SavingProduct,
-    SavingOption,
-)
+from products.models import *
 
 
 class BankSerializer(serializers.ModelSerializer):

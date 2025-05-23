@@ -3,16 +3,45 @@ from drf_yasg import openapi
 
 from products.serializers import DepositProductSerializer, SavingProductSerializer
 
+TAG = ["products"]
+
+all_list_view = swagger_auto_schema(
+    operation_summary="예금 및 적금 모두 불러오기",
+    operation_description="예금과 적금 상품 리스트를 한 번에 조회합니다.",
+    responses={
+        200: openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "deposit_products": openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Items(
+                        type=openapi.TYPE_OBJECT,
+                        ref="#/definitions/DepositProductSerializer",
+                    ),
+                ),
+                "saving_products": openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Items(
+                        type=openapi.TYPE_OBJECT,
+                        ref="#/definitions/SavingProductSerializer",
+                    ),
+                ),
+            },
+        )
+    },
+    tags=TAG,
+)
+
 deposit_list_view = swagger_auto_schema(
     operation_summary="예금 모두 불러오기",
     operation_description="예금 상품 리스트를 조회합니다.",
     responses={200: DepositProductSerializer(many=True)},
-    tags=["Products"],
+    tags=TAG,
 )
 
 saving_list_view = swagger_auto_schema(
     operation_summary="적금 모두 불러오기",
     operation_description="적금 상품 리스트를 조회합니다.",
     responses={200: SavingProductSerializer(many=True)},
-    tags=["Products"],
+    tags=TAG,
 )

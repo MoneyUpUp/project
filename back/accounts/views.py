@@ -6,11 +6,8 @@ from rest_framework import status
 
 
 from accounts.serializers import UserSerializer
-from swaggers.accounts_swaggers import (
-    me_get_swagger,
-    me_patch_swagger,
-    me_delete_swagger,
-)
+from swaggers.accounts_swaggers import *
+
 
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
