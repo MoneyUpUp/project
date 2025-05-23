@@ -32,6 +32,7 @@
           <span :class="{ active: selectedIndex === 3 }">24개월</span>
         </div>
       </div>
+      <productList v-if="type !== 'deposit' && type !== 'saving'" :items="depositItems" />
       <RouterView />
     </div>
   </div>
@@ -40,13 +41,17 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
-import { ref, computed } from 'vue'
+import { onMounted, ref, computed,  } from 'vue'
+import productList from '@/components/product/productList.vue'
+import { useProductStore } from '@/stores/products'
 
 const route = useRoute()
 const router = useRouter()
+const store = useProductStore()
 
 const selectedBank = ref('우리은행')
 const selectedIndex = ref(1) // 기본값: 6개월
+const depositItems = ref([]);
 
 const banks = [
   '국민은행', '우리은행', '신한은행', '하나은행', '카카오뱅크', '토스뱅크',
@@ -55,7 +60,8 @@ const banks = [
 ]
 
 
-const type = ref(route.path.includes('saving') ? 'saving' : 'deposit')
+// const type = ref(route.path.includes('saving') ? 'saving' : 'deposit')
+const type = ref('all')
 
 const setType = (value) => {
   type.value = value;
@@ -72,6 +78,13 @@ const getSliderBackground = computed(() => {
   const percent = (selectedIndex.value / 3) * 100
   return `linear-gradient(to right, #43B883 0%, #43B883 ${percent}%, #D9F1E6 ${percent}%, #D9F1E6 100%)`
 })
+
+const fetchData = async () => {
+  const res = await store.depositData()
+  depositItems.value = res
+}
+  
+onMounted(fetchData)
 </script>
 
 <style scoped>
@@ -93,8 +106,8 @@ select {
 }
 
 .range-input {
-  width: 100%;
   -webkit-appearance: none;
+  width: 100%;
   height: 10px;
   border-radius: 5px;
   background: linear-gradient(to right, #43B883 0%, #43B883 33.3%, #D9F1E6 33.3%, #D9F1E6 100%);
