@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import BaseLayout from '@/layouts/BaseLayout.vue'
 
-import ArticleView from '@/views/ArticleView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import MapView from '@/views/MapView.vue'
@@ -15,9 +14,9 @@ import SpotAssetView from '@/views/SpotAssetView.vue'
 import depositList from '@/components/deposit/depositList.vue'
 import savingView from '@/components/saving/savingView.vue'
 
-import CreateArticle from '@/components/Article/CreateArticle.vue'
 import ArticleComponent from '@/components/Article/ArticleComponent.vue'
 import ArticleDetail from '@/components/Article/ArticleDetail.vue'
+import CreateArticle from '@/components/Article/CreateArticle.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
