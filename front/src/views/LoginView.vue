@@ -1,13 +1,13 @@
 <template>
 	<div>
 		  <div class="signup-container">
-				<logInComponent />
+        <RouterView/>
 			</div>
 	</div>
 </template>
 
 <script setup>
-import logInComponent from '@/components/login/logInComponent.vue'
+import { RouterView  } from 'vue-router';
 </script>
 
 <style scoped>

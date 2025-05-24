@@ -22,6 +22,13 @@ import CreateArticle from '@/components/Article/CreateArticle.vue'
 import searchList from '@/components/search/searchList.vue'
 import SearchDetail from '@/components/search/SearchDetail.vue'
 
+import profileUpdate from '@/components/profile/profileUpdate.vue'
+import AccessionProduct from '@/components/profile/AccessionProduct.vue'
+import AiCustomPick from '@/components/profile/AiCustomPick.vue'
+
+import logInComponent from '@/components/login/logInComponent.vue'
+import KakaoLogin from '@/components/login/KakaoLogin.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -87,6 +94,27 @@ const router = createRouter({
           path: 'profile',
           name: 'profile',
           component: ProfileView,
+          children: [
+            {
+              path: '',
+              redirect: { name: 'profile-update' }, // 자동 리디렉트
+            },
+            {
+              path: 'update',
+              name: 'profile-update',
+              component: profileUpdate,
+            },
+            {
+              path: 'accession',
+              name: 'profile-accession',
+              component: AccessionProduct,
+            },
+            {
+              path: 'aicustompick',
+              name: 'profile-ai',
+              component: AiCustomPick,
+            },
+          ],
         },
         {
           path: 'searchproduct',
@@ -94,9 +122,9 @@ const router = createRouter({
           component: SearchProductView,
           children: [
             {
-              path:'',
-              name:'',
-              component:searchList
+              path: '',
+              name: '',
+              component: searchList,
             },
             {
               path: 'detail/:id',
@@ -112,6 +140,18 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+      children: [
+        {
+          path: '',
+          name: 'login-main',
+          component: logInComponent,
+        },
+        {
+          path: 'kakao',
+          name: 'kakao',
+          component: KakaoLogin,
+        },
+      ],
     },
     {
       path: '/signup',

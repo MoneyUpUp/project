@@ -13,7 +13,7 @@
                 <h4>Social Login</h4>
                 <div class="social">
 
-                    <div class="kakao">
+                    <div class="kakao" @click="kakaoLogin">
                         <img src="@/assets/loginbutton/kakao.png" alt="">
                     </div>
                     <div class="google">
@@ -29,9 +29,15 @@
     </div>
   </template>
   
-  <script setup>
+<script setup>
+ import { useRouter } from 'vue-router'
+ const router = useRouter()
 
-  </script>
+ const kakaoLogin = ( )=> {
+  router.push({name:'kakao'})
+ }
+ 
+</script>
   
   <style scoped>
   .social {
@@ -51,6 +57,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
   }
   .kakao img {
     width: 24px; /* 로고 크기 */
