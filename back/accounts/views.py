@@ -3,10 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-
-
+from accounts.adapters import KakaoOAuth2Adapter, CustomGoogleOAuth2Adapter
+from dj_rest_auth.registration.views import SocialLoginView
 from accounts.serializers import UserSerializer
 from swaggers.accounts_swaggers import *
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+
 
 # test
 class MeView(APIView):
@@ -31,3 +33,28 @@ class MeView(APIView):
     def delete(self, request):
         request.user.delete()
         return Response({"message": "회원 탈퇴 완료"})
+
+
+class KakaoLogin(SocialLoginView):
+    adapter_class = KakaoOAuth2Adapter
+    callback_url = "http://localhost:8000/accounts/auth/kakao/login/callback/"
+    client_class = OAuth2Client
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == 200:
+            user_data = UserSerializer(request.user).data
+            return Response(
+                {
+                    "message": "로그인 성공",
+                    "user": user_data,
+                    "token": response.data.get("key"),
+                }
+            )
+        return response
+
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = CustomGoogleOAuth2Adapter
+    callback_url = "http://localhost:8000/accounts/auth/google/login/callback/"
+    client_class = OAuth2Client

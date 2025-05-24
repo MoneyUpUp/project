@@ -1,6 +1,8 @@
 asgiref==3.8.1
 certifi==2025.1.31
+cffi==1.17.1
 charset-normalizer==3.4.1
+cryptography==45.0.2
 dj-rest-auth==7.0.1
 Django==4.2.20
 django-allauth==65.8.1
@@ -13,6 +15,8 @@ idna==3.10
 inflection==0.5.1
 packaging==25.0
 pillow==11.1.0
+pycparser==2.22
+PyJWT==2.10.1
 python-dateutil==2.9.0.post0
 pytz==2025.2
 PyYAML==6.0.2
