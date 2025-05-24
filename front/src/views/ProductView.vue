@@ -1,90 +1,60 @@
 <template>
-  <div class="back">
-    <div class="container">
-      <!-- <h1>예적금 리스트 페이지</h1> -->
+  <div class="container">
+    <ProductFilterPanel />
 
-      <div class="product-header">
-        <!-- 은행 드롭다운 -->
-        <select v-model="selectedBank" class="custom-select">
-          <option v-for="bank in banks" :key="bank">{{ bank }}</option>
-        </select>
-
-        <!-- 예금/적금 토글 -->
-        <div class="toggle-bg">
-          <div class="toggle-labels">
-            <RouterLink :to="{ path: '/product/deposit', query: { bank: selectedBank, period: selectedIndex } }"
-              class="label" :class="{ active: type === 'deposit' }" @click.prevent="setType('deposit')">예금</RouterLink>
-            <RouterLink to="/product/saving" class="label" :class="{ active: type === 'saving' }"
-              @click.prevent="setType('saving')">적금</RouterLink>
-          </div>
-          <div class="toggle-circle" :class="type"></div>
-        </div>
-      </div>
-      <hr>
-      <!-- 기간 선택 슬라이더 -->
-      <div class="slider-container">
-        <input type="range" min="0" max="3" step="1" v-model="selectedIndex" class="range-input"
-          :style="{ background: getSliderBackground }" />
-        <div class="labels">
-          <span :class="{ active: selectedIndex === 0 }">전체</span>
-          <span :class="{ active: selectedIndex === 1 }">6개월</span>
-          <span :class="{ active: selectedIndex === 2 }">12개월</span>
-          <span :class="{ active: selectedIndex === 3 }">24개월</span>
-        </div>
-      </div>
-      <RouterView />
-    </div>
+    <main class="main-content">
+      <ProductAdvancedFilter />
+      <section class="product-list-section">
+        <ProductList :items="productStore.filteredItems" />
+      </section>
+    </main>
   </div>
 </template>
-
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+// ✅ 필요한 모듈 불러오기
+import ProductAdvancedFilter from '@/components/product/ProductAdvancedFilter.vue'
+import ProductFilterPanel from '@/components/product/ProductFilterPanel.vue'
+import ProductList from '@/components/product/ProductList.vue'
+import { useProductStore } from '@/stores/productStore'
+import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ref, computed } from 'vue'
 
+// ✅ 상태 저장소 가져오기
+const productStore = useProductStore()
 const route = useRoute()
 const router = useRouter()
 
-const selectedBank = ref('우리은행')
-const selectedIndex = ref(1) // 기본값: 6개월
-
-const banks = [
-  '국민은행', '우리은행', '신한은행', '하나은행', '카카오뱅크', '토스뱅크',
-  '기업은행', '농협', '수협', 'SC제일은행', '씨티은행', '부산은행',
-  '경남은행', '대구은행', '전북은행', '광주은행', '제주은행', '케이뱅크', '아이엠뱅크'
-]
-
-
-const type = ref(route.path.includes('saving') ? 'saving' : 'deposit')
-
+// ✅ 예금/적금 탭 전환 핸들러
 const setType = (value) => {
-  type.value = value;
+  productStore.type = value
   router.push({
     path: `/product/${value}`,
     query: {
-      bank: selectedBank.value,
-      period: selectedIndex.value
-    }
-  });
-};
+      bank: productStore.selectedBank,
+      period: productStore.selectedIndex,
+    },
+  })
+}
 
+// ✅ 슬라이더 스타일 계산
 const getSliderBackground = computed(() => {
-  const percent = (selectedIndex.value / 3) * 100
+  const percent = (productStore.selectedIndex / 3) * 100
   return `linear-gradient(to right, #43B883 0%, #43B883 ${percent}%, #D9F1E6 ${percent}%, #D9F1E6 100%)`
+})
+
+// ✅ 최초 데이터 패치
+onMounted(() => {
+  productStore.fetchAllProducts()
 })
 </script>
 
 <style scoped>
 .product-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
   margin-top: 5%;
   margin-bottom: 24px;
-}
-
-select {
-  padding: 8px;
 }
 
 .slider-container {
@@ -93,11 +63,11 @@ select {
 }
 
 .range-input {
-  width: 100%;
   -webkit-appearance: none;
+  width: 100%;
   height: 10px;
   border-radius: 5px;
-  background: linear-gradient(to right, #43B883 0%, #43B883 33.3%, #D9F1E6 33.3%, #D9F1E6 100%);
+  background: linear-gradient(to right, #43b883 0%, #43b883 33.3%, #d9f1e6 33.3%, #d9f1e6 100%);
   outline: none;
   transition: background 0.3s;
 }
@@ -109,7 +79,7 @@ select {
   height: 16px;
   border-radius: 50%;
   background: white;
-  border: 3px solid #43B883;
+  border: 3px solid #43b883;
   cursor: pointer;
   margin-top: -4px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
@@ -127,14 +97,14 @@ select {
 }
 
 .labels .active {
-  color: #43B883;
+  color: #43b883;
   font-weight: bold;
 }
 
 .toggle-bg {
   width: 110px;
   height: 30px;
-  background-color: #43B883;
+  background-color: #43b883;
   border-radius: 15px;
   position: relative;
   display: flex;
@@ -161,7 +131,7 @@ select {
 }
 
 .label.active {
-  color: #43B883;
+  color: #43b883;
   background-color: white;
 }
 
@@ -184,7 +154,7 @@ select {
 .custom-select {
   font-size: 20px;
   font-weight: bold;
-  color: #43B883;
+  color: #43b883;
   border: none;
   background: transparent;
   appearance: none;
@@ -194,5 +164,24 @@ select {
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   padding-right: 2rem;
+}
+
+.main-content {
+  display: flex;
+  gap: 32px;
+  margin-top: 2rem;
+}
+
+.filter-sidebar {
+  width: 240px;
+  min-width: 200px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.product-list-section {
+  flex: 1;
 }
 </style>

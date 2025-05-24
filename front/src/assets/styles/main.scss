@@ -1,0 +1,21 @@
+// utils
+@use "utils/variables" as *;
+@use "base/theme-vars" as *;
+// @import "utils/mixins";
+
+// base
+@use "base/normalize" as *;
+@use "base/typography" as *;
+// @import "base/base";
+
+// // layout
+@use "layout/header" as *;
+@use "layout/footer" as *;
+
+// // components
+@use "components/button" as *;
+@use "components/card" as *;
+
+// // pages
+// @import "pages/home";
+// @import "pages/profile";

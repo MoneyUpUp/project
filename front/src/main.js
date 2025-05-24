@@ -1,16 +1,22 @@
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
 
-import App from './App.vue'
-import router from './router'
 import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css';
+
+import App from './App.vue';
+import router from './router';
+
+import '@/assets/styles/main.scss';
 
 const app = createApp(App)
+const key = import.meta.env.VITE_KAKAO_API_JS_KEY
 
 app.use(createPinia())
 app.use(router)
 app.component('VueDatePicker', VueDatePicker);
 
 app.mount('#app')
+
+window.Kakao.init(key)

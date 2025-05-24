@@ -1,0 +1,6 @@
+@use "../utils/variables" as *;
+
+.navbar {
+  padding: 0 $layout-padding; // SCSS 변수 사용
+  // ...
+}

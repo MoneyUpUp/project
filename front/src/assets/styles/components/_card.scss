@@ -1,0 +1,26 @@
+@use "../utils/variables" as *;
+
+.card {
+  background-color: white;
+  border: 1px solid $gray-200;
+  border-radius: 12px;
+  padding: $space-lg;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: 700;
+    margin-bottom: $space-sm;
+    color: $gray-800;
+  }
+
+  &__content {
+    font-size: $font-size-base;
+    color: $gray-700;
+  }
+}
