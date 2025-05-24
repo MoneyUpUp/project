@@ -19,6 +19,8 @@ import CreateArticle from '@/components/Article/CreateArticle.vue'
 import ArticleComponent from '@/components/Article/ArticleComponent.vue'
 import ArticleDetail from '@/components/Article/ArticleDetail.vue'
 
+import SearchDetail from '@/components/search/SearchDetail.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -89,6 +91,13 @@ const router = createRouter({
           path: 'searchproduct',
           name: 'searchproduct',
           component: SearchProductView,
+          children: [
+            {
+              path: 'detail',
+              name: 'detail',
+              component: SearchDetail,
+            },
+          ],
         },
       ],
     },

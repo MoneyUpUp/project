@@ -11,7 +11,7 @@ import { RouterView } from 'vue-router';
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/utils/_variables.scss';
+@use '@/assets/styles/utils/variables' as *;
 
 h3 {
 	margin-top: 5%;
