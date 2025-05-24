@@ -15,6 +15,10 @@ import SpotAssetView from '@/views/SpotAssetView.vue'
 import depositList from '@/components/deposit/depositList.vue'
 import savingView from '@/components/saving/savingView.vue'
 
+import CreateArticle from '@/components/Article/CreateArticle.vue'
+import ArticleComponent from '@/components/Article/ArticleComponent.vue'
+import ArticleDetail from '@/components/Article/ArticleDetail.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -31,6 +35,23 @@ const router = createRouter({
           path: 'article',
           name: 'article',
           component: ArticleView,
+          children: [
+            {
+              path: '',
+              name: '',
+              component: ArticleComponent,
+            },
+            {
+              path: 'create',
+              name: 'create',
+              component: CreateArticle,
+            },
+            {
+              path: 'detail',
+              name: 'detail',
+              component: ArticleDetail,
+            },
+          ],
         },
         {
           path: 'map',

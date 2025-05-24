@@ -1,6 +1,5 @@
 <template>
-	<div class="back">
-
+	<div>
 		<div class="container">
 			<h3>금 / 은 가격 변동</h3>
 			<hr>
