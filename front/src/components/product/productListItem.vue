@@ -9,7 +9,7 @@
         />
         <div class="info">
           <h4>{{ item.fin_prdt_nm }}</h4>
-          <p>{{ item.bank.kor_co_rm }} · {{ item.join_member }}</p>
+          <p>{{ item.bank.kor_co_nm }} · {{ item.join_member }}</p>
           <span class="tag">방문없이가입</span>
         </div>
       </div>
