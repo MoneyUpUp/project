@@ -11,7 +11,7 @@ export const useSearchStore = defineStore('search', () => {
 
         try {
             const res = await fetch(
-                `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(keyword)}&key=${key}`
+                `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=${encodeURIComponent(keyword)}&key=${key}`
             )
 
             const data = await res.json()
