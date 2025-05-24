@@ -10,8 +10,6 @@ urlpatterns = [
     path("community/", include("community.urls")),
     path("products/", include("products.urls")),
     #
-    path("auth/", include("dj_rest_auth.urls")),
-    path("auth/signup/", include("dj_rest_auth.registration.urls")),
     # swagger
     # Swagger UI
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0)),
