@@ -39,8 +39,11 @@ class KakaoLogin(SocialLoginView):
     adapter_class = KakaoOAuth2Adapter
     callback_url = "http://localhost:8000/accounts/auth/kakao/login/callback/"
     client_class = OAuth2Client
-
+    print(123)
+    
     def post(self, request, *args, **kwargs):
+        print("요청 body:", request.body)
+        print("요청 data:", request.data)
         response = super().post(request, *args, **kwargs)
         if response.status_code == 200:
             user_data = UserSerializer(request.user).data
