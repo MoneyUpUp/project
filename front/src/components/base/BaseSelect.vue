@@ -68,6 +68,7 @@ function getLabel(option) {
 
 .variant--default {
   padding: 0.625rem 1rem;
+  padding-right: 3rem;
   border: 1px solid #ccc;
   background-color: #fff;
   color: #333;
