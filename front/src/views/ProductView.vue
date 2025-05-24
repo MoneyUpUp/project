@@ -1,61 +1,23 @@
 <template>
-  <div class="back">
-    <div class="container">
-      <!-- ✅ 은행 선택 드롭다운 -->
-      <div class="product-header">
-        <BaseSelect
-          v-model="productStore.selectedBank"
-          placeholder="은행 명"
-          :options="productStore.bankOptions"
-          variant="clean"
-        />
+  <div class="container">
+    <ProductFilterPanel />
 
-        <!-- ✅ 예금/적금 토글 버튼 -->
-        <BaseSegmentedControl
-          v-model="productStore.selectedTypes"
-          :options="[
-            { label: '예금', value: 'deposit' },
-            { label: '적금', value: 'saving' },
-          ]"
-        />
-      </div>
-
-      <hr />
-
-      <!-- ✅ 기간 슬라이더 -->
-      <div class="slider-container">
-        <input
-          type="range"
-          min="0"
-          max="3"
-          step="1"
-          v-model="productStore.selectedIndex"
-          class="range-input"
-          :style="{ background: getSliderBackground }"
-        />
-        <div class="labels">
-          <span :class="{ active: productStore.selectedIndex === 0 }">전체</span>
-          <span :class="{ active: productStore.selectedIndex === 1 }">6개월</span>
-          <span :class="{ active: productStore.selectedIndex === 2 }">12개월</span>
-          <span :class="{ active: productStore.selectedIndex === 3 }">24개월</span>
-        </div>
-      </div>
-
-      <!-- ✅ 리스트 출력 -->
-      <ProductList :items="productStore.filteredItems" />
-
-      <RouterView />
-    </div>
+    <main class="main-content">
+      <ProductAdvancedFilter />
+      <section class="product-list-section">
+        <ProductList :items="productStore.filteredItems" />
+      </section>
+    </main>
   </div>
 </template>
 <script setup>
 // ✅ 필요한 모듈 불러오기
-import BaseSegmentedControl from '@/components/base/BaseSegmentedControl.vue'
-import BaseSelect from '@/components/base/BaseSelect.vue'
+import ProductAdvancedFilter from '@/components/product/ProductAdvancedFilter.vue'
+import ProductFilterPanel from '@/components/product/ProductFilterPanel.vue'
 import ProductList from '@/components/product/ProductList.vue'
 import { useProductStore } from '@/stores/productStore'
 import { computed, onMounted } from 'vue'
-import { RouterView, useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 // ✅ 상태 저장소 가져오기
 const productStore = useProductStore()
@@ -89,14 +51,10 @@ onMounted(() => {
 <style scoped>
 .product-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
   margin-top: 5%;
   margin-bottom: 24px;
-}
-
-select {
-  padding: 8px;
 }
 
 .slider-container {
@@ -206,5 +164,24 @@ select {
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   padding-right: 2rem;
+}
+
+.main-content {
+  display: flex;
+  gap: 32px;
+  margin-top: 2rem;
+}
+
+.filter-sidebar {
+  width: 240px;
+  min-width: 200px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.product-list-section {
+  flex: 1;
 }
 </style>
