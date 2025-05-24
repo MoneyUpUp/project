@@ -1,90 +1,89 @@
 <template>
   <div class="back">
     <div class="container">
-      <!-- <h1>예적금 리스트 페이지</h1> -->
-
+      <!-- ✅ 은행 선택 드롭다운 -->
       <div class="product-header">
-        <!-- 은행 드롭다운 -->
-        <select v-model="selectedBank" class="custom-select">
-          <option v-for="bank in banks" :key="bank">{{ bank }}</option>
-        </select>
+        <BaseSelect
+          v-model="productStore.selectedBank"
+          placeholder="은행 명"
+          :options="productStore.bankOptions"
+          variant="clean"
+        />
 
-        <!-- 예금/적금 토글 -->
-        <div class="toggle-bg">
-          <div class="toggle-labels">
-            <RouterLink :to="{ path: '/product/deposit', query: { bank: selectedBank, period: selectedIndex } }"
-              class="label" :class="{ active: type === 'deposit' }" @click.prevent="setType('deposit')">예금</RouterLink>
-            <RouterLink to="/product/saving" class="label" :class="{ active: type === 'saving' }"
-              @click.prevent="setType('saving')">적금</RouterLink>
-          </div>
-          <div class="toggle-circle" :class="type"></div>
-        </div>
+        <!-- ✅ 예금/적금 토글 버튼 -->
+        <BaseSegmentedControl
+          v-model="productStore.selectedTypes"
+          :options="[
+            { label: '예금', value: 'deposit' },
+            { label: '적금', value: 'saving' },
+          ]"
+        />
       </div>
-      <hr>
-      <!-- 기간 선택 슬라이더 -->
+
+      <hr />
+
+      <!-- ✅ 기간 슬라이더 -->
       <div class="slider-container">
-        <input type="range" min="0" max="3" step="1" v-model="selectedIndex" class="range-input"
-          :style="{ background: getSliderBackground }" />
+        <input
+          type="range"
+          min="0"
+          max="3"
+          step="1"
+          v-model="productStore.selectedIndex"
+          class="range-input"
+          :style="{ background: getSliderBackground }"
+        />
         <div class="labels">
-          <span :class="{ active: selectedIndex === 0 }">전체</span>
-          <span :class="{ active: selectedIndex === 1 }">6개월</span>
-          <span :class="{ active: selectedIndex === 2 }">12개월</span>
-          <span :class="{ active: selectedIndex === 3 }">24개월</span>
+          <span :class="{ active: productStore.selectedIndex === 0 }">전체</span>
+          <span :class="{ active: productStore.selectedIndex === 1 }">6개월</span>
+          <span :class="{ active: productStore.selectedIndex === 2 }">12개월</span>
+          <span :class="{ active: productStore.selectedIndex === 3 }">24개월</span>
         </div>
       </div>
-      <productList v-if="type !== 'deposit' && type !== 'saving'" :items="depositItems" />
+
+      <!-- ✅ 리스트 출력 -->
+      <ProductList :items="productStore.filteredItems" />
+
       <RouterView />
     </div>
   </div>
 </template>
-
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import { useRoute, useRouter } from 'vue-router'
-import { onMounted, ref, computed,  } from 'vue'
-import productList from '@/components/product/productList.vue'
-import { useProductStore } from '@/stores/products'
+// ✅ 필요한 모듈 불러오기
+import BaseSegmentedControl from '@/components/base/BaseSegmentedControl.vue'
+import BaseSelect from '@/components/base/BaseSelect.vue'
+import ProductList from '@/components/product/ProductList.vue'
+import { useProductStore } from '@/stores/productStore'
+import { computed, onMounted } from 'vue'
+import { RouterView, useRoute, useRouter } from 'vue-router'
 
+// ✅ 상태 저장소 가져오기
+const productStore = useProductStore()
 const route = useRoute()
 const router = useRouter()
-const store = useProductStore()
 
-const selectedBank = ref('우리은행')
-const selectedIndex = ref(1) // 기본값: 6개월
-const depositItems = ref([]);
-
-const banks = [
-  '국민은행', '우리은행', '신한은행', '하나은행', '카카오뱅크', '토스뱅크',
-  '기업은행', '농협', '수협', 'SC제일은행', '씨티은행', '부산은행',
-  '경남은행', '대구은행', '전북은행', '광주은행', '제주은행', '케이뱅크', '아이엠뱅크'
-]
-
-
-// const type = ref(route.path.includes('saving') ? 'saving' : 'deposit')
-const type = ref('all')
-
+// ✅ 예금/적금 탭 전환 핸들러
 const setType = (value) => {
-  type.value = value;
+  productStore.type = value
   router.push({
     path: `/product/${value}`,
     query: {
-      bank: selectedBank.value,
-      period: selectedIndex.value
-    }
-  });
-};
+      bank: productStore.selectedBank,
+      period: productStore.selectedIndex,
+    },
+  })
+}
 
+// ✅ 슬라이더 스타일 계산
 const getSliderBackground = computed(() => {
-  const percent = (selectedIndex.value / 3) * 100
+  const percent = (productStore.selectedIndex / 3) * 100
   return `linear-gradient(to right, #43B883 0%, #43B883 ${percent}%, #D9F1E6 ${percent}%, #D9F1E6 100%)`
 })
 
-const fetchData = async () => {
-  const res = await store.depositData()
-  depositItems.value = res
-}
-  
-onMounted(fetchData)
+// ✅ 최초 데이터 패치
+onMounted(() => {
+  productStore.fetchAllProducts()
+})
 </script>
 
 <style scoped>
@@ -110,7 +109,7 @@ select {
   width: 100%;
   height: 10px;
   border-radius: 5px;
-  background: linear-gradient(to right, #43B883 0%, #43B883 33.3%, #D9F1E6 33.3%, #D9F1E6 100%);
+  background: linear-gradient(to right, #43b883 0%, #43b883 33.3%, #d9f1e6 33.3%, #d9f1e6 100%);
   outline: none;
   transition: background 0.3s;
 }
@@ -122,7 +121,7 @@ select {
   height: 16px;
   border-radius: 50%;
   background: white;
-  border: 3px solid #43B883;
+  border: 3px solid #43b883;
   cursor: pointer;
   margin-top: -4px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
@@ -140,14 +139,14 @@ select {
 }
 
 .labels .active {
-  color: #43B883;
+  color: #43b883;
   font-weight: bold;
 }
 
 .toggle-bg {
   width: 110px;
   height: 30px;
-  background-color: #43B883;
+  background-color: #43b883;
   border-radius: 15px;
   position: relative;
   display: flex;
@@ -174,7 +173,7 @@ select {
 }
 
 .label.active {
-  color: #43B883;
+  color: #43b883;
   background-color: white;
 }
 
@@ -197,7 +196,7 @@ select {
 .custom-select {
   font-size: 20px;
   font-weight: bold;
-  color: #43B883;
+  color: #43b883;
   border: none;
   background: transparent;
   appearance: none;
