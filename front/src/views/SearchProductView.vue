@@ -10,16 +10,12 @@
             </button>
         </div>
         </form>
-
         <RouterView/>
-        <SearchList/>
-
     </div>
 </template>
 
 <script setup>
 import { RouterView } from 'vue-router'
-import SearchList from '@/components/search/SearchList.vue'
 import { ref } from 'vue'
 import { useSearchStore } from '@/stores/searchVideo'
 

@@ -19,6 +19,7 @@ import ArticleComponent from '@/components/Article/ArticleComponent.vue'
 import ArticleDetail from '@/components/Article/ArticleDetail.vue'
 import CreateArticle from '@/components/Article/CreateArticle.vue'
 
+import searchList from '@/components/search/searchList.vue'
 import SearchDetail from '@/components/search/SearchDetail.vue'
 
 const router = createRouter({
@@ -50,7 +51,7 @@ const router = createRouter({
             },
             {
               path: 'detail',
-              name: 'detail',
+              name: 'article-detail',
               component: ArticleDetail,
             },
           ],
@@ -93,8 +94,13 @@ const router = createRouter({
           component: SearchProductView,
           children: [
             {
-              path: 'detail',
-              name: 'detail',
+              path:'',
+              name:'',
+              component:searchList
+            },
+            {
+              path: 'detail/:id',
+              name: 'search-detail',
               component: SearchDetail,
             },
           ],

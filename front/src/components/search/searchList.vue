@@ -11,7 +11,7 @@
   </template>
   
   <script setup>
-  import SearchListItem from '@/components/search/SearchListItem.vue';
+  import SearchListItem from '@/components/search/searchListItem.vue';
   import { useSearchStore } from '@/stores/searchVideo';
   
   const store = useSearchStore()
