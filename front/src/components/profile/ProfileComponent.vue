@@ -38,10 +38,11 @@
 @use '@/assets/styles/utils/variables' as *;
 
 .menu {
-	width:300px;
+	flex: 0 0 200px;
 	height: 100vh;
-	border-right: solid 1px $gray-500;
-	border-left: solid 1px $gray-500;
+	border-right: solid 1px $gray-300;
+	border-left: solid 1px $gray-300;
+	margin-right: 70px;
 }
 
 p {
