@@ -2,6 +2,13 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
+from rest_framework import serializers
+from .models import User
+from products.serializers import (
+    DepositProductSerializer,
+    SavingProductSerializer,
+    SpotAssetProductSerializer,
+)
 
 
 User = get_user_model()
@@ -46,3 +53,13 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.nickname = user.username  # 자동 닉네임
         user.save()
         return user
+
+
+class UserFavoriteProductsSerializer(serializers.ModelSerializer):
+    favorite_deposits = DepositProductSerializer(many=True, read_only=True)
+    favorite_savings = SavingProductSerializer(many=True, read_only=True)
+    favorite_assets = SpotAssetProductSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = ["favorite_deposits", "favorite_savings", "favorite_assets"]

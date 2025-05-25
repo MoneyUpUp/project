@@ -36,3 +36,11 @@ class SavingProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = SavingProduct
         fields = "__all__"
+
+
+class SpotAssetProductSerializer(serializers.ModelSerializer):
+    bank = BankSerializer()
+
+    class Meta:
+        model = SpotAssetProduct
+        fields = "__all__"

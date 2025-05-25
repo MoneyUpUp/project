@@ -28,5 +28,16 @@ class User(AbstractUser):
         max_length=1, choices=PREFERRED_TERM_CHOICES, null=True, blank=True
     )
 
+    # 찜
+    favorite_deposits = models.ManyToManyField(
+        "products.DepositProduct", blank=True, related_name="liked_by_users"
+    )
+    favorite_savings = models.ManyToManyField(
+        "products.SavingProduct", blank=True, related_name="liked_by_users"
+    )
+    favorite_assets = models.ManyToManyField(
+        "products.SpotAssetProduct", blank=True, related_name="liked_by_users"
+    )
+
     def __str__(self):
         return self.username
