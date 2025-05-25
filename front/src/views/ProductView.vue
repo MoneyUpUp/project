@@ -6,10 +6,19 @@
       <ProductAdvancedFilter class="filter-sidebar" />
       <section class="product-list-section">
         <div class="scroll-area">
-          <ProductList :items="productStore.filteredItems" />
+          <ProductList
+            :items="productStore.filteredItems"
+            @select="selectedItem = $event"
+          />
         </div>
       </section>
     </main>
+    <!-- 모달 -->
+    <ProductModal
+      v-if="selectedItem"
+      :product="selectedItem"
+      @close="selectedItem = null"
+    />
   </div>
 </template>
 <script setup>
@@ -17,15 +26,16 @@
 import ProductAdvancedFilter from '@/components/product/ProductAdvancedFilter.vue'
 import ProductFilterPanel from '@/components/product/ProductFilterPanel.vue'
 import ProductList from '@/components/product/ProductList.vue'
+import ProductModal from '@/components/product/ProductModal.vue'
 import { useProductStore } from '@/stores/productStore'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 // ✅ 상태 저장소 가져오기
 const productStore = useProductStore()
 const route = useRoute()
 const router = useRouter()
-
+const selectedItem = ref(null)
 // ✅ 예금/적금 탭 전환 핸들러
 const setType = (value) => {
   productStore.type = value

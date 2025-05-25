@@ -4,6 +4,7 @@
       v-for="item in sortedItems"
       :key="item.id"
       :item="item"
+      @click="$emit('select', item)"
     />
   </div>
 </template>
@@ -15,6 +16,7 @@ import { useRoute } from 'vue-router'
 import productListItem from './productListItem.vue'
 
 const route = useRoute()
+defineEmits(['select'])
 const props = defineProps({
   items: Array,
 })

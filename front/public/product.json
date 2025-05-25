@@ -1,27 +1,6 @@
 {
   "deposit_products": [
     {
-      "id": 1,
-      "bank": {
-        "fin_co_no": "0010001",
-        "kor_co_nm": "우리은행"
-      },
-      "options": [],
-      "dcls_month": "",
-      "fin_prdt_cd": "D001",
-      "fin_prdt_nm": "예금 상품 A",
-      "join_way": "영업점,인터넷",
-      "mtrt_int": "만기 후 이자율 적용",
-      "spcl_cnd": "우대조건 없음",
-      "join_deny": "1",
-      "join_member": "제한없음",
-      "etc_note": "",
-      "max_limit": 50000000,
-      "dcls_strt_day": "2025-01-01",
-      "dcls_end_day": null,
-      "fin_co_subm_day": "2025-05-23T00:00:00Z"
-    },
-    {
       "id": 2,
       "bank": {
         "fin_co_no": "0010001",

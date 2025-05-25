@@ -1,47 +1,48 @@
 <template>
-  <!-- 🔹 필터 헤더: 은행 + 예/적금 + 고급필터 -->
-  <div class="filter-header">
-    <BaseSelect
-      v-model="productStore.selectedBank"
-      placeholder="은행 명"
-      :options="productStore.bankOptions"
-      variant="clean"
-    />
+  <!-- 🔹 전체 필터 툴바: 좌측 필터 + 우측 정렬 -->
+  <div class="filter-toolbar">
+    <div class="filter-header">
+      <BaseSelect
+        v-model="productStore.selectedBank"
+        placeholder="은행 명"
+        :options="productStore.bankOptions"
+        variant="clean"
+      />
 
-    <BaseSegmentedControl
-      v-model="productStore.selectedTypes"
-      :options="[
-        { label: '예금', value: 'deposit' },
-        { label: '적금', value: 'saving' },
-      ]"
-    />
-  </div>
+      <BaseSelect
+        v-model="deposit"
+        placeholder="예*적금"
+        :options="[
+          { label: '예금', value: 'deposit' },
+          { label: '적금', value: 'saving' },
+        ]"
+        variant="clean"
+      />
+    </div>
 
-  <!-- 🔹 정렬 컨트롤 (리스트 위쪽에 위치) -->
-  <div class="sort-control">
-    <BaseSelect
-      v-model="productStore.sortOption"
-      placeholder="정렬 기준"
-      :options="[
-        { label: '이름순', value: 'name' },
-        { label: '금리순', value: 'rate' },
-        { label: '최신순', value: 'latest' },
-        { label: '기간순', value: 'term' },
-        { label: '은행순', value: 'bank' },
-      ]"
-      variant="default"
-    />
+    <!-- 🔹 정렬 컨트롤 (오른쪽 정렬) -->
+    <div class="sort-control">
+      <BaseSegmentedControl
+        v-model="productStore.sortOption"
+        placeholder="정렬 기준"
+        :options="[
+          { label: '이름순', value: 'name' },
+          { label: '금리순', value: 'rate' },
+        ]"
+        variant="default"
+      />
+    </div>
   </div>
 
   <hr />
 </template>
 
 <script setup>
-import BaseSegmentedControl from '@/components/base/BaseSegmentedControl.vue'
 import BaseSelect from '@/components/base/BaseSelect.vue'
 
 import { useProductStore } from '@/stores/productStore'
 import { ref } from 'vue'
+import BaseSegmentedControl from '../base/BaseSegmentedControl.vue'
 
 const productStore = useProductStore()
 
@@ -71,20 +72,23 @@ function applyFilters() {
 </script>
 
 <style scoped lang="scss">
-.filter-header {
+.filter-toolbar {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-top: 5%;
   margin-bottom: 1.5rem;
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
   gap: 1.5rem;
-  flex-direction: row;
 }
 
 .sort-control {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 1rem;
 }
 </style>

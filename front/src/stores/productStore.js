@@ -12,18 +12,30 @@ export const useProductStore = defineStore('product', () => {
   const selectedBank = ref('all')
   const selectedIndex = ref(0)
   const selectedTypes = ref(['deposit', 'saving'])
+  const sortOption = ref('name')
   const allItems = ref([])
 
   const bankOptions = computed(() => BANK_OPTIONS)
 
-  const filteredItems = computed(() =>
-    allItems.value.filter(
+  const filteredItems = computed(() => {
+    const filtered = allItems.value.filter(
       (item) =>
         matchesType(item, selectedTypes.value) &&
         matchesBank(item, selectedBank.value) &&
         matchesPeriod(item, selectedIndex.value),
-    ),
-  )
+    )
+
+    if (sortOption.value === 'rate') {
+      return filtered.sort((a, b) => {
+        const maxRateA = Math.max(...(a.options?.map((opt) => parseFloat(opt.intr_rate2)) || [0]))
+        const maxRateB = Math.max(...(b.options?.map((opt) => parseFloat(opt.intr_rate2)) || [0]))
+        return maxRateB - maxRateA
+      })
+    }
+
+    // 기본: 이름순
+    return filtered.sort((a, b) => a.fin_prdt_nm.localeCompare(b.fin_prdt_nm))
+  })
 
   async function fetchAllProducts() {
     allItems.value = []
@@ -46,6 +58,7 @@ export const useProductStore = defineStore('product', () => {
     selectedBank,
     selectedIndex,
     selectedTypes,
+    sortOption,
     bankOptions,
     filteredItems,
     fetchAllProducts,
