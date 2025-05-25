@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar">
-    <div class="container">
+    <div class="container" style="display: flex;">
       <div class="left-section">
         <RouterLink
           to="/"
@@ -17,22 +17,32 @@
           <li><RouterLink to="/searchproduct">관심종목검색</RouterLink></li>
         </ul>
       </div>
-
+      <template v-if="store.isLogin">
+        <img style="margin-left: auto; cursor: pointer;" @click="onclick" src="@/assets/icon/basicprofile.png" alt="">
+        <BaseButton style="margin-left: 20px;" @click="store.logOut()">로그아웃</BaseButton>
+      </template>
+        <template v-else>
+          <BaseButton style="margin-left: auto;" to="/login">로그인</BaseButton>
+          <BaseButton style="margin-left: 20px;" to="/signup" variant="secondary">가입하기</BaseButton>
+        </template>
       <div class="right-section">
-        <BaseButton to="/login">로그인</BaseButton>
-        <BaseButton
-          to="/signup"
-          variant="secondary"
-          >가입하기</BaseButton
-        >
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import BaseButton from '@/components/base/BaseButton.vue'
+import { useAccountStore } from '@/stores/accounts';
+
+const store = useAccountStore() 
+const router = useRouter()
+
+const onclick = () => {
+  router.push({name:'profile-update'})
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -92,6 +102,11 @@ import BaseButton from '@/components/base/BaseButton.vue'
 //   align-items: center;
 //   margin-left: auto;
 // }
+
+img {
+  width: 40px;
+  height: 40px;
+}
 
 .navbar {
   width: 100%;

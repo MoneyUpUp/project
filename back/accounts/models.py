@@ -7,7 +7,7 @@ class User(AbstractUser):
     # 필수 정보
     username = models.CharField(max_length=150, unique=True, null=True, blank=True)
     name = models.CharField(max_length=30)
-    nickname = models.CharField(max_length=30, unique=True)
+    nickname = models.CharField(max_length=30)
     email = models.EmailField()
     age = models.PositiveIntegerField(null=True, blank=True)
     profile_image = models.ImageField(
