@@ -30,7 +30,7 @@
   </template>
   
 <script setup>
-	import { ref } from 'vue'
+	import { ref, watch } from 'vue'
 	import { useRouter } from 'vue-router'
 	import { useAccountStore } from '@/stores/accounts'
 	const router = useRouter()
@@ -38,17 +38,26 @@
 	const username = ref('')
 	const password = ref('')
 
-	const onlogin = () => {
+	const onlogin = async () => {
 		const userInfo = {
-			username : username.value,
-			password : password.value
+			username: username.value,
+			password: password.value
 		}
-		store.logIn(userInfo)
+		const success = await store.logIn(userInfo)
+
+		if (success) {
+			router.push({ name: 'home' })
+		} else {
+			alert('로그인에 실패했습니다. 아이디나 비밀번호를 확인하세요.')
+			// 또는 에러 메시지 ref에 담아서 화면에 띄워도 됩니다
+		}
 	}
 
 	const kakaoLogin = ( )=> {
 		router.push({name:'kakao'})
 	}
+
+	
 	
 </script>
   
