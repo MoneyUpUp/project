@@ -7,31 +7,46 @@ export const useAccountStore = defineStore('account', () => {
   const API_URL = "http://127.0.0.1:8000/";
   const token = ref('')
   const router = useRouter()
-    const createUser = ({username, email, password, age}) => {
-        axios({
-            method: 'post',
-            url: `${API_URL}auth/signup/`,
-            data: {
-                username:username,
-                email:email, 
-                password1: password,
-                password2: password,
-                age:age
-            },
-            headers: {
-              'Content-Type': 'application/json'
-            }
-        })
-        .then(res => {
-            console.log('회원가입 성공!')
-            console.log(res.data)
-            token.value = res.data.key
-            router.push({name:'login'})
-            
-        })
-        .catch(err => console.log(err))
-    }
-  return { 
-    createUser
+  const createUser = ({username, email, password, age}) => {
+      axios({
+          method: 'post',
+          url: `${API_URL}auth/signup/`,
+          data: {
+              username:username,
+              email:email, 
+              password1: password,
+              password2: password,
+              age:age
+          },
+          headers: {
+            'Content-Type': 'application/json'
+          }
+      })
+      .then(res => {
+          console.log('회원가입 성공!')
+          console.log(res.data)
+          token.value = res.data.key
+          router.push({name:'login'})
+          
+      })
+      .catch(err => console.log(err))
+  }
+
+  const logIn = ({username, password}) => {
+    axios({
+      method: 'post',
+      url: `${API_URL}auth/login/`,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        username, password
+      }
+    })
+  }
+  
+  return {
+    createUser,
+    logIn,
   }
 })

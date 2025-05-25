@@ -44,6 +44,22 @@
       );
       console.log(result);
       token.value = result.data.access_token
+      axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8000/accounts/auth/kakao/login/',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: {
+          access_token: token.value
+        }
+      })
+      .then(response => {
+        console.log('응답:', response.data);
+      })
+      .catch(error => {
+        console.error('에러:', error);
+      });
       return result;
     } catch (e) {
       console.log(e);
@@ -132,20 +148,4 @@
     },
   };
 
-  axios({
-    method: 'post',
-    url: 'http://127.0.0.1:8000/accounts/auth/kakao/login/',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    data: {
-      access_token: token
-    }
-  })
-  .then(response => {
-    console.log('응답:', response.data);
-  })
-  .catch(error => {
-    console.error('에러:', error);
-  });
   </script>
