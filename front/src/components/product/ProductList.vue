@@ -4,6 +4,7 @@
       v-for="item in sortedItems"
       :key="item.id"
       :item="item"
+      @click="$emit('select', item)"
     />
   </div>
 </template>
@@ -15,6 +16,7 @@ import { useRoute } from 'vue-router'
 import productListItem from './productListItem.vue'
 
 const route = useRoute()
+defineEmits(['select'])
 const props = defineProps({
   items: Array,
 })
@@ -36,17 +38,10 @@ const sortedItems = computed(() => {
 </script>
 
 <style scoped>
-.header-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-.sort-control {
-  width: 160px;
-}
 .deposit-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding-right: 4px; /* Optional for scrollbar spacing */
 }
 </style>

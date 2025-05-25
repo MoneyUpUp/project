@@ -1,20 +1,22 @@
 <template>
   <div class="layout-wrapper">
     <BaseNavBar />
-    <RouterView />
-    <!-- 테마 토글 버튼 고정 -->
-    <div class="theme-toggle-btn">
-      <button @click="ui.toggleTheme">123</button>
-      <!-- <BaseButton @click="ui.toggleTheme">
+
+    <div class="content-area">
+      <RouterView />
+      <!-- 테마 토글 버튼 고정 -->
+      <div class="theme-toggle-btn">
+        <button @click="ui.toggleTheme">123</button>
+        <!-- <BaseButton @click="ui.toggleTheme">
         {{ ui.theme === 'light' ? '🌙 다크모드' : '☀️ 라이트모드' }}
       </BaseButton> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import BaseNavBar from '@/components/layouts/nav/BaseNavBar.vue'
-import BaseButton from '@/components/base/BaseButton.vue'
 import { RouterView } from 'vue-router'
 
 import { useUiStore } from '@/stores/uiStore'
@@ -26,12 +28,17 @@ const ui = useUiStore()
 @use '@/assets/styles/base/theme-vars' as *;
 
 .layout-wrapper {
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; // 전체 화면
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
   background: var(--bg-color);
   color: var(--text-color);
 }
-
-
 .theme-toggle-btn {
   position: fixed;
   bottom: 1.5rem;

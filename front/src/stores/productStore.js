@@ -12,51 +12,53 @@ export const useProductStore = defineStore('product', () => {
   const selectedBank = ref('all')
   const selectedIndex = ref(0)
   const selectedTypes = ref(['deposit', 'saving'])
+  const sortOption = ref('name')
   const allItems = ref([])
 
   const bankOptions = computed(() => BANK_OPTIONS)
 
-  const filteredItems = computed(() =>
-    allItems.value.filter(
+  const filteredItems = computed(() => {
+    const filtered = allItems.value.filter(
       (item) =>
         matchesType(item, selectedTypes.value) &&
         matchesBank(item, selectedBank.value) &&
         matchesPeriod(item, selectedIndex.value),
-    ),
-  )
+    )
+
+    if (sortOption.value === 'rate') {
+      return filtered.sort((a, b) => {
+        const maxRateA = Math.max(...(a.options?.map((opt) => parseFloat(opt.intr_rate2)) || [0]))
+        const maxRateB = Math.max(...(b.options?.map((opt) => parseFloat(opt.intr_rate2)) || [0]))
+        return maxRateB - maxRateA
+      })
+    }
+
+    // 기본: 이름순
+    return filtered.sort((a, b) => a.fin_prdt_nm.localeCompare(b.fin_prdt_nm))
+  })
 
   async function fetchAllProducts() {
     allItems.value = []
 
-    const [depositRes, savingRes] = await Promise.all([
-      fetch('/deposit.json'),
-      fetch('/saving.json'),
-    ])
-
-    let depositData = []
-    let savingData = []
-
     try {
-      depositData = parseProductData(await depositRes.json(), 'deposit')
-    } catch (err) {
-      console.error('❌ depositData 파싱 오류:', err)
-      depositData = []
-    }
+      const res = await fetch('/product.json')
+      const data = await res.json()
 
-    try {
-      savingData = parseProductData(await savingRes.json(), 'saving')
-    } catch (err) {
-      console.error('❌ savingData 파싱 오류:', err)
-      savingData = []
-    }
+      const depositData = parseProductData(data.deposit_products || [], 'deposit')
+      const savingData = parseProductData(data.saving_products || [], 'saving')
 
-    allItems.value.push(...depositData, ...savingData)
+      allItems.value.push(...depositData, ...savingData)
+    } catch (err) {
+      console.error('❌ productData 파싱 오류:', err)
+      allItems.value = []
+    }
   }
 
   return {
     selectedBank,
     selectedIndex,
     selectedTypes,
+    sortOption,
     bankOptions,
     filteredItems,
     fetchAllProducts,
