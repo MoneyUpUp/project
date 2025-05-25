@@ -5,7 +5,7 @@ from products.serializers import DepositProductSerializer, SavingProductSerializ
 
 TAG = ["products"]
 
-all_list_view = swagger_auto_schema(
+product_list_view = swagger_auto_schema(
     operation_summary="예금 및 적금 모두 불러오기",
     operation_description="예금과 적금 상품 리스트를 한 번에 조회합니다.",
     responses={

@@ -1,5 +1,150 @@
 [
   {
+    "model": "products.bank",
+    "pk": 1,
+    "fields": {
+      "fin_co_no": "0010001",
+      "kor_co_nm": "우리은행"
+    }
+  },
+  {
+    "model": "products.depositproduct",
+    "pk": 1,
+    "fields": {
+      "fin_prdt_cd": "D001",
+      "fin_prdt_nm": "예금 상품 A",
+      "bank": 1,
+      "join_way": "영업점,인터넷",
+      "mtrt_int": "만기 후 이자율 적용",
+      "spcl_cnd": "우대조건 없음",
+      "join_deny": "1",
+      "join_member": "제한없음",
+      "etc_note": "",
+      "max_limit": 50000000,
+      "dcls_strt_day": "2025-01-01",
+      "dcls_end_day": null,
+      "fin_co_subm_day": "2025-05-23T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.savingproduct",
+    "pk": 2,
+    "fields": {
+      "fin_prdt_cd": "S001",
+      "fin_prdt_nm": "적금 상품 A",
+      "bank": 1,
+      "join_way": "모바일,인터넷",
+      "mtrt_int": "만기 후 이자율 적용",
+      "spcl_cnd": "우대조건 있음",
+      "join_deny": "2",
+      "join_member": "개인",
+      "etc_note": "",
+      "max_limit": 30000000,
+      "dcls_strt_day": "2025-01-01",
+      "dcls_end_day": null,
+      "fin_co_subm_day": "2025-05-23T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.spotassetproduct",
+    "pk": 3,
+    "fields": {
+      "code": "100",
+      "name": "금",
+      "purchase_url": "https://example.com/gold",
+      "price": 25000
+    }
+  },
+  {
+    "model": "accounts.user_favorite_deposits",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "depositproduct": 1
+    }
+  },
+  {
+    "model": "products.spotassetprice",
+    "pk": 1,
+    "fields": {
+      "product": 3,
+      "date": "2023-01-09",
+      "close": 24.562,
+      "volume": 60.053,
+      "open": 24.82,
+      "high": 25.22,
+      "low": 24.52
+    }
+  },
+  {
+    "model": "products.spotassetprice",
+    "pk": 2,
+    "fields": {
+      "product": 3,
+      "date": "2023-01-11",
+      "close": 22.79,
+      "volume": 52.76,
+      "open": 22.955,
+      "high": 23.13,
+      "low": 22.645
+    }
+  },
+  {
+    "model": "products.spotassetprice",
+    "pk": 3,
+    "fields": {
+      "product": 3,
+      "date": "2023-01-12",
+      "close": 25.857,
+      "volume": 68.016,
+      "open": 25.695,
+      "high": 25.94,
+      "low": 25.48
+    }
+  },
+  {
+    "model": "products.spotassetprice",
+    "pk": 4,
+    "fields": {
+      "product": 3,
+      "date": "2023-02-10",
+      "close": 21.421,
+      "volume": 93.21,
+      "open": 22.41,
+      "high": 22.41,
+      "low": 21.215
+    }
+  },
+  {
+    "model": "products.spotassetprice",
+    "pk": 5,
+    "fields": {
+      "product": 3,
+      "date": "2023-02-11",
+      "close": 22.846,
+      "volume": 43.235,
+      "open": 23.5,
+      "high": 23.24,
+      "low": 22.755
+    }
+  },
+  {
+    "model": "accounts.user_favorite_savings",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "savingproduct": 2
+    }
+  },
+  {
+    "model": "accounts.user_favorite_assets",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "spotassetproduct": 3
+    }
+  },
+  {
     "model": "accounts.user",
     "pk": 1,
     "fields": {
