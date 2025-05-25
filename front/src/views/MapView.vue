@@ -16,13 +16,13 @@
   </div>
 </template>
 <script setup>
+import MapDisplay from '@/components/map/MapDisplay.vue'
 import SearchControls from '@/components/map/SearchControls.vue'
 import SearchResultList from '@/components/map/SearchResultList.vue'
-import MapDisplay from '@/components/map/MapDisplay.vue'
 
-import { onMounted } from 'vue'
-import { loadKakaoMap } from '@/utils/map/kakao.js'
 import { useMapStore } from '@/stores/mapStore'
+import { loadKakaoMap } from '@/utils/map/kakao.js'
+import { onMounted } from 'vue'
 
 import dotImage from '@/assets/dot.png'
 
@@ -43,7 +43,7 @@ onMounted(async () => {
         const lat = position.coords.latitude
         const lng = position.coords.longitude
         mapStore.setMyLocationOnce(lat, lng)
-
+        
         new kakao.maps.Marker({
           position: mapStore.myLocation,
           map: mapStore.map,
