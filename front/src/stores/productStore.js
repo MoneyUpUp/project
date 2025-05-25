@@ -28,29 +28,18 @@ export const useProductStore = defineStore('product', () => {
   async function fetchAllProducts() {
     allItems.value = []
 
-    const [depositRes, savingRes] = await Promise.all([
-      fetch('/deposit.json'),
-      fetch('/saving.json'),
-    ])
-
-    let depositData = []
-    let savingData = []
-
     try {
-      depositData = parseProductData(await depositRes.json(), 'deposit')
-    } catch (err) {
-      console.error('❌ depositData 파싱 오류:', err)
-      depositData = []
-    }
+      const res = await fetch('/product.json')
+      const data = await res.json()
 
-    try {
-      savingData = parseProductData(await savingRes.json(), 'saving')
-    } catch (err) {
-      console.error('❌ savingData 파싱 오류:', err)
-      savingData = []
-    }
+      const depositData = parseProductData(data.deposit_products || [], 'deposit')
+      const savingData = parseProductData(data.saving_products || [], 'saving')
 
-    allItems.value.push(...depositData, ...savingData)
+      allItems.value.push(...depositData, ...savingData)
+    } catch (err) {
+      console.error('❌ productData 파싱 오류:', err)
+      allItems.value = []
+    }
   }
 
   return {
