@@ -1,13 +1,48 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 
-from products.models import DepositProduct, SavingProduct
+from products.models import (
+    DepositProduct,
+    SavingProduct,
+    SpotAssetProduct,
+    SpotAssetPrice,
+)
 from products.serializers import DepositProductSerializer, SavingProductSerializer
 from products.utils.update_checker import should_update, mark_updated
 from swaggers.products_swaggers import product_list_view
 
 
 from .api.fin_api import get_deposit_api, get_saving_api
+
+from .api.yfinance_api import save_asset_prices, TICKER_MAP
+
+
+class CommodityHistoryView(APIView):
+    def get(self, request, commodity_name):
+        from django.utils import timezone
+
+        today = timezone.now().date()
+
+        if commodity_name not in TICKER_MAP:
+            return Response(
+                {"error": "Unsupported commodity."}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        spot_asset, _ = SpotAssetProduct.objects.get_or_create(name=commodity_name)
+
+        spot_price_qs = SpotAssetPrice.objects.filter(product=spot_asset, date=today)
+        if not spot_price_qs.exists():
+            try:
+                save_asset_prices(commodity_name)
+            except ValueError as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        prices = SpotAssetPrice.objects.filter(product=spot_asset).order_by("date")
+        data = [
+            {"date": price.date, "close_price": price.close_price} for price in prices
+        ]
+        return Response({commodity_name: data})
 
 
 class ProductListView(APIView):

@@ -2,13 +2,10 @@ from django.db import models
 
 
 class SpotAssetProduct(models.Model):
-    code = models.CharField(max_length=20)
-    name = models.CharField(max_length=100)
-    purchase_url = models.URLField()
-    price = models.BigIntegerField()
+    name = models.CharField(max_length=20)  # gold, silver, oil 등
 
     def __str__(self):
-        return f"[{self.code}] {self.name}"
+        return self.name
 
 
 class SpotAssetPrice(models.Model):
@@ -16,15 +13,11 @@ class SpotAssetPrice(models.Model):
         SpotAssetProduct, on_delete=models.CASCADE, related_name="price_history"
     )
     date = models.DateField()
-    close = models.FloatField()
-    volume = models.FloatField()
-    open = models.FloatField()
-    high = models.FloatField()
-    low = models.FloatField()
+    close_price = models.FloatField()
 
     class Meta:
-        unique_together = ("product", "date")
+        unique_together = ("product", "date")  # ✔ 수정
         ordering = ["-date"]
 
     def __str__(self):
-        return f"{self.product.asset_code} @ {self.date}"
+        return f"{self.product.name} - {self.date} : {self.close_price}"  # ✔ 수정
