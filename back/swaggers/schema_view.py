@@ -20,6 +20,8 @@ api_urlpatterns = (
     + products_urls
     + community_urls
     + [
+        path("auth/kakao/login/", KakaoLogin.as_view()),
+        path("auth/google/login/", GoogleLogin.as_view()),
         path("auth/login/", LoginView.as_view(), name="auth-login"),
         path("auth/logout/", LogoutView.as_view(), name="auth-logout"),
         path("auth/signup/", RegisterView.as_view(), name="auth-signup"),

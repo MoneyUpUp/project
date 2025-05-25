@@ -38,7 +38,8 @@ class KakaoLogin(SocialLoginView):
     adapter_class = KakaoOAuth2Adapter
     callback_url = "http://localhost:8000/accounts/auth/kakao/login/callback/"
     client_class = OAuth2Client
-
+    
+    @kakao_login_swagger
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         if response.status_code == 200:
@@ -61,11 +62,13 @@ class GoogleLogin(SocialLoginView):
 
 class MyFavoriteProductsView(APIView):
     permission_classes = [IsAuthenticated]
-
+    
+    @favorite_get_swagger
     def get(self, request):
         serializer = UserFavoriteProductsSerializer(request.user)
         return Response(serializer.data)
-
+    
+    @favorite_post_swagger
     def post(self, request):
         product_type = request.data.get("type")  # "deposit", "saving", "asset"
         product_id = request.data.get("id")
@@ -121,7 +124,8 @@ class MyFavoriteProductsView(APIView):
             return Response({"error": "잘못된 상품 타입입니다."}, status=400)
 
         return Response({"message": "찜 추가됨" if added else "찜 해제됨"})
-
+    
+    @favorite_delete_swagger
     def delete(self, request):
         product_type = request.data.get("type")  # "deposit", "saving", "asset"
         product_id = request.data.get("id")
