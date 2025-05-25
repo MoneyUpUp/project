@@ -109,3 +109,39 @@ watch(filters, (newFilters) => {
   console.log('적용된 고급 필터:', newFilters)
 })
 </script>
+
+<style scoped lang="scss">
+.advanced-filter {
+  width: 220px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: sans-serif;
+
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 6px;
+  }
+
+  .filter-section {
+    margin-bottom: 20px;
+
+    .subtitle {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+}
+</style>

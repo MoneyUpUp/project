@@ -16,23 +16,24 @@
       ]"
     />
   </div>
+
   <!-- 🔹 정렬 컨트롤 (리스트 위쪽에 위치) -->
-  <div class="header-row">
-    <div class="sort-control">
-      <BaseSelect
-        v-model="productStore.sortOption"
-        placeholder="정렬 기준"
-        :options="[
-          { label: '이름순', value: 'name' },
-          { label: '금리순', value: 'rate' },
-          { label: '최신순', value: 'latest' },
-          { label: '기간순', value: 'term' },
-          { label: '은행순', value: 'bank' },
-        ]"
-        variant="default"
-      />
-    </div>
+  <div class="sort-control">
+    <BaseSelect
+      v-model="productStore.sortOption"
+      placeholder="정렬 기준"
+      :options="[
+        { label: '이름순', value: 'name' },
+        { label: '금리순', value: 'rate' },
+        { label: '최신순', value: 'latest' },
+        { label: '기간순', value: 'term' },
+        { label: '은행순', value: 'bank' },
+      ]"
+      variant="default"
+    />
   </div>
+
+  <hr />
 </template>
 
 <script setup>

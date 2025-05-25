@@ -36,17 +36,10 @@ const sortedItems = computed(() => {
 </script>
 
 <style scoped>
-.header-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-.sort-control {
-  width: 160px;
-}
 .deposit-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding-right: 4px; /* Optional for scrollbar spacing */
 }
 </style>
