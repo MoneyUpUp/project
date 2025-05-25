@@ -1,5 +1,5 @@
 <template>
-  <BaseCard>
+  <BaseCard style="cursor: pointer;">
     <div class="item">
       <div class="left">
         <img
