@@ -19,139 +19,141 @@
         카카오 로그아웃
       </button>
     </div>
-  </div>
-</template>
-
-<script>
-import axios from 'axios'
-import { ref } from 'vue'
-const key = import.meta.env.VITE_KAKAO_API_KEY
-const token = ref('')
-const getKakaoToken = async (code) => {
-  try {
-    const data = {
-      grant_type: 'authorization_code',
-      client_id: key, // REST API 키
-      redirect_uri: 'http://localhost:5173/login/kakao',
-      code: code,
-    }
-
-    const queryString = Object.keys(data)
-      .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
-      .join('&')
-    //console.log(queryString);
-
-    const result = await axios.post('https://kauth.kakao.com/oauth/token', queryString, {
-      headers: {
-        'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-      },
-    })
-    console.log(result)
-    token.value = result.data.access_token
-    console.log('token :' + token.value)
-
-    axios({
-      method: 'post',
-      url: 'http://127.0.0.1:8000/accounts/auth/kakao/login/',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        access_token: token.value,
-      },
-    })
-      .then((response) => {
-        console.log('응답:', response.data)
+    </div>
+  </template>
+  
+  <script>
+  import axios from "axios";
+  import {ref} from 'vue'
+  const key = import.meta.env.VITE_KAKAO_API_KEY
+  const token = ref('')
+  const getKakaoToken = async (code) => {
+    try {
+      const data = {
+        grant_type: "authorization_code",
+        client_id: key, // REST API 키
+        redirect_uri: "http://localhost:5173/login/kakao",
+        code: code,
+      };
+  
+      const queryString = Object.keys(data)
+        .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+        .join("&");
+      //console.log(queryString);
+  
+      const result = await axios.post(
+        "https://kauth.kakao.com/oauth/token",
+        queryString,
+        {
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+        }
+      );
+      console.log(result);
+      token.value = result.data.access_token
+      axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8000/accounts/auth/kakao/login/',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: {
+          access_token: token.value
+        }
       })
-      .catch((error) => {
-        console.error('에러:', error)
+      .then(response => {
+        console.log('응답:', response.data);
       })
-
-    return result
-  } catch (e) {
-    console.log(e)
-    return e
-  }
-}
-
-const getKakaoUserInfo = async () => {
-  let data = ''
-  await window.Kakao.API.request({
-    url: '/v2/user/me',
-  })
-    .then(function (response) {
-      console.log(response)
-      data = response
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
-  console.log('카카오 계정 정보', data)
-  return data
-}
-
-export default {
-  data() {
-    return {
-      user: {}, // TODO store로 이관 필요
+      .catch(error => {
+        console.error('에러:', error);
+      });
+      return result;
+    } catch (e) {
+      console.log(e);
+      return e;
     }
-  },
-  created() {
-    const urlParams = new URLSearchParams(window.location.search)
-    // code가 있는 경우 토큰 발급 요청
-    if (urlParams.has('code')) {
-      const code = urlParams.get('code')
-      console.log('code: ', code)
-      this.setKakaoToken(code)
-    }
-  },
-  methods: {
-    // 1. 인가 코드 얻기
-    // https://developers.kakao.com/docs/latest/ko/kakaologin/js#login
-    kakaoLogin() {
-      window.Kakao.Auth.authorize({
-        redirectUri: 'http://localhost:5173/login/kakao',
+  };
+  
+  const getKakaoUserInfo = async () => {
+    let data = "";
+    await window.Kakao.API.request({
+      url: "/v2/user/me",
+    })
+      .then(function (response) {
+        console.log(response);
+        data = response;
       })
+      .catch(function (error) {
+        console.log(error);
+      });
+    console.log("카카오 계정 정보", data);
+    return data;
+  };
+  
+  export default {
+    data() {
+      return {
+        user: {}, // TODO store로 이관 필요
+      };
     },
-
-    // 2. 토큰 조회
-    // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
-    async setKakaoToken(code) {
-      const { data } = await getKakaoToken(code)
-      if (data.error) {
-        console.log(data.error)
-        return
+    created() {
+      const urlParams = new URLSearchParams(window.location.search);
+      // code가 있는 경우 토큰 발급 요청
+      if (urlParams.has("code")) {
+        const code = urlParams.get("code");
+        console.log("code: ", code);
+        this.setKakaoToken(code);
       }
-      console.log(data)
-      window.Kakao.Auth.setAccessToken(data.access_token)
-      await this.setUserInfo()
-      // this.$router.push({ path: "/kakaologin" });
     },
+    methods: {
+      // 1. 인가 코드 얻기
+      // https://developers.kakao.com/docs/latest/ko/kakaologin/js#login
+      kakaoLogin() {
+        window.Kakao.Auth.authorize({
+          redirectUri: "http://localhost:5173/login/kakao",
+        });
+      },
+  
+      // 2. 토큰 조회
+      // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
+      async setKakaoToken(code) {
+        const { data } = await getKakaoToken(code);
+        if (data.error) {
+          console.log(data.error);
+          return;
+        }
+        console.log(data);
+        window.Kakao.Auth.setAccessToken(data.access_token);
+        await this.setUserInfo();
+        // this.$router.push({ path: "/kakaologin" });
+      },
+  
+      // 3. 사용자 정보 조회
+      // https://developers.kakao.com/docs/latest/ko/kakaologin/js#req-user-info
+      async setUserInfo() {
+        const res = await getKakaoUserInfo();
+        const userInfo = {
+          name: res.kakao_account.profile.nickname,
+          // email: res.kakao_account.email,
+        };
+        console.log(userInfo);
+        this.user = userInfo;
+      },
+  
+      // 로그아웃
+      kakaoLogout() {
+        this.user = {};
+        window.Kakao.Auth.logout()
+          .then(function (response) {
+            console.log(window.Kakao.Auth.getAccessToken()); // null
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
+    },
+  };
 
-    // 3. 사용자 정보 조회
-    // https://developers.kakao.com/docs/latest/ko/kakaologin/js#req-user-info
-    async setUserInfo() {
-      const res = await getKakaoUserInfo()
-      const userInfo = {
-        name: res.kakao_account.profile.nickname,
-        // email: res.kakao_account.email,
-      }
-      console.log(userInfo)
-      this.user = userInfo
-    },
-
-    // 로그아웃
-    kakaoLogout() {
-      this.user = {}
-      window.Kakao.Auth.logout()
-        .then(function (response) {
-          console.log(window.Kakao.Auth.getAccessToken()) // null
-          console.log(response)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    },
-  },
-}
-</script>
+  </script>

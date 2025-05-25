@@ -2,41 +2,54 @@
     <div class="login-box">
       <div class="login-left">
           <form @submit.prevent="onlogin">
-              <div class="login-right">
-                <h4 style="text-align: center;">Login</h4>
-                <label>Email</label>
-                <input type="email" placeholder="Value" v-model="email"/>
-                <label>Password</label>
-                <input type="password" placeholder="Value" v-model="password" style="margin-bottom: 5%;"/>
-                <button>Login</button>
+						<div class="login-right">
+							<h4 style="text-align: center;">Login</h4>
+							<label>Username</label>
+							<input type="text" placeholder="Value" v-model="username"/>
+							<label>Password</label>
+							<input type="password" placeholder="Value" v-model="password" style="margin-bottom: 5%;"/>
+							<button>Login</button>
+						</div>
+					</form>
 
-                <h4>Social Login</h4>
-                <div class="social">
+					<h4>Social Login</h4>
+					<div class="social">
 
-                    <div class="kakao" @click="kakaoLogin">
-                        <img src="@/assets/loginbutton/kakao.png" alt="">
-                    </div>
-                    <div class="google">
-                        <img src="@/assets/loginbutton/google.png" alt="">
-                    </div>
-                    <div class="naver">
-                        <img src="@/assets/loginbutton/naver.png" alt="">
-                    </div>
-                </div>
-              </div>
-            </form>
+							<div class="kakao" @click="kakaoLogin">
+									<img src="@/assets/loginbutton/kakao.png" alt="">
+							</div>
+							<div class="google">
+									<img src="@/assets/loginbutton/google.png" alt="">
+							</div>
+							<div class="naver">
+									<img src="@/assets/loginbutton/naver.png" alt="">
+							</div>
+					</div>
       </div>
     </div>
   </template>
   
 <script setup>
- import { useRouter } from 'vue-router'
- const router = useRouter()
+	import { ref } from 'vue'
+	import { useRouter } from 'vue-router'
+	import { useAccountStore } from '@/stores/accounts'
+	const router = useRouter()
+	const store = useAccountStore()
+	const username = ref('')
+	const password = ref('')
 
- const kakaoLogin = ( )=> {
-  router.push({name:'kakao'})
- }
- 
+	const onlogin = () => {
+		const userInfo = {
+			username : username.value,
+			password : password.value
+		}
+		store.logIn(userInfo)
+	}
+
+	const kakaoLogin = ( )=> {
+		router.push({name:'kakao'})
+	}
+	
 </script>
   
   <style scoped>
