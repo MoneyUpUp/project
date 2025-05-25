@@ -3,6 +3,26 @@
     <h4 class="title">고급 필터</h4>
 
     <div class="filter-section">
+      <h5 class="subtitle">가입 기간</h5>
+      <div class="range-wrapper">
+        <input
+          type="range"
+          min="0"
+          max="3"
+          step="1"
+          v-model="selectedTerm"
+          class="range-input"
+          :style="rangeBackground"
+        />
+        <div class="range-labels">
+          <span :class="labelClasses(0)">6개월</span>
+          <span :class="labelClasses(1)">12개월</span>
+          <span :class="labelClasses(2)">24개월</span>
+          <span :class="labelClasses(3)">36개월</span>
+        </div>
+      </div>
+    </div>
+    <div class="filter-section">
       <h5 class="subtitle">가입 방법</h5>
       <div class="filter-group">
         <BaseCheckbox
@@ -31,83 +51,42 @@
         </BaseCheckbox>
       </div>
     </div>
-
-    <div class="filter-section">
-      <h5 class="subtitle">우대 조건</h5>
-      <div class="filter-group">
-        <BaseCheckbox
-          v-model="filters.specialRate"
-          label="우대금리 제공"
-        >
-          우대금리 제공
-        </BaseCheckbox>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <h5 class="subtitle">가입 제한</h5>
-      <div class="filter-group">
-        <BaseCheckbox
-          v-model="filters.noRestriction"
-          label="제한 없음"
-        >
-          제한 없음
-        </BaseCheckbox>
-        <BaseCheckbox
-          v-model="filters.individualOnly"
-          label="실명의 개인 전용"
-        >
-          실명의 개인 전용
-        </BaseCheckbox>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <h5 class="subtitle">기타 조건</h5>
-      <div class="filter-group">
-        <BaseCheckbox
-          v-model="filters.hasMinAmount"
-          label="최소 가입금액 존재"
-        >
-          최소 가입금액 존재
-        </BaseCheckbox>
-        <BaseCheckbox
-          v-model="filters.customTerm"
-          label="가입 기간 자유 선택 가능"
-        >
-          가입 기간 자유 선택 가능
-        </BaseCheckbox>
-        <BaseCheckbox
-          v-model="filters.hasMaturityRate"
-          label="만기 이율 조건 있음"
-        >
-          만기 이율 조건 있음
-        </BaseCheckbox>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup>
 import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
-import { reactive, watch } from 'vue'
+import { useProductStore } from '@/stores/productStore'
+import { computed } from 'vue'
 
-const filters = reactive({
-  internet: false,
-  smartphone: false,
-  telephone: false,
-  branch: false,
-  specialRate: false,
-  noRestriction: false,
-  individualOnly: false,
-  hasMinAmount: false,
-  customTerm: false,
-  hasMaturityRate: false,
+const productStore = useProductStore()
+
+const selectedTerm = computed({
+  get: () => {
+    const termMap = [6, 12, 24, 36]
+    return termMap.indexOf(productStore.selectedTerm ?? 6)
+  },
+  set: (val) => {
+    const termMap = [6, 12, 24, 36]
+    productStore.selectedTerm = termMap[val]
+  },
 })
 
-watch(filters, (newFilters) => {
-  console.log('적용된 고급 필터:', newFilters)
+const filters = computed(() => productStore.advancedFilters)
+
+const rangeBackground = computed(() => {
+  const percent = (selectedTerm.value / 3) * 100
+  return {
+    background: `linear-gradient(to right, #43b883 0%, #43b883 ${percent}%, #ddd ${percent}%, #ddd 100%)`,
+  }
 })
+
+const labelClasses = (index) => {
+  return {
+    active: selectedTerm.value === index,
+    filled: index >= 0 && index <= selectedTerm.value,
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -141,6 +120,68 @@ watch(filters, (newFilters) => {
       display: flex;
       flex-direction: column;
       gap: 6px;
+    }
+  }
+}
+
+.range-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .range-input {
+    width: 100%;
+    appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #43b883;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+
+    span {
+      color: #aaa;
+      font-weight: normal;
+    }
+
+    span.active,
+    span.filled {
+      color: #43b883;
+      font-weight: bold;
+    }
+  }
+}
+
+.horizontal-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0;
+
+  .term-button {
+    white-space: nowrap;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #f7f7f7;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #e0f4ec;
     }
   }
 }

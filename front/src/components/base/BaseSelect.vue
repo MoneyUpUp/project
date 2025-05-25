@@ -65,7 +65,6 @@ function getLabel(option) {
   background-position: right 1rem center;
   background-size: 1rem;
 }
-
 .variant--default {
   padding: 0.625rem 1rem;
   padding-right: 3rem;

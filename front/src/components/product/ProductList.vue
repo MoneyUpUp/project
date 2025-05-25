@@ -2,7 +2,7 @@
   <div class="deposit-list">
     <productListItem
       v-for="item in sortedItems"
-      :key="item.id"
+      :key="`${item.bank.fin_co_no}-${item.fin_prdt_cd}`"
       :item="item"
       @click="$emit('select', item)"
     />

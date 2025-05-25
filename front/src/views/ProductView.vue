@@ -28,7 +28,7 @@ import ProductFilterPanel from '@/components/product/ProductFilterPanel.vue'
 import ProductList from '@/components/product/ProductList.vue'
 import ProductModal from '@/components/product/ProductModal.vue'
 import { useProductStore } from '@/stores/productStore'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 // ✅ 상태 저장소 가져오기
@@ -47,12 +47,6 @@ const setType = (value) => {
     },
   })
 }
-
-// ✅ 슬라이더 스타일 계산
-const getSliderBackground = computed(() => {
-  const percent = (productStore.selectedIndex / 3) * 100
-  return `linear-gradient(to right, #43B883 0%, #43B883 ${percent}%, #D9F1E6 ${percent}%, #D9F1E6 100%)`
-})
 
 // ✅ 최초 데이터 패치
 onMounted(() => {

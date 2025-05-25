@@ -49,6 +49,8 @@ function toggleOption(value) {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 72px;
 }
 
 .segment.active {

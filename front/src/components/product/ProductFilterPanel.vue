@@ -10,9 +10,10 @@
       />
 
       <BaseSelect
-        v-model="deposit"
-        placeholder="예*적금"
+        v-model="productStore.selectedTypes"
+        placeholder="종류"
         :options="[
+          { label: '예•적금', value: 'all' },
           { label: '예금', value: 'deposit' },
           { label: '적금', value: 'saving' },
         ]"
@@ -24,10 +25,10 @@
     <div class="sort-control">
       <BaseSegmentedControl
         v-model="productStore.sortOption"
-        placeholder="정렬 기준"
         :options="[
           { label: '이름순', value: 'name' },
-          { label: '금리순', value: 'rate' },
+          { label: '최고 이율순', value: 'rate_max' },
+          { label: '기본 이율순', value: 'rate_base' },
         ]"
         variant="default"
       />

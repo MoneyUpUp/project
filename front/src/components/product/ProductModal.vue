@@ -11,8 +11,14 @@
     <div class="modal-body">
       <section>
         <h3>가입 정보</h3>
-        <p><strong>가입 대상:</strong> {{ product.join_member }}</p>
-        <p><strong>가입 방법:</strong> {{ product.join_way }}</p>
+        <p><strong>가입 대상: </strong>{{ product.join_member }}</p>
+        <p>
+          <strong>가입 방법: </strong>
+          <span v-if="Array.isArray(product.join_way)">
+            {{ product.join_way.join(', ') }}
+          </span>
+          <span v-else>{{ product.join_way }}</span>
+        </p>
       </section>
 
       <section v-if="product.options && product.options.length">
@@ -47,11 +53,20 @@
         <pre>{{ product.etc_note }}</pre>
       </section>
     </div>
+    <div class="modal-footer">
+      <BaseButton
+        type="secondary"
+        @click="$emit('close')"
+        >닫기</BaseButton
+      >
+      <BaseButton type="primary">장바구니 추가</BaseButton>
+    </div>
   </BaseModal>
 </template>
 
 <script setup>
 import BaseModal from '@/components/base/BaseModal.vue'
+import BaseButton from '../base/BaseButton.vue'
 
 const props = defineProps({
   product: Object,
@@ -88,6 +103,7 @@ h2 {
   color: #fff;
   background: rgba(0, 0, 0, 0.25);
   display: inline-block;
+  margin-left: 12px;
   padding: 0.2rem 0.5rem;
   border-radius: 0.3rem;
 }
@@ -159,5 +175,13 @@ td {
 }
 th {
   background-color: #f0f0f0;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-top: 1px solid #eee;
 }
 </style>

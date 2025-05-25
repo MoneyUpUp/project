@@ -25,17 +25,37 @@
 
 <script setup>
 import BaseCard from '@/components/base/BaseCard.vue'
+import { useProductStore } from '@/stores/productStore'
 import { computed } from 'vue'
 
 const props = defineProps({
   item: Object,
 })
+
+const productStore = useProductStore()
+
+const filteredOptions = computed(() => {
+  const terms = [6, 12, 24, 36]
+  const selectedTerm = terms[productStore.selectedIndex]
+  const options = props.item.options || []
+
+  // Try to find exact match first
+  let filtered = options.filter((opt) => opt.save_trm === selectedTerm)
+
+  // If no match, fallback to the smallest available
+  if (filtered.length === 0) {
+    filtered = [...options].sort((a, b) => a.save_trm - b.save_trm)
+  }
+
+  return filtered
+})
+
 const baseRate = computed(() => {
-  return parseFloat(props.item.options?.[0]?.intr_rate || 0).toFixed(2)
+  return parseFloat(filteredOptions.value?.[0]?.intr_rate || 0).toFixed(2)
 })
 
 const maxRate = computed(() => {
-  const rates = props.item.options?.map((opt) => parseFloat(opt.intr_rate2)) || []
+  const rates = filteredOptions.value.map((opt) => parseFloat(opt.intr_rate2 || 0))
   return rates.length ? Math.max(...rates).toFixed(2) : '0.00'
 })
 </script>
