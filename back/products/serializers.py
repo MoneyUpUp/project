@@ -44,3 +44,7 @@ class SpotAssetProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpotAssetProduct
         fields = "__all__"
+
+class ProductListResponseSerializer(serializers.Serializer):
+    deposit_products = DepositProductSerializer(many=True)
+    saving_products = SavingProductSerializer(many=True)
