@@ -1,20 +1,21 @@
 <template>
 <div>
-	<form role="search" style="display: flex;">
+	<div style="display: flex;">
     <div class="update-bar">
-      <input type="text" id="updateUser" class="updateInput" :value="user">
+      <input type="text" id="updateUser" :value="user" >
     </div>
-    <UpdateButton/>
-	</form>
+	</div>
 </div>
 </template>
 
 <script setup>
 import UpdateButton from './UpdateButton.vue';
+import { useAccountStore } from '@/stores/accounts';
 
 defineProps({
   user: String
 });
+
 </script>
 
 <style lang="scss" scoped>

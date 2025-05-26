@@ -10,6 +10,7 @@ export const useAccountStore = defineStore(
     const initialTokenFromLocalStorage = localStorage.getItem('token');
     const token = ref(initialTokenFromLocalStorage || '');
     const userInfo = ref({})
+    
 
     const router = useRouter()
     const createUser = ({ username, email, password, age }) => {
@@ -72,8 +73,7 @@ export const useAccountStore = defineStore(
       token.value = value;
     }
 
-    const getUserInfo = async () => {
-      console.log(`토큰? ${token.value}`)
+    const getUserInfo = async (info) => {
       try {
         const res = await axios.get(
           `${API_URL}accounts/me/`,
@@ -89,6 +89,25 @@ export const useAccountStore = defineStore(
       }
     }
 
+    const updateUserInfo = async ({nickname, age, email}) => {
+      try {
+        const res = await axios.patch(
+          `${API_URL}accounts/me/`,
+          {
+            nickname, age, email
+          },
+          {
+            headers: { 'Authorization': `Token ${token.value}` },
+          },
+        )
+        console.log('유저 정보 수정 성공');
+        console.log(res.data)
+        getUserInfo(res.data)
+      } catch (err) {
+        console.log('유저 정보 수정 실패:', err.response?.data || err.message)
+      }
+    }
+
 
     return {
       createUser,
@@ -98,7 +117,8 @@ export const useAccountStore = defineStore(
       logOut,
       setToken,
       getUserInfo,
-      userInfo
+      userInfo,
+      updateUserInfo
     }
   },
   { persist: true }, // Temporarily disabled for debugging

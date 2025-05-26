@@ -1,5 +1,5 @@
 <template>
-	<div style="display: flex;">
+	<div class="profile-container">
 		<div class="menu">
 			<p 
 				style="padding-top: 30%;" 
@@ -37,9 +37,13 @@
 <style lang="scss" scoped>
 @use '@/assets/styles/utils/variables' as *;
 
+.profile-container {
+	display: flex;
+	min-height: 100vh; /* Ensure the container takes at least full viewport height */
+}
+
 .menu {
 	flex: 0 0 200px;
-	height: 100vh;
 	border-right: solid 1px $gray-300;
 	border-left: solid 1px $gray-300;
 	margin-right: 70px;
