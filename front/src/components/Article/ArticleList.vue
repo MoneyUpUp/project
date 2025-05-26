@@ -12,7 +12,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				<ArticleListItem v-for="i in 20" :key="i"/>
+				<ArticleListItem
+					v-for="article in articles"
+					:key="article.id"
+					:article="article"
+				/>
 			</tbody>
 		</table>
 	</div>
@@ -20,6 +24,9 @@
 
 <script setup>
 import ArticleListItem from './ArticleListItem.vue';
+defineProps({
+  articles: Array
+})
 </script>
 
 <style lang="scss" scoped>

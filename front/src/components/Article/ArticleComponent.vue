@@ -22,19 +22,27 @@
 		<p>
 			<strong>!</strong> 비방이나 욕설이 담긴 게시물, 개인정보가 포함된 게시물, 신고된 게시물의 경우 별도의 안내 없이 미노출 처리 될 수 있습니다.
 		</p>
-		<ArticleList/>
+		<ArticleList v-if="articleStore.articleList" :articles="articleStore.articleList" />
 	</div>
 </template>
 
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import ArticleList from './ArticleList.vue';
+import { onMounted } from 'vue'
+import { useArticleStore } from '@/stores/Articles' 
 
 const router = useRouter()
 const onCreate = () => {
   router.push('/article/create');
 };
 
+const articleStore = useArticleStore()
+
+onMounted(() => {
+  articleStore.getArticleList()
+  console.log(articleStore.articleList)
+})
 </script>
 
 <style lang="scss" scoped>

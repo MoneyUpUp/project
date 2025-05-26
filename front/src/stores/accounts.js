@@ -84,6 +84,7 @@ export const useAccountStore = defineStore(
         )
         console.log('유저정보 가져오기 성공');
         console.log(res.data)
+        localStorage.setItem('username', res.data.nickname)
         userInfo.value = res.data
       } catch (err) {
         console.log('유저 정보 불러오기 실패:', err.response?.data || err.message)

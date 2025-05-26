@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<form>
+		<form @submit.prevent="onSubmit">
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">제목</label>
-				<input type="text" class="title form-control" id="exampleFormControlInput1" placeholder="제목을 입력하세유">
+				<input type="text" class="title form-control" id="exampleFormControlInput1" placeholder="제목을 입력하세유" v-model="title">
 			</div>
 			<div class="mb-3">
 				<label for="exampleFormControlTextarea1" class="form-label">글</label>
-				<textarea class="content form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+				<textarea class="content form-control" id="exampleFormControlTextarea1" rows="3" v-model="content"></textarea>
 			</div>
 			<div class="mb-3" style="display: flex; justify-content: flex-end;">
 				<button class="save">저장</button>
@@ -17,7 +17,35 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import { useArticleStore } from '@/stores/Articles'
 
+const title = ref('')
+const content = ref('')
+let cnt = ref(0)
+
+const articleStore = useArticleStore()
+
+// 로그인할 때 userId가 넘어오게 하면 author에 데이터를 넣을 수 있을듯
+// 로그인할 때 localStorage.setItem('userId', res.data.userId)
+// 이렇게 받을 수 있으면 딱 좋을 듯
+// author 때문에 자꾸 에러남;;
+const onSubmit = async (e) => {
+  e.preventDefault()
+  cnt++
+  const userId = localStorage.getItem('username')  // author ID가 필요하다면
+
+  if (!title.value || !content.value) {
+    alert('제목과 내용을 모두 입력해주세요.')
+    return
+  }
+
+  await articleStore.addArticle({
+    title: title.value,
+    content: content.value,
+    author: cnt
+  })
+}
 </script>
 
 <style lang="scss" scoped>
