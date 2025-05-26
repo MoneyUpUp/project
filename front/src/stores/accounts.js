@@ -10,7 +10,8 @@ export const useAccountStore = defineStore(
     const initialTokenFromLocalStorage = localStorage.getItem('token');
     const token = ref(initialTokenFromLocalStorage || '');
     const userInfo = ref({})
-    
+    const propensity = ref('')
+    const period = ref('')
 
     const router = useRouter()
     const createUser = ({ username, email, password, age }) => {
@@ -89,12 +90,12 @@ export const useAccountStore = defineStore(
       }
     }
 
-    const updateUserInfo = async ({nickname, age, email}) => {
+    const updateUserInfo = async ({nickname, age, email, annual_income}) => {
       try {
         const res = await axios.patch(
           `${API_URL}accounts/me/`,
           {
-            nickname, age, email
+            nickname, age, email, annual_income
           },
           {
             headers: { 'Authorization': `Token ${token.value}` },
@@ -108,6 +109,13 @@ export const useAccountStore = defineStore(
       }
     }
 
+    const setPropensity = (value) => {
+      propensity.value = value
+    }
+
+    const setPeriod = (value) => {
+      period.value = value
+    }
 
     return {
       createUser,
@@ -118,7 +126,10 @@ export const useAccountStore = defineStore(
       setToken,
       getUserInfo,
       userInfo,
-      updateUserInfo
+      updateUserInfo,
+      propensity,
+      setPropensity,
+      setPeriod
     }
   },
   { persist: true }, // Temporarily disabled for debugging

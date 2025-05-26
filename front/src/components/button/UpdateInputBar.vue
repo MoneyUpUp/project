@@ -9,8 +9,6 @@
 </template>
 
 <script setup>
-import UpdateButton from './UpdateButton.vue';
-import { useAccountStore } from '@/stores/accounts';
 
 defineProps({
   user: String

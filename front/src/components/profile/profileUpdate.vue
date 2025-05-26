@@ -6,7 +6,7 @@
       </div>
       <form @submit.prevent="onSubmit">
         <div style="margin: 10% auto;">
-          <p class="name">{{ store.userInfo.username }}</p>
+          <p class="name">{{ store.userInfo.name }}</p>
 
           <div class="info-update">
             <span class="info" id="nickname">닉네임</span>
@@ -40,13 +40,19 @@
     <div class="custom-container2">
       <div>
         <div class="custom-container3">
-          <p class="fontStyle" style="margin-right: 40px;">연봉</p> 
-          <SalaryInputBar/>
+          <form @submit.prevent="onSubmit2">
+            <p class="fontStyle" style="margin-right: 40px;" id="annual_income">연봉</p> 
+            <SalaryInputBar
+              :user="store.userInfo.annual_income"
+            />
+          </form>
         </div>
         <p class="fontStyle" style="margin-right: 40px; margin-top: 66px;">투자성향</p> 
         <PropensityBtn/>
         <p class="fontStyle" style="margin-right: 40px; margin-top: 66px;">희망투자기간</p> 
         <!-- 희망투자기간 컴포넌트가 필요하다면 여기에 추가 -->
+         <PeriodBtn/>
+         <div style="height: 100px;"></div>
       </div>
     </div> 
   </div>
@@ -59,6 +65,7 @@ import PropensityBtn from '../button/PropensityBtn.vue';
 import { useAccountStore } from '@/stores/accounts';
 import { onMounted } from 'vue';
 import UpdateButton from '../button/UpdateButton.vue';
+import PeriodBtn from '../button/PeriodBtn.vue';
 
 const store = useAccountStore();
 
@@ -84,6 +91,22 @@ const onSubmit = (e) => {
   store.updateUserInfo(updatedData);
 };
 
+const onSubmit2 = (e) => {
+  const input = e.target.querySelector('input');
+  const key = e.target.querySelector('p')?.id;
+  console.log('수정된 데이터')
+  console.log(input.value+" "+key)
+
+  if (input && key) {
+    const updatedData = {
+      [key]: input.value
+    };
+    console.log("연봉 수정 데이터:", updatedData);
+    store.updateUserInfo(updatedData);
+  } else {
+    console.warn("입력값 또는 키를 찾을 수 없습니다.");
+  }
+};
 
 </script>
 

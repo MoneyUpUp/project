@@ -1,11 +1,6 @@
 <template>
 <!-- 투자 성향 바 구성 -->
 	<div class="investment-style-container">
-		<!-- 상단 라벨 + 말풍선 -->
-		<div class="style-label" :style="computedLabelStyle">
-			<div class="label-bg">나의 투자성향</div>
-			<div class="label-arrow"></div>
-		</div>
 
 		<!-- 투자성향 바 -->
 		<div class="style-bar">
@@ -23,49 +18,39 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAccountStore } from '@/stores/accounts';
 
 const store = useAccountStore();
 
 const styles = ref([
-  { text: '안정형', id: 0 },
-  { text: '안정<br>추구형', id: 1 },
-  { text: '위험<br>중립형', id: 2 },
-  { text: '적극<br>투자형', id: 3 },
-  { text: '공격<br>투자형', id: 4 }
+  { text: '3개월', id: 0 },
+  { text: '6개월', id: 1 },
+  { text: '1년', id: 2 },
+  { text: '1년6개월', id: 3 },
+  { text: '5년 이상', id: 4 }
 ]);
 
-const activeIndex = ref(0); // 초기 활성 인덱스
+const activeIndex = ref(3); // 초기 활성 인덱스, 필요에 따라 0 또는 다른 값으로 변경 가능
 
 const selectStyle = (index) => {
   activeIndex.value = index;
   const selectedText = styles.value[index].text.replace('<br>', '');
-  store.setPropensity(selectedText); // setPropensity 액션 사용
-  localStorage.setItem('userPropensity', selectedText);
-  // console.log('투자성향 저장:', selectedText);
+  store.setPeriod(selectedText); // setPeriod 액션 사용
+  localStorage.setItem('userPeriod', selectedText);
+  // console.log("Selected period index:", index, "Text:", selectedText);
 };
 
 onMounted(() => {
-  const savedPropensity = localStorage.getItem('userPropensity');
-  if (savedPropensity) {
-    const foundIndex = styles.value.findIndex(style => style.text.replace('<br>', '') === savedPropensity);
+  const savedPeriod = localStorage.getItem('userPeriod');
+  if (savedPeriod) {
+    const foundIndex = styles.value.findIndex(style => style.text.replace('<br>', '') === savedPeriod);
     if (foundIndex !== -1) {
       activeIndex.value = foundIndex;
-      store.setPropensity(savedPropensity); // setPropensity 액션 사용
-      // console.log('저장된 투자성향 불러옴:', savedPropensity, '인덱스:', foundIndex);
+      store.setPeriod(savedPeriod); // setPeriod 액션 사용
+      // console.log('저장된 기간 불러옴:', savedPeriod, '인덱스:', foundIndex);
     }
   }
-});
-
-const boxWidth = 51.12; // px, as per current CSS for .style-box width
-
-const computedLabelStyle = computed(() => {
-  const leftOffset = activeIndex.value * boxWidth;
-  return {
-    left: `calc(${leftOffset}px + (${boxWidth}px / 2))`, // Center of the active box
-    transform: 'translateX(-50%)', // Center the label itself
-  };
 });
 
 
