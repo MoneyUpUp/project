@@ -20,6 +20,7 @@ from .api.yfinance_api import save_asset_prices, TICKER_MAP
 
 
 class CommodityHistoryView(APIView):
+    authentication_classes = []  # 인증 클래스 비활성화
     permission_classes = [AllowAny]  # 권한 클래스 추가
 
     @commodity_history_swagger
@@ -50,6 +51,7 @@ class CommodityHistoryView(APIView):
 
 
 class ProductListView(APIView):
+    authentication_classes = []  # 인증 클래스 비활성화
     permission_classes = [AllowAny]  # 권한 클래스 추가
 
     @product_list_view
