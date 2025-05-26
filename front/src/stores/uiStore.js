@@ -7,7 +7,10 @@ export const useUiStore = defineStore('ui', () => {
 
   const isMobile = computed(() => width.value < 768)
   const isTablet = computed(() => width.value < 1024)
-
+  const isChatOpen = ref(false)
+  const toggleChat = () => {
+    isChatOpen.value = !isChatOpen.value
+  }
   // const theme = ref('light') // 기본값: light
   const theme = ref(localStorage.getItem('theme') || 'light')
   // 진입 시 테마 클래스 적용
@@ -28,6 +31,6 @@ export const useUiStore = defineStore('ui', () => {
     isMobile,
     isTablet,
     theme,
-    toggleTheme,
+    toggleTheme, isChatOpen, toggleChat
   }
 })

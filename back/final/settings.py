@@ -2,6 +2,7 @@ from pathlib import Path
 import environ
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -18,6 +19,9 @@ GOOGLE_SECRET = env("GOOGLE_SECRET")
 NAVER_CLIENT_ID = env("NAVER_CLIENT_ID")
 NAVER_SECRET = env("NAVER_SECRET")
 
+
+OPENAI_API_KEY = env("OPENAI_API_KEY")
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure--u4ts=j+yvv_lmwv#tv!!z#afpm^(g=gd-ha+y824$f!!ot-2@"
 
@@ -33,6 +37,7 @@ INSTALLED_APPS = [
     "accounts",
     "products",
     "community",
+    "ai",
     # library
     "rest_framework",
     "rest_framework.authtoken",
