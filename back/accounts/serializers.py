@@ -27,11 +27,11 @@ class UserSerializer(serializers.ModelSerializer):
             "annual_income",
             "invest_type",
             "preferred_term",
-            'favorite_deposits',
+            "favorite_deposits",
             "favorite_savings",
             "favorite_assets",
         ]
-        read_only_fields = ["username", "email"]
+        read_only_fields = ["username"]
 
 
 class CustomRegisterSerializer(RegisterSerializer):
