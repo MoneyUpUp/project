@@ -16,7 +16,7 @@ TICKER_MAP = {
 }
 
 
-def save_asset_prices(name, start="2010-01-01", end=None):
+def save_asset_prices(name, start="2020-01-01", end=None):
     if name not in TICKER_MAP:
         raise ValueError(f"{name}은(는) 지원하지 않는 원자재입니다.")
 

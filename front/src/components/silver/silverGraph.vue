@@ -2,18 +2,12 @@
   <div class="container my-5">
     <div class="w-full max-w-4xl mx-auto">
       <h2 class="text-xl font-bold mb-2">
-        {{ store.commodityOptions.find((opt) => opt.value === store.selectedCommodity)?.label }}
-        가격 (USD)
+        {{store.commodityOptions.find((opt) => opt.value === store.selectedCommodity)?.label}}
       </h2>
-      <p
-        class="text-red-500 font-semibold"
-        v-if="store.selectedData.length"
-      >
+      <p class="text-red-500 font-semibold" v-if="store.selectedData.length">
         {{ latestPrice?.close_price.toFixed(2) }} USD
-        <span
-          v-if="change !== null && percentChange !== null"
-          :class="{ 'text-green-600': change > 0, 'text-red-600': change < 0 }"
-        >
+        <span v-if="change !== null && percentChange !== null"
+          :class="{ 'text-green-600': change > 0, 'text-red-600': change < 0 }">
           {{ change > 0 ? '+' : '' }}{{ change.toFixed(2) }} ({{ percentChange > 0 ? '+' : ''
           }}{{ percentChange.toFixed(2) }}%)
         </span>
@@ -21,10 +15,7 @@
           ({{ latestPrice?.date.replaceAll('-', '.') }})
         </span>
       </p>
-      <p
-        v-else
-        class="text-gray-500"
-      >
+      <p v-else class="text-gray-500">
         데이터 없음
       </p>
       <canvas ref="chartCanvas"></canvas>
