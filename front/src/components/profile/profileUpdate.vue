@@ -1,12 +1,12 @@
 <template>
   <div class="container-lg">
     <div class="custom-container">
-      <div style="margin: 10% auto;">
+      <div style="margin: 50px 50px;">
         <img src="@/assets/profile.png">
       </div>
       <form @submit.prevent="onSubmit">
         <div style="margin: 10% auto;">
-          <p class="name">{{ store.userInfo.name }}</p>
+          <p class="name">{{ store.userInfo.nickname }}</p>
 
           <div class="info-update">
             <span class="info" id="nickname">닉네임</span>
@@ -41,15 +41,15 @@
       <div>
         <div class="custom-container3">
           <form @submit.prevent="onSubmit2">
-            <p class="fontStyle" style="margin-right: 40px;" id="annual_income">연봉</p> 
+            <p class="fontStyle pTag" style="margin-bottom: 40px; margin-left: -50px;" id="annual_income">연봉</p> 
             <SalaryInputBar
               :user="store.userInfo.annual_income"
             />
           </form>
         </div>
-        <p class="fontStyle" style="margin-right: 40px; margin-top: 66px;">투자성향</p> 
+        <p class="fontStyle pTag" style="margin-right: 40px; margin-top: 66px;">투자성향</p> 
         <PropensityBtn/>
-        <p class="fontStyle" style="margin-right: 40px; margin-top: 66px;">희망투자기간</p> 
+        <p class="fontStyle pTag" style="margin-right: 40px; margin-top: 66px;">희망투자기간</p> 
         <!-- 희망투자기간 컴포넌트가 필요하다면 여기에 추가 -->
          <PeriodBtn/>
          <div style="height: 100px;"></div>
@@ -115,7 +115,7 @@ const onSubmit2 = (e) => {
 
 img {
     width: 100%;
-    max-width: 300px;    // ✅ 최대 너비 지정
+    max-width: 200px;    // ✅ 최대 너비 지정
     height: auto;        // ✅ 비율 자동 유지
     border-radius: 50%;  // 프로필 원형 이미지일 경우
     display: block;
@@ -123,9 +123,9 @@ img {
 
 .custom-container {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 5%;
+  // justify-content: center;
+  // align-items: flex-start;
+  margin-top: 4%;
   gap: 40px;
 
   @media (max-width: 1140px) {
@@ -136,8 +136,9 @@ img {
 
 .custom-container2 {
   display: flex;  
-  justify-content: flex-end;
+  // justify-content: flex-end;
   width: 100%;         // ✅ 반응형으로 기본 100% 차지
+  margin-left: 20%;
 }
 
 .custom-container3 {
@@ -173,6 +174,11 @@ img {
   display: flex;
   justify-content: flex-end;
   margin-top: 20px; /* Adjust or remove as needed */
+}
+
+.pTag {
+  margin-bottom: 40px; 
+  margin-left: -50px;
 }
 
 </style>

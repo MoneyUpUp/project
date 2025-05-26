@@ -6,10 +6,10 @@
 				@click="showProfile"
 				:class="{ ispick: route.name === 'profile-update' }"
 				>프로필 수정</p>
-			<p @click="showProducts" :class="{ ispick: route.name === 'profile-accession' }">가입한 상품들</p>
+			<p @click="showProducts" :class="{ ispick: route.name === 'profile-accession' }">찜한 상품들</p>
 			<p @click="aiPick" :class="{ ispick: route.name === 'profile-ai' }">맞춤 상품 추천</p>
 		</div>
-		<div>
+		<div style="width: 100%;">
 			<RouterView/>
 		</div>
 	</div>

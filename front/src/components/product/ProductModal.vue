@@ -59,7 +59,7 @@
         @click="$emit('close')"
         >닫기</BaseButton
       >
-      <BaseButton type="primary">장바구니 추가</BaseButton>
+      <BaseButton type="primary" @click="handleFavoriteClick">장바구니 추가</BaseButton>
     </div>
   </BaseModal>
 </template>
@@ -67,6 +67,8 @@
 <script setup>
 import BaseModal from '@/components/base/BaseModal.vue'
 import BaseButton from '../base/BaseButton.vue'
+import { useFavoriteStore } from '@/stores/favorite'
+const favoriteStore = useFavoriteStore()
 
 const props = defineProps({
   product: Object,
@@ -81,6 +83,10 @@ const bankColorMap = {
   하나은행: 'bg-hana',
   농협은행: 'bg-nh',
   // 추가 은행은 여기에...
+}
+
+const handleFavoriteClick = () => {
+  favoriteStore.addFavorite(props.product)
 }
 
 // const bankColorClass = computed(() => bankColorMap[props.product?.bank.kor_co_nm] || 'bg-default')

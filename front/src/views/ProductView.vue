@@ -28,7 +28,7 @@ import ProductFilterPanel from '@/components/product/ProductFilterPanel.vue'
 import ProductList from '@/components/product/ProductList.vue'
 import ProductModal from '@/components/product/ProductModal.vue'
 import { useProductStore } from '@/stores/productStore'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch  } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 // ✅ 상태 저장소 가져오기
@@ -51,6 +51,11 @@ const setType = (value) => {
 // ✅ 최초 데이터 패치
 onMounted(() => {
   productStore.fetchAllProducts()
+})
+
+// 선택된 상품 디버깅
+watch(selectedItem, (newVal) => {
+  console.log('🛍️ 선택된 상품:', newVal)
 })
 </script>
 
