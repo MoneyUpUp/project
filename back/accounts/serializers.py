@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "username",  # 읽기 전용
-            "email",  # 읽기 전용
+            "email",
             "name",
             "nickname",
             "age",
