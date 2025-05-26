@@ -4,7 +4,7 @@
         <div class="salary-bar">
           <input type="text" id="salaryUser" class="salaryInput" value="">
         </div>
-        <UpdateButton/>
+        <UpdateButton class="salary-update-button"/>
         </form>
     </div>
     </template>
@@ -14,7 +14,7 @@
     </script>
     
     <style lang="scss" scoped>
-    @use '@/assets/styles/utils/variables' as *;
+    @use '@/assets/styles/utils/variables' as *; // Corrected path
     
     .salary-bar {
       display: flex;
@@ -50,13 +50,12 @@
       border: none;
       cursor: pointer;
     }
-    
-    /* 버튼 내부 이미지 스타일링 */
-    .salary-bar button img {
-      width: 60px;     /* 아이콘 크기에 맞게 조절 */
-      height: 60px;
-      object-fit: contain;
+
+    .salary-update-button {
+      margin-left: 20px;
     }
+    
+  
     
     
     </style>
