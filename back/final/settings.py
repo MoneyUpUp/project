@@ -182,7 +182,7 @@ REST_FRAMEWORK = {
 REST_AUTH_REGISTER_SERIALIZERS = {
     "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer"
 }
-ACCOUNT_SIGNUP_FIELDS = ["username", "email", "password1", "age"]
+ACCOUNT_SIGNUP_FIELDS = ["username", "email", "password1"]
 
 
 # django-allauth 경고 무시

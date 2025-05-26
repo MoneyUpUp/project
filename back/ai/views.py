@@ -7,10 +7,12 @@ from rest_framework import status
 from .utils.gpt_chat_bot import get_chatbot_response
 from products.models import DepositOption, SavingOption
 from .utils.gpt_api import generate_reasons_from_gpt
+from swaggers.ai_swaggers import recommend_products_swagger, chat_bot_swagger
 
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
+@recommend_products_swagger
 def recommend_products_view(request):
     user = request.user
 
@@ -55,6 +57,7 @@ def recommend_products_view(request):
 
 
 @api_view(["POST"])
+@chat_bot_swagger
 def chat_bot_view(request, style):
     message = request.data.get("message")
     if not message:

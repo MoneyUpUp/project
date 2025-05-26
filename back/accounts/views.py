@@ -5,9 +5,18 @@ from rest_framework.response import Response
 from rest_framework import status
 from accounts.adapters import KakaoOAuth2Adapter, CustomGoogleOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
-from accounts.serializers import UserSerializer, UserFavoriteProductsSerializer
+from accounts.serializers import (
+    UserSerializer,
+    UserFavoriteProductsSerializer,
+    CustomRegisterSerializer,
+)
 from swaggers.accounts_swaggers import *
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import RegisterView
+
+
+class CustomRegisterView(RegisterView):
+    serializer_class = CustomRegisterSerializer
 
 
 class MeView(APIView):
@@ -61,15 +70,31 @@ class GoogleLogin(SocialLoginView):
     callback_url = "http://localhost:8000/accounts/auth/google/login/callback/"
     client_class = OAuth2Client
 
+    @google_login_swagger
+    def post(self, request, *args, **kwargs):
+        print("요청 body:", request.body)
+        print("요청 data:", request.data)
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == 200:
+            user_data = UserSerializer(request.user).data
+            return Response(
+                {
+                    "message": "로그인 성공",
+                    "user": user_data,
+                    "token": response.data.get("key"),
+                }
+            )
+        return response
+
 
 class MyFavoriteProductsView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     @favorite_get_swagger
     def get(self, request):
         serializer = UserFavoriteProductsSerializer(request.user)
         return Response(serializer.data)
-    
+
     @favorite_post_swagger
     def post(self, request):
         product_type = request.data.get("type")  # "deposit", "saving", "asset"
@@ -126,7 +151,7 @@ class MyFavoriteProductsView(APIView):
             return Response({"error": "잘못된 상품 타입입니다."}, status=400)
 
         return Response({"message": "찜 추가됨" if added else "찜 해제됨"})
-    
+
     @favorite_delete_swagger
     def delete(self, request):
         product_type = request.data.get("type")  # "deposit", "saving", "asset"

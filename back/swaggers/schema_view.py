@@ -10,15 +10,18 @@ from dj_rest_auth.registration.views import RegisterView
 from accounts.views import *
 from products.views import *
 from community.views import *
+from ai.views import *  # ai.views 추가
 
 from accounts.urls import urlpatterns as accounts_urls
 from products.urls import urlpatterns as products_urls
 from community.urls import urlpatterns as community_urls
+from ai.urls import urlpatterns as ai_urls  # ai.urls 추가
 
 api_urlpatterns = (
     accounts_urls
     + products_urls
     + community_urls
+    + ai_urls  # ai_urls 추가
     + [
         path("auth/kakao/login/", KakaoLogin.as_view()),
         path("auth/google/login/", GoogleLogin.as_view()),
