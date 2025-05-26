@@ -7,7 +7,10 @@ export const useAccountStore = defineStore(
   'account',
   () => {
     const API_URL = 'http://127.0.0.1:8000/'
-    const token = ref(localStorage.getItem('token') || '')
+    const initialTokenFromLocalStorage = localStorage.getItem('token');
+    const token = ref(initialTokenFromLocalStorage || '');
+    const userInfo = ref({})
+
     const router = useRouter()
     const createUser = ({ username, email, password, age }) => {
       axios({
@@ -28,7 +31,8 @@ export const useAccountStore = defineStore(
         .then((res) => {
           console.log('회원가입 성공!')
           console.log(res.data)
-          router.push({ name: 'login' })
+          token.value = res.data.key
+          router.push({ name: 'home' })
         })
         .catch((err) => console.log(err))
     }
@@ -54,7 +58,9 @@ export const useAccountStore = defineStore(
         return false
       }
     }
-    const isLogin = computed(() => token.value.length >= 1)
+    const isLogin = computed(() => {
+      return token.value.length >= 1;
+    })
 
     const logOut = () => {
       token.value = ''
@@ -62,13 +68,38 @@ export const useAccountStore = defineStore(
       router.push({ name: 'home' })
     }
 
+    const setToken = (value) => {
+      token.value = value;
+    }
+
+    const getUserInfo = async () => {
+      console.log(`토큰? ${token.value}`)
+      try {
+        const res = await axios.get(
+          `${API_URL}accounts/me/`,
+          {
+            headers: { 'Authorization': `Token ${token.value}` },
+          },
+        )
+        console.log('유저정보 가져오기 성공');
+        console.log(res.data)
+        userInfo.value = res.data
+      } catch (err) {
+        console.log('유저 정보 불러오기 실패:', err.response?.data || err.message)
+      }
+    }
+
+
     return {
       createUser,
       logIn,
       isLogin,
       token,
       logOut,
+      setToken,
+      getUserInfo,
+      userInfo
     }
   },
-  { persist: true },
+  { persist: true }, // Temporarily disabled for debugging
 )

@@ -6,21 +6,27 @@
       </div>
 
       <div style="margin: 10% auto;">
-        <p class="name">이지언</p>
+        <p class="name">{{ store.userInfo.username }}</p>
 
         <div class="info-update">
           <span class="info">닉네임</span>
-          <UpdateInputBar/>
+          <UpdateInputBar
+            :user="store.userInfo.nickname"
+          />
         </div>
 
         <div class="info-update">
           <span class="info">이메일</span>
-          <UpdateInputBar/>
+          <UpdateInputBar
+            :user="store.userInfo.email"
+          />
         </div>
         
         <div class="info-update">
           <span class="info">나이</span>
-          <UpdateInputBar/>
+          <UpdateInputBar
+            :user="store.userInfo.age"
+          />
         </div>
       </div>
     </div>
@@ -44,6 +50,18 @@
 import UpdateInputBar from '../button/UpdateInputBar.vue';
 import SalaryInputBar from '../button/SalaryInputBar.vue';
 import PropensityBtn from '../button/PropensityBtn.vue';
+import { useAccountStore } from '@/stores/accounts';
+import { onMounted } from 'vue';
+
+const store = useAccountStore();
+
+onMounted(async () => {
+  await store.getUserInfo();
+});
+
+
+
+
 </script>
 
 <style lang="scss" scoped>

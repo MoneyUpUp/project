@@ -2,7 +2,7 @@
 <div>
 	<form role="search" style="display: flex;">
     <div class="update-bar">
-      <input type="text" id="updateUser" class="updateInput" value="">
+      <input type="text" id="updateUser" class="updateInput" :value="user">
     </div>
     <UpdateButton/>
 	</form>
@@ -11,6 +11,10 @@
 
 <script setup>
 import UpdateButton from './UpdateButton.vue';
+
+defineProps({
+  user: String
+});
 </script>
 
 <style lang="scss" scoped>

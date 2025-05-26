@@ -11,15 +11,13 @@ import router from './router';
 
 import '@/assets/styles/main.scss';
 
-const app = createApp(App)
-const key = import.meta.env.VITE_KAKAO_API_JS_KEY
-const pinia = createPinia()
+const app = createApp(App);
+const pinia = createPinia(); // Pinia 인스턴스 생성
 
-app.use(createPinia())
-app.use(router)
+pinia.use(piniaPluginPersistedstate); // 생성된 인스턴스에 플러그인 등록
+
+app.use(pinia); // 앱에 해당 Pinia 인스턴스 사용
+app.use(router);
 app.component('VueDatePicker', VueDatePicker);
-pinia.use(piniaPluginPersistedstate)
 
-app.mount('#app')
-
-window.Kakao.init(key)
+app.mount('#app');

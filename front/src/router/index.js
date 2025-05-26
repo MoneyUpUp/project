@@ -138,11 +138,11 @@ const router = createRouter({
     // ✅ 로그인/회원가입은 네비 없는 독립 페이지
     {
       path: '/login',
-      name: 'login',
       component: LoginView,
+      redirect: '/login/main',
       children: [
         {
-          path: '',
+          path: 'main',
           name: 'login-main',
           component: logInComponent,
         },
