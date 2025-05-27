@@ -1,6 +1,9 @@
 <template>
-  <nav class="navbar">
-    <div class="container" style="display: flex;">
+  <nav :class="['navbar', { transparent: isHome, fixed: isHome, bordered: !isHome }]">
+    <div
+      class="container"
+      style="display: flex"
+    >
       <div class="left-section">
         <RouterLink
           to="/"
@@ -18,36 +21,56 @@
         </ul>
       </div>
       <template v-if="store.isLogin">
-        <img style="margin-left: auto; cursor: pointer;" @click="onclick" src="@/assets/icon/basicprofile.png" alt="">
-        <BaseButton style="margin-left: 20px;" @click="store.logOut()">로그아웃</BaseButton>
+        <img
+          style="margin-left: auto; cursor: pointer"
+          @click="onclick"
+          src="@/assets/icon/basicprofile.png"
+          alt=""
+        />
+        <BaseButton
+          style="margin-left: 20px"
+          @click="store.logOut()"
+          >로그아웃</BaseButton
+        >
       </template>
-        <template v-else>
-          <BaseButton style="margin-left: auto;" to="/login">로그인</BaseButton>
-          <BaseButton style="margin-left: 20px;" to="/signup" variant="secondary">가입하기</BaseButton>
-        </template>
-      <div class="right-section">
-      </div>
+      <template v-else>
+        <BaseButton
+          style="margin-left: auto"
+          to="/login"
+          >로그인</BaseButton
+        >
+        <BaseButton
+          style="margin-left: 20px"
+          to="/signup"
+          variant="secondary"
+          >가입하기</BaseButton
+        >
+      </template>
+      <div class="right-section"></div>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { RouterLink, useRouter } from 'vue-router'
 import BaseButton from '@/components/base/BaseButton.vue'
-import { useAccountStore } from '@/stores/accounts';
+import { useAccountStore } from '@/stores/accounts'
+import { computed } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 
-const store = useAccountStore() 
+const route = useRoute()
+
+const isHome = computed(() => route.path === '/')
+
+const store = useAccountStore()
 const router = useRouter()
 
 const onclick = () => {
-  router.push({name:'profile-update'})
+  router.push({ name: 'profile-update' })
 }
-
 </script>
 
 <style scoped lang="scss">
 @use '@/assets/styles/utils/variables' as *;
-
 
 img {
   width: 40px;
@@ -56,14 +79,24 @@ img {
 
 .navbar {
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.3); /* 흰색 배경에 30% 투명도 적용 */
-  border-bottom: 1px solid #e0e0e0;
+  background-color: white;
   font-family: $font-base;
-  position: fixed; /* 내비게이션 바 고정 */
-  top: 0;
-  left: 0;
-  z-index: 1000; /* 다른 콘텐츠 위에 오도록 z-index 설정 */
+  z-index: 1000;
 
+  &.transparent {
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: none;
+  }
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  &.bordered {
+    border-bottom: 1px solid #dee2e6;
+  }
 }
 
 .wrapper {
