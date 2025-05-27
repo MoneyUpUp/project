@@ -4,8 +4,8 @@
           <form @submit.prevent="onlogin">
 						<div class="login-right">
 							<h4 style="text-align: center;">Login</h4>
-							<label>Username</label>
-							<input type="text" placeholder="Value" v-model="username"/>
+							<label>Email</label>
+							<input type="text" placeholder="Value" v-model="email"/>
 							<label>Password</label>
 							<input type="password" placeholder="Value" v-model="password" style="margin-bottom: 5%;"/>
 							<button>Login</button>
@@ -35,12 +35,12 @@
 	import { useAccountStore } from '@/stores/accounts'
 	const router = useRouter()
 	const store = useAccountStore()
-	const username = ref('')
+	const email = ref('')
 	const password = ref('')
 
 	const onlogin = async () => {
 		const userInfo = {
-			username: username.value,
+			email: email.value,
 			password: password.value
 		}
 		const success = await store.logIn(userInfo)

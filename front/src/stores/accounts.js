@@ -14,16 +14,15 @@ export const useAccountStore = defineStore(
     const period = ref('')
 
     const router = useRouter()
-    const createUser = ({ username, email, password, age }) => {
+    const createUser = ({ name, email, password, age }) => {
       axios({
         method: 'post',
         url: `${API_URL}auth/signup/`,
         data: {
-          username: username,
+          name: name,
           email: email,
           password1: password,
           password2: password,
-          nickname: username,
           age: age,
         },
         headers: {
@@ -33,19 +32,19 @@ export const useAccountStore = defineStore(
         .then((res) => {
           console.log('회원가입 성공!')
           console.log(res.data)
-          token.value = res.data.toekn
-          localStorage.setItem('token', res.data.toekn)
+          token.value = res.data.token
+          localStorage.setItem('token', res.data.token)
           router.push({ name: 'home' })
         })
         .catch((err) => console.log(err))
     }
 
-    const logIn = async ({ username, password }) => {
+    const logIn = async ({ email, password }) => {
       try {
         const res = await axios.post(
           `${API_URL}auth/login/`,
           {
-            username,
+            email,
             password,
           },
           {
@@ -53,8 +52,8 @@ export const useAccountStore = defineStore(
           },
         )
 
-        token.value = res.data.toekn
-        localStorage.setItem('token', res.data.toekn)
+        token.value = res.data.token
+        localStorage.setItem('token', res.data.token)
         return true
       } catch (err) {
         console.log('로그인 실패:', err.response?.data || err.message)
@@ -92,7 +91,7 @@ export const useAccountStore = defineStore(
       }
     }
 
-    const updateUserInfo = async ({nickname, age, email, annual_income}) => {
+    const updateUserInfo = async ({ nickname, age, email, annual_income }) => {
       try {
         const res = await axios.patch(
           `${API_URL}accounts/me/`,

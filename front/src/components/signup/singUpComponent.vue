@@ -6,14 +6,14 @@
     <form @submit.prevent="onSignup">
         <div class="signup-right">
           <label>Name</label>
-          <input type="text" placeholder="Value" v-model="username"/>
+          <input type="text" placeholder="Value" v-model="name"/>
           <label>Email</label>
           <input type="email" placeholder="Value" v-model="email"/>
           <label>Password</label>
           <input type="password" placeholder="Value" v-model="password"/>
           <label>Age</label>
           <input type="number" placeholder="Value" v-model="age"/>
-          <button>Sign in</button>
+          <button>Sign up</button>
       </div>
       </form>
   </div>
@@ -23,7 +23,7 @@
 import { ref } from 'vue'
 import { useAccountStore } from '@/stores/accounts'
 
-const username = ref('')
+const name = ref('')
 const email = ref('')
 const password = ref('')
 const age= ref(0)
@@ -31,7 +31,7 @@ const age= ref(0)
 const store = useAccountStore()
 const onSignup = function() {
     const userInfo = {
-        username : username.value,
+        name : name.value,
         email : email.value,
         password : password.value,
         age: age.value
