@@ -40,7 +40,7 @@ const onSubmit = async (e) => {
   await articleStore.addArticle({
     title: title.value,
     content: content.value,
-    author: 1
+    author: userId
   })
 }
 </script>
