@@ -27,7 +27,7 @@ inflection==0.5.1
 jiter==0.10.0
 more-itertools==10.7.0
 multitasking==0.0.11
-numpy==2.0.2
+numpy==1.26.4
 openai==1.82.0
 packaging==25.0
 pandas==2.2.3
