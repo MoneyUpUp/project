@@ -4,7 +4,7 @@
             <input type="checkbox" name="" id="">
         </td>
         <td>
-            <img :src="getBankLogo(item.bank.kor_co_nm)"  style="width: 40%;" alt="">
+            <img :src="getBankLogoById(item.bank.fin_co_no)"  style="width: 40%;" alt="">
         </td>
 
 		<td>{{ item.fin_prdt_nm }}</td>
@@ -15,14 +15,15 @@
 </template>
 
 <script setup>
-defineProps({
+import { onMounted } from 'vue';
+import { getBankLogoById } from '@/constants/banks'
+const props = defineProps({
   item: Object
 })
 
-const getBankLogo = (bankName) => {
-  const name = bankName.toLowerCase().replace(/\s/g, '')
-  return new URL(`@/assets/images/banks/${name}-bank.png`, import.meta.url).href
-}
+onMounted(()=> {
+  console.log(props.item)
+})
 </script>
 
 <style scoped>

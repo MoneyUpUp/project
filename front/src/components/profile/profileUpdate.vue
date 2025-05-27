@@ -6,7 +6,7 @@
       </div>
       <form @submit.prevent="onSubmit">
         <div style="margin: 10% auto;">
-          <p class="name">{{ store.userInfo.nickname }}</p>
+          <p class="name">{{ store.userInfo.name }}</p>
 
           <div class="info-update">
             <span class="info" id="nickname">닉네임</span>

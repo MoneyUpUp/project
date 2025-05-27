@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export const useFavoriteStore = defineStore( 'favorit', () => {
     const API_URL = 'http://127.0.0.1:8000/accounts/'
-    const favoriteList_deposits = ref([])
+    const favoriteList = ref([])
 
     const getFavoriteList = async () => {
         try {
@@ -22,7 +22,7 @@ export const useFavoriteStore = defineStore( 'favorit', () => {
             console.log('찜목록 가져오기 성공')
             console.log(res.data)
 
-            favoriteList_deposits.value = res.data.favorite_deposits || []
+            favoriteList.value = res.data || []
         }catch (err) {
             console.log('찜목록 가져오기 실패')
             console.log(err.response.data)
@@ -55,7 +55,7 @@ export const useFavoriteStore = defineStore( 'favorit', () => {
     }
     
     return {
-      favoriteList_deposits,
+      favoriteList,
       getFavoriteList,
       addFavorite,
     }
