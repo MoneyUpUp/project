@@ -67,52 +67,48 @@
     align-items: center;
     justify-content: center;
     margin-top: 5%;
-    margin-bottom: 5%;
+    /* margin-bottom: 15%; */ /* 이전 여백 조정 제거 */
+    padding-bottom: 15%; /* 아이콘 아래에 패딩 추가 */
   }
-  .kakao{
+  .kakao, .google, .naver { /* 공통 스타일 */
     width: 50px;
     height: 50px;
-    margin-right: 10%;
-    background-color: #F9E500;
-    border-radius: 10%;
+    min-width: 50px; /* 최소 너비 설정 */
+    min-height: 50px; /* 최소 높이 설정 */
+    border-radius: 10%; 
     box-shadow:0 2px 6px rgba(0, 0, 0, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-  }
-  .kakao img {
-    width: 24px; /* 로고 크기 */
-    height: 24px;
-  }
-  .google{
-    width: 50px;
-    height: 50px;
     margin-right: 10%;
+  }
+
+  .kakao {
+    background-color: #F9E500;
+  }
+  .google {
     background-color: #ffffff;
-    border-radius: 10%;
-    box-shadow:0 2px 6px rgba(0, 0, 0, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  }
+  .naver {
+    background-color: #03D166;
+    margin-right: 0; /* 마지막 요소 오른쪽 마진 제거 */
+  }
+
+  .kakao img {
+    width: 24px; 
+    height: 24px;
+    object-fit: contain; 
   }
   .google img {
-    width: 30px; /* 로고 크기 */
+    width: 30px; 
     height: 30px;
-  }
-  .naver{
-    width: 50px;
-    height: 50px;
-    background-color: #03D166;
-    border-radius: 10%;
-    box-shadow:0 2px 6px rgba(0, 0, 0, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    object-fit: contain; 
   }
   .naver img {
-    width: 24px; /* 로고 크기 */
+    width: 24px; 
     height: 24px;
+    object-fit: contain; /* 네이버 아이콘에도 object-fit 추가 */
   }
 
   form {
@@ -137,7 +133,7 @@
     display: flex;
     background-color: white;
     width: 500px;
-    height: 600px;
+    height: 650px; /* 높이를 600px에서 650px로 늘림 */
     border-radius: 30px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     padding: 40px;
@@ -192,4 +188,3 @@
     color: #43B883;
   }
   </style>
-  

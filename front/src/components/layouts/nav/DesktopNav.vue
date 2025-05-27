@@ -110,13 +110,14 @@ img {
 
 .navbar {
   width: 100%;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.3); /* 흰색 배경에 30% 투명도 적용 */
   border-bottom: 1px solid #e0e0e0;
   font-family: $font-base;
   position: fixed; /* 내비게이션 바 고정 */
   top: 0;
   left: 0;
   z-index: 1000; /* 다른 콘텐츠 위에 오도록 z-index 설정 */
+
 }
 
 .wrapper {
