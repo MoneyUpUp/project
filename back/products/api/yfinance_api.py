@@ -23,6 +23,7 @@ def save_asset_prices(name, start="2020-01-01", end=None):
     if end is None:
         end = datetime.today().strftime("%Y-%m-%d")
 
+    print(f"{name} 데이터 api 요청 시작")
     # 1. SpotAssetProduct 가져오기 (없으면 생성)
     product, _ = SpotAssetProduct.objects.get_or_create(name=name)
 
