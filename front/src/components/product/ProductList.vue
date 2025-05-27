@@ -11,7 +11,7 @@
 
 <script setup>
 import { useProductStore } from '@/stores/productStore'
-import { computed, defineProps } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import productListItem from './productListItem.vue'
 
