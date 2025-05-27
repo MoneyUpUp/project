@@ -1,4 +1,4 @@
-const appkey = import.meta.env.VITE_MAP_JS_API_KEY
+const appkey = import.meta.env.VITE_KAKAO_API_JS_KEY
 
 export const loadKakaoMap = () => {
   return new Promise((resolve, reject) => {

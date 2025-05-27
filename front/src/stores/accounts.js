@@ -1,14 +1,14 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
 import axios from 'axios'
-import { useRoute, useRouter } from 'vue-router'
+import { defineStore } from 'pinia'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export const useAccountStore = defineStore(
   'account',
   () => {
     const API_URL = 'http://127.0.0.1:8000/'
-    const initialTokenFromLocalStorage = localStorage.getItem('token');
-    const token = ref(initialTokenFromLocalStorage || '');
+    const initialTokenFromLocalStorage = localStorage.getItem('token')
+    const token = ref(initialTokenFromLocalStorage || '')
     const userInfo = ref({})
     const propensity = ref('')
     const period = ref('')
@@ -63,7 +63,7 @@ export const useAccountStore = defineStore(
       }
     }
     const isLogin = computed(() => {
-      return token.value.length >= 1;
+      return token.value.length >= 1
     })
 
     const logOut = () => {
@@ -73,18 +73,16 @@ export const useAccountStore = defineStore(
     }
 
     const setToken = (value) => {
-      token.value = value;
+      token.value = value
+      localStorage.setItem('token', value)
     }
 
     const getUserInfo = async (info) => {
       try {
-        const res = await axios.get(
-          `${API_URL}accounts/me/`,
-          {
-            headers: { 'Authorization': `Token ${token.value}` },
-          },
-        )
-        console.log('유저정보 가져오기 성공');
+        const res = await axios.get(`${API_URL}accounts/me/`, {
+          headers: { Authorization: `Token ${token.value}` },
+        })
+        console.log('유저정보 가져오기 성공')
         console.log(res.data)
         userInfo.value = res.data
       } catch (err) {
@@ -97,13 +95,16 @@ export const useAccountStore = defineStore(
         const res = await axios.patch(
           `${API_URL}accounts/me/`,
           {
-            nickname, age, email, annual_income
+            nickname,
+            age,
+            email,
+            annual_income,
           },
           {
-            headers: { 'Authorization': `Token ${token.value}` },
+            headers: { Authorization: `Token ${token.value}` },
           },
         )
-        console.log('유저 정보 수정 성공');
+        console.log('유저 정보 수정 성공')
         console.log(res.data)
         getUserInfo(res.data)
       } catch (err) {
@@ -131,7 +132,7 @@ export const useAccountStore = defineStore(
       updateUserInfo,
       propensity,
       setPropensity,
-      setPeriod
+      setPeriod,
     }
   },
   { persist: true }, // Temporarily disabled for debugging
