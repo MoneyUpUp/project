@@ -48,60 +48,6 @@ const onclick = () => {
 <style scoped lang="scss">
 @use '@/assets/styles/utils/variables' as *;
 
-// .navbar {
-//   width: 100%;
-//   height: 60px;
-//   display: flex;
-//   align-items: center;
-//   padding: 0 $space-xl * 10;
-//   background-color: white;
-//   border-bottom: 1px solid #e0e0e0;
-//   font-family: $font-base;
-// }
-
-// .left-section {
-//   display: flex;
-//   align-items: center;
-//   gap: 40px;
-// }
-
-// .logo {
-//   font-weight: 900;
-//   font-size: 24px;
-//   line-height: 36px;
-//   color: $primary-500;
-// }
-
-// .logo-link {
-//   text-decoration: none;
-// }
-
-// .nav-links {
-//   display: flex;
-//   list-style: none;
-//   gap: 24px;
-//   margin: 0;
-//   padding: 0;
-// }
-
-// .nav-links li {
-//   cursor: pointer;
-//   font-weight: 600;
-//   font-size: 16px;
-//   color: $primary-500;
-// }
-
-// .nav-links a {
-//   text-decoration: none;
-//   color: inherit;
-// }
-
-// .right-section {
-//   display: flex;
-//   gap: 12px;
-//   align-items: center;
-//   margin-left: auto;
-// }
 
 img {
   width: 40px;

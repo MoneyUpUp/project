@@ -78,7 +78,6 @@ function applyFilters() {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 5%;
   margin-bottom: 1.5rem;
 }
 

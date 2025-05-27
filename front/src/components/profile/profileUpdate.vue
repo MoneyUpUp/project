@@ -181,4 +181,8 @@ img {
   margin-left: -50px;
 }
 
+.container-lg {
+  padding-top: 80px; /* 네비게이션 바 높이만큼 패딩 추가 */
+}
+
 </style>

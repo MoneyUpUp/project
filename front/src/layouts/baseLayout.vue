@@ -98,6 +98,7 @@ watch(() => chat.isChatOpen, (isOpen) => {
 
 .content-area {
   flex: 1;
+  padding-top: 60px; /* 네비게이션 바 높이만큼 패딩 추가 */
   /* height: 100%; */ /* RouterView가 렌더링되는 영역이 높이를 꽉 채우도록 */
   overflow-y: auto; /* 필요한 경우에만 세로 스크롤 허용 */
   background: var(--bg-color);

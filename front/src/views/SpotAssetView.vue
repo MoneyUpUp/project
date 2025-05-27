@@ -53,8 +53,8 @@
     </div>
 
     <div class="chart-wrapper">
-      <silverGraph v-if="store.selectedData.length > 0" />
-      <p v-else class="no-data-message">선택된 기간에 대한 데이터가 없습니다.</p>
+      <silverGraph v-show="store.selectedData.length > 0" />
+      <p v-if="store.selectedData.length === 0" class="no-data-message">선택된 기간에 대한 데이터가 없습니다.</p>
     </div>
   </div>
 </template>
@@ -118,7 +118,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .spot-container {
-  margin-top: 3rem;
+  // margin-top: 3rem;
   padding: 2rem; /* 패딩 증가 */
   width: 100%;
   max-width: 1200px;

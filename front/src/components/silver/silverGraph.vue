@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed, nextTick } from 'vue' // nextTick 임포트 추가
+import { ref, onMounted, watch, computed, nextTick, onBeforeUnmount } from 'vue' // onBeforeUnmount 임포트 추가
 import { Chart, registerables } from 'chart.js'
 import { useSpotAssetStore } from '@/stores/spotAssetStore'
 
@@ -54,6 +54,7 @@ const percentChange = computed(() => {
 function renderChart() {
   if (chartInstance.value) {
     chartInstance.value.destroy();
+    chartInstance.value = null; // 인스턴스 파괴 후 null로 설정
   }
 
   // nextTick을 사용하여 DOM 업데이트가 완료된 후에 차트 렌더링 시도
@@ -156,6 +157,13 @@ function renderChart() {
 
 onMounted(renderChart)
 watch(() => store.selectedData, renderChart, { deep: true })
+
+onBeforeUnmount(() => {
+  if (chartInstance.value) {
+    chartInstance.value.destroy();
+    chartInstance.value = null;
+  }
+});
 </script>
 
 <style scoped>
