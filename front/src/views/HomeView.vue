@@ -29,14 +29,10 @@
         <homehotarticle />
       </section>
     </main>
-    <section class="home-section footer-section">
-      <homefooter class="footer" />
-    </section>
   </div>
 </template>
 
 <script setup>
-import homefooter from '@/components/home/homeFooter.vue'
 import homehotarticle from '@/components/home/homeHotArticle.vue'
 import homeService from '@/components/home/homeService.vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
@@ -171,8 +167,5 @@ onUnmounted(() => {
 
 .home-section.alt {
   background-color: #f9f9f9;
-}
-.footer-section {
-  background-color: #e9ecef;
 }
 </style>

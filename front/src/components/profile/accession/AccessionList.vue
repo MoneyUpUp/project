@@ -8,7 +8,7 @@
                         <input type="checkbox" :checked="allSelected" @change="toggleAll">
                     </th>
                     <th style="width:10%">
-                        이미지
+                        은행
                     </th>
                     <th scope="col" style="width:30%">예 적금 명</th>
                     <th scope="col" class="tableSt" style="width:5%">종류</th>
