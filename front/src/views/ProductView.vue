@@ -61,7 +61,7 @@ watch(selectedItem, (newVal) => {
 
 <style scoped>
 .container {
-  padding-top: 60px; /* 네비게이션 바와의 간격 확보 */
+  padding-top: 20px
 }
 .scroll-area {
   flex: 1;

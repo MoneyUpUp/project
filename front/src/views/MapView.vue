@@ -78,7 +78,7 @@ onMounted(async () => {
 .map-container {
   display: flex;
   height: calc(100vh - 60px); /* 네비게이션 바 높이(60px)를 제외한 높이 */
-  margin-top: 60px; /* 네비게이션 바 아래로 이동 */
+  /* margin-top: 60px; 네비게이션 바 아래로 이동 */
   padding: 20px; /* 전체 컨테이너에 패딩 추가 */
   box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
 }

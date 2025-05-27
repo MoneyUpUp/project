@@ -1,7 +1,12 @@
 <template>
     <tr @click="onclick">
 		<td style="text-align: center;" scope="row">
-            <input type="checkbox" name="" id="">
+            <input 
+                type="checkbox" 
+                :checked="isSelected" 
+                @change="handleCheckboxChange"
+                @click.stop
+            >
         </td>
         <td>
             <img :src="getBankLogoById(item.bank.fin_co_no)"  style="width: 40%;" alt="">
@@ -18,11 +23,23 @@
 import { onMounted } from 'vue';
 import { getBankLogoById } from '@/constants/banks'
 const props = defineProps({
-  item: Object
+  item: Object,
+  isSelected: Boolean
 })
 
+const emit = defineEmits(['update:selected'])
+
+const handleCheckboxChange = (event) => {
+  console.log(`AccessionListItem - Checkbox for ${props.item.fin_prdt_nm} changed to: ${event.target.checked}`);
+  emit('update:selected', event.target.checked);
+};
+
+const onclick = () => {
+  console.log('AccessionListItem - Row clicked:', props.item);
+}
+
 onMounted(()=> {
-  console.log(props.item)
+  console.log('AccessionListItem - Mounted with item:', props.item);
 })
 </script>
 

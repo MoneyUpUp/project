@@ -2,36 +2,7 @@
   <div class="container spot-container">
 
 
-    <div class="commodity-list-wrapper">
-      <h2>주요 원자재 가격</h2>
-      <div class="commodity-table">
-        <div class="table-header">
-          <div class="header-item">원자재</div>
-          <div class="header-item">현재 가격</div>
-          <div class="header-item">전일 대비</div>
-        </div>
-        <div class="table-body">
-          <div class="table-row" v-for="item in mainCommodities" :key="item.name" @click="selectCommodityFromTable(item.value)">
-            <div class="row-item">{{ item.name }}</div>
-            <div class="row-item">{{ item.price }}</div>
-            <div
-              class="row-item"
-              :class="{
-                'positive': typeof item.change === 'number' && item.change > 0,
-                'negative': typeof item.change === 'number' && item.change < 0
-              }"
-            >
-              <template v-if="typeof item.change === 'number'">
-                {{ item.change > 0 ? '+' : '' }}{{ item.change }}%
-              </template>
-              <template v-else>
-                {{ item.change }}
-              </template>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
         <div class="spot-header">
       <BaseSelect
         v-model="store.selectedCommodity"
@@ -53,8 +24,8 @@
     </div>
 
     <div class="chart-wrapper">
-      <silverGraph v-if="store.selectedData.length > 0" />
-      <p v-else class="no-data-message">선택된 기간에 대한 데이터가 없습니다.</p>
+      <silverGraph v-show="store.selectedData.length > 0" />
+      <p v-if="store.selectedData.length === 0" class="no-data-message">선택된 기간에 대한 데이터가 없습니다.</p>
     </div>
   </div>
 </template>
@@ -118,7 +89,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .spot-container {
-  margin-top: 3rem;
+  // margin-top: 3rem;
   padding: 2rem; /* 패딩 증가 */
   width: 100%;
   max-width: 1200px;
