@@ -53,10 +53,42 @@ export const useFavoriteStore = defineStore( 'favorit', () => {
         console.error('❌ 찜 처리 실패:', err.response?.data || err.message)
       }
     }
+
+    const deleteFavorites = async (items) => {
+      try {
+        const token = localStorage.getItem('token')
+
+        const deletePromises = items.map((item) =>
+          axios.post(
+            `${API_URL}me/favorites/`,
+            {
+              type: item.type,
+              id: item.id || item.fin_prdt_cd,
+            },
+            {
+              headers: {
+                Authorization: `Token ${token}`,
+                'Content-Type': 'application/json',
+              },
+            },
+          ),
+        )
+
+        await Promise.all(deletePromises)
+        console.log('✅ 선택한 관심 상품 삭제 성공')
+
+        // 목록 다시 가져오기
+        await getFavoriteList()
+      } catch (error) {
+        console.error('❌ 관심 상품 삭제 실패:', error.response?.data || error.message)
+        throw error // 호출하는 곳에서 예외 처리할 수 있도록 re-throw
+      }
+    }
     
     return {
       favoriteList,
       getFavoriteList,
       addFavorite,
+      deleteFavorites,
     }
 })

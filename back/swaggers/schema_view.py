@@ -4,30 +4,23 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 
-from dj_rest_auth.views import LoginView, LogoutView
-from dj_rest_auth.registration.views import RegisterView
-
-from accounts.views import *
-from products.views import *
-from community.views import *
-from ai.views import *  # ai.views 추가
+from accounts.views import KakaoLogin, GoogleLogin, CustomLoginView, CustomRegisterView
 
 from accounts.urls import urlpatterns as accounts_urls
 from products.urls import urlpatterns as products_urls
 from community.urls import urlpatterns as community_urls
-from ai.urls import urlpatterns as ai_urls  # ai.urls 추가
+from ai.urls import urlpatterns as ai_urls
 
 api_urlpatterns = (
     accounts_urls
     + products_urls
     + community_urls
-    + ai_urls  # ai_urls 추가
+    + ai_urls
     + [
         path("auth/kakao/login/", KakaoLogin.as_view()),
         path("auth/google/login/", GoogleLogin.as_view()),
-        path("auth/login/", LoginView.as_view(), name="auth-login"),
-        path("auth/logout/", LogoutView.as_view(), name="auth-logout"),
-        path("auth/signup/", RegisterView.as_view(), name="auth-signup"),
+        path("auth/login/", CustomLoginView.as_view()),
+        path("auth/signup/", CustomRegisterView.as_view()),
     ]
 )
 

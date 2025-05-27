@@ -6,9 +6,9 @@
 </template>
 
 <script setup>
-import ChatStyleSelector from './ChatStyleSelector.vue'
-import ChatConversation from './ChatConversation.vue'
 import { useChatStore } from '@/stores/chatStore'
+import ChatConversation from './ChatConversation.vue'
+import ChatStyleSelector from './ChatStyleSelector.vue'
 
 const ai = useChatStore()
 

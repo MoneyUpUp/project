@@ -1,30 +1,53 @@
 <template>
   <div class="chat-body">
     <div class="chat-header">
-      <button class="back-btn" @click="ai.selectStyle(null)">←</button>
+      <button
+        class="back-btn"
+        @click="ai.selectStyle(null)"
+      >
+        ←
+      </button>
       <span class="bot-name">{{ botName }}</span>
     </div>
 
-    <div class="chat-log" ref="logRef">
-      <div v-for="(msg, idx) in ai.messages" :key="idx" :class="['msg', msg.role]">
+    <div
+      class="chat-log"
+      ref="logRef"
+    >
+      <div
+        v-for="(msg, idx) in ai.messages"
+        :key="idx"
+        :class="['msg', msg.role]"
+      >
         <div class="bubble">{{ msg.content }}</div>
       </div>
-
     </div>
 
     <div class="input-area">
-      <input v-model="ai.input" @keydown.enter.prevent="ai.sendMessage" placeholder="메시지를 입력하세요..." />
+      <input
+        v-model="ai.input"
+        @keydown.enter.prevent="handleEnter"
+        @compositionstart="isComposing = true"
+        @compositionend="isComposing = false"
+        placeholder="메시지를 입력하세요..."
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue'
 import { useChatStore } from '@/stores/chatStore'
+import { nextTick, ref, watch } from 'vue'
 
 const ai = useChatStore()
 const logRef = ref(null)
+const isComposing = ref(false)
 
+const handleEnter = () => {
+  if (!isComposing.value) {
+    ai.sendMessage()
+  }
+}
 // 자동 스크롤
 watch(
   () => ai.messages.length,
@@ -32,7 +55,7 @@ watch(
     await nextTick()
     const el = logRef.value
     if (el) el.scrollTop = el.scrollHeight
-  }
+  },
 )
 
 const botNameMap = {

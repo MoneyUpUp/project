@@ -2,73 +2,66 @@ from pathlib import Path
 import environ
 import os
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# 환경 변수 설정
 env = environ.Env(DEBUG=(bool, True))
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
-FIN_API_KEY = env("FIN_API_KEY")
 
+# API 키들
+FIN_API_KEY = env("FIN_API_KEY")
 KAKAO_CLIENT_ID = env("KAKAO_CLIENT_ID")
 KAKAO_SECRET = env("KAKAO_SECRET")
-
 GOOGLE_CLIENT_ID = env("GOOGLE_CLIENT_ID")
 GOOGLE_SECRET = env("GOOGLE_SECRET")
-
 NAVER_CLIENT_ID = env("NAVER_CLIENT_ID")
 NAVER_SECRET = env("NAVER_SECRET")
-
-
 OPENAI_API_KEY = env("OPENAI_API_KEY")
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# 보안 설정
 SECRET_KEY = "django-insecure--u4ts=j+yvv_lmwv#tv!!z#afpm^(g=gd-ha+y824$f!!ot-2@"
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
-
-# Application definition
+# 앱 등록
 INSTALLED_APPS = [
-    # apps
+    # 로컬 앱
     "accounts",
     "products",
     "community",
     "ai",
-    # library
+    # 서드파티 라이브러리
     "rest_framework",
     "rest_framework.authtoken",
-    "drf_yasg",  # swagger
+    "drf_yasg",
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",  # 소셜 로그인
+    "allauth.socialaccount",
     "allauth.socialaccount.providers.kakao",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.naver",
     "corsheaders",
-    # ---
+    # 장고 기본 앱
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # 추가
     "django.contrib.sites",
 ]
-# allauth가 요구
-SITE_ID = 1
 
-# 소셜 로그인 어댑터
+# allauth가 요구하는 설정
+SITE_ID = 1
 SOCIALACCOUNT_ADAPTER = "accounts.adapters.CustomSocialAccountAdapter"
 
+# CORS 설정: 모든 출처 허용 (개발 환경)
 CORS_ALLOW_ALL_ORIGINS = True
 
+# 미들웨어 설정
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -77,13 +70,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # dj-rest-auth
     "allauth.account.middleware.AccountMiddleware",
-    # cors
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
 ]
 
+# URL 설정
 ROOT_URLCONF = "final.urls"
 
 TEMPLATES = [
@@ -103,10 +94,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "final.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+# 데이터베이스 설정 (SQLite 사용)
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -114,84 +102,52 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
+# 비밀번호 검증
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
+# 국제화
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
+# 정적 파일 설정
 STATIC_URL = "static/"
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
+# 기본 기본키 타입
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-# Custom User Setting
+# 사용자 모델
 AUTH_USER_MODEL = "accounts.User"
 
-# ACCOUNT_LOGIN_METHODS = {"username"}  # 혹은 {"email"} 또는 {"username", "email"}
-# ACCOUNT_SIGNUP_FIELDS = {
-#     "username": {"required": True},
-#     "email": {"required": True},
-#     "nickname": {"required": False},
-#     "password1": {"required": True},
-#     "password2": {"required": False},
-# }
-ACCOUNT_AUTHENTICATION_METHOD = "email"  # 로그인 시 이메일 사용
-ACCOUNT_USERNAME_REQUIRED = False  # 사용자 이름 필수로 요구하지 않음
-ACCOUNT_EMAIL_REQUIRED = True  # 이메일 필수
-ACCOUNT_UNIQUE_EMAIL = True  # 이메일 고유성 보장
-ACCOUNT_EMAIL_VERIFICATION = "none"
+# 로그인/회원가입 설정
 
-# 비밀번호 재설정 이후 자동 로그인
-ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = [
+    "email",
+    "name",
+    # "nickname",
+    "password1",
+]
 
+# dj-rest-auth 설정
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer"
+}
+
+# DRF 기본 인증 방식
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
-REST_AUTH_REGISTER_SERIALIZERS = {
-    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer"
-}
-ACCOUNT_SIGNUP_FIELDS = [
-    "email",
-    "name",  # name 추가
-    "nickname",
-    "password1",
-]
 
-
-# django-allauth 경고 무시
+# allauth 경고 무시
 SILENCED_SYSTEM_CHECKS = ["account.W001"]

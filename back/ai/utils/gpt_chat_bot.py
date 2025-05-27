@@ -10,7 +10,7 @@ def get_chatbot_response(user_message: str, style: str = "default") -> str:
     system_message = system_prompts.get(style, system_prompts["default"])["desc"]
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # 또는 gpt-3.5-turbo
+            model="gpt-4o-mini",
             messages=[
                 {
                     "role": "system",
@@ -23,7 +23,6 @@ def get_chatbot_response(user_message: str, style: str = "default") -> str:
         )
         return response.choices[0].message.content
     except Exception as e:
-        print("❌ GPT 챗봇 호출 실패:", e)
         return "죄송합니다. 현재 챗봇 응답을 생성할 수 없습니다."
 
 

@@ -8,50 +8,68 @@ client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 def generate_reasons_from_gpt(user, product_options):
+    print(product_options)
     invest_type_display = user.get_invest_type_display()
     preferred_term_display = user.get_preferred_term_display()
-    print(f"✅ settings.OPENAI_API_KEY: {settings.OPENAI_API_KEY}")
-    # OPENAI_API_KEY = "..."
-    # client = OpenAI(api_key=OPENAI_API_KEY)
+
+    # 상품 리스트를 GPT에 보여줄 형태로 만듦
+    product_descriptions = "\n".join(
+        [
+            f"{i+1}. [{opt['type']}] {opt['name']} - {opt['bank']} ({opt['save_trm']}개월, 금리 {opt['interest_rate']}%)"
+            for i, opt in enumerate(product_options)
+        ]
+    )
 
     prompt = f"""
     사용자 정보:
     - 투자 성향: {invest_type_display}
     - 희망 투자 기간: {preferred_term_display}
 
+    다음은 추천할 금융 상품 목록입니다:
 
-    각 상품에 대해 사용자에게 적합한 이유를 설명해줘.
+    {product_descriptions}
 
-    JSON 배열 형식으로 응답해야 하며, 각 항목에는 반드시 아래와 같은 키가 포함되어야 합니다:
-
-    - type: "deposit" 또는 "saving" (상품 종류)
-    - id: 상품 ID (정수형)
-    - reason: 사용자에게 왜 이 상품이 적합한지 설명하는 한 문장
-
-    다음 형식처럼 정확히 출력해 주세요:
+    각 상품에 대해, **이유(reason)**만 JSON 배열로 생성해줘.
+    형식은 다음과 같아야 해:
 
     [
-    {{
-        "type": "deposit",
-        "id": 1,
-        "reason": "이 상품은 금리가 높고, 사용자 성향에 적합하여 추천됩니다."
-    }},
-    ...
+      {{
+        "reason": "이 상품은 안정적이면서 금리가 높아 투자 성향에 적합합니다."
+      }},
+      ...
     ]
 
-    ※ 응답은 JSON 배열 자체로만 출력하고, 문자열로 감싸지 마세요.
+    ✨ 총 {len(product_options)}개의 이유를, 순서대로 정확히 배열로 반환해줘.
+    다른 설명이나 문자열은 붙이지 말고, JSON만 출력해.
     """
 
-    # chat.completions API 사용 (최신 방식)
     response = client.chat.completions.create(
-        model="gpt-4o-mini",  # 또는 fallback 확인 중이면 "gpt-4o-mini"
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "너는 금융 상품 추천 전문가야."},
             {"role": "user", "content": prompt},
         ],
         temperature=1,
-        max_tokens=256,
+        max_tokens=512,
     )
 
-    # 응답 추출 방식 업데이트
-    return json.loads(response.choices[0].message.content)
+    try:
+        gpt_reasons = json.loads(response.choices[0].message.content)
+
+        # product_options와 이유를 묶어서 반환
+        combined = []
+        for opt, reason_data in zip(product_options, gpt_reasons):
+            combined.append(
+                {
+                    "type": opt["type"],
+                    "id": opt["id"],
+                    "bank": opt["bank"],
+                    "bank_id": opt["bank_id"],
+                    "reason": reason_data["reason"],
+                }
+            )
+        return combined
+
+    except (json.JSONDecodeError, KeyError, IndexError) as e:
+        print("GPT 응답 파싱 오류:", e)
+        return []

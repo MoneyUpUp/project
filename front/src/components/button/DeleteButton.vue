@@ -1,5 +1,5 @@
 <template>
-	<button class="update-btn">삭제</button>
+	<button @click="$emit('click')" class="update-btn">삭제</button>
 </template>
 
 <script setup>

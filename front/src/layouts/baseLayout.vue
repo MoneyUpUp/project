@@ -6,85 +6,103 @@
     </div>
 
     <!-- 챗봇 토글 버튼 -->
-    <button class="chat-toggle-btn" @click="chat.toggleChat">
-      <Transition name="slide-fade"> <!-- mode="out-in" 제거 -->
-        <img :src="currentImage" :key="currentImage" alt="Chatbot Toggle" class="chat-toggle-img" />
+    <button
+      class="chat-toggle-btn"
+      @click="chat.toggleChat"
+    >
+      <Transition name="slide-fade">
+        <!-- mode="out-in" 제거 -->
+        <img
+          :src="currentImage"
+          :key="currentImage"
+          alt="Chatbot Toggle"
+          class="chat-toggle-img"
+        />
       </Transition>
     </button>
 
     <!-- 챗봇 창 -->
-    <div v-if="chat.isChatOpen" class="chatbot-popup">
+    <div
+      v-if="chat.isChatOpen"
+      class="chatbot-popup"
+    >
       <ChatBot />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue'; // watch 임포트 추가
-import BaseNavBar from '@/components/layouts/nav/BaseNavBar.vue'
 import ChatBot from '@/components/chatbot/ChatBot.vue'
-import { RouterView } from 'vue-router'
+import BaseNavBar from '@/components/layouts/nav/BaseNavBar.vue'
 import { useChatStore } from '@/stores/chatStore.js'
+import { onMounted, onUnmounted, ref, watch } from 'vue' // watch 임포트 추가
+import { RouterView } from 'vue-router'
 
 const chat = useChatStore()
 
 // 챗봇 스타일에서 이미지 경로 목록 생성
 const styleImagePaths = Object.values(chat.styles).map(
-  (style) => `/src/assets/images/chatbots/${style.default}.png`
-);
+  (style) => `/src/assets/images/chatbots/${style.default}.png`,
+)
 
-const currentImage = ref(''); // 현재 표시될 이미지 (초기값 빈 문자열)
-let intervalId;
+const currentImage = ref('') // 현재 표시될 이미지 (초기값 빈 문자열)
+let intervalId
 
 // 챗봇 스타일이 선택되었는지 여부에 따라 이미지 설정
 const updateImage = () => {
   if (chat.selectedStyle) {
     // 특정 스타일이 선택된 경우 해당 스타일 이미지로 고정
-    const selectedStylePath = `/src/assets/images/chatbots/${chat.selectedStyle}.png`;
-    currentImage.value = selectedStylePath;
+    const selectedStylePath = `/src/assets/images/chatbots/${chat.selectedStyle}.png`
+    currentImage.value = selectedStylePath
     if (intervalId) {
-      clearInterval(intervalId); // 랜덤 변경 중지
-      intervalId = null;
+      clearInterval(intervalId) // 랜덤 변경 중지
+      intervalId = null
     }
   } else {
     // 스타일이 선택되지 않은 경우 랜덤 이미지 변경 시작
     if (!intervalId) {
       intervalId = setInterval(() => {
-        const randomIndex = Math.floor(Math.random() * styleImagePaths.length);
-        currentImage.value = styleImagePaths[randomIndex];
-      }, 5000); // 5000ms = 5초
+        const randomIndex = Math.floor(Math.random() * styleImagePaths.length)
+        currentImage.value = styleImagePaths[randomIndex]
+      }, 5000) // 5000ms = 5초
     }
     // 초기 로드 시 랜덤 이미지 설정
     if (!currentImage.value) {
-      const randomIndex = Math.floor(Math.random() * styleImagePaths.length);
-      currentImage.value = styleImagePaths[randomIndex];
+      const randomIndex = Math.floor(Math.random() * styleImagePaths.length)
+      currentImage.value = styleImagePaths[randomIndex]
     }
   }
-};
+}
 
 onMounted(() => {
-  updateImage(); // 컴포넌트 마운트 시 초기 이미지 설정
-});
+  updateImage() // 컴포넌트 마운트 시 초기 이미지 설정
+})
 
 onUnmounted(() => {
   // 컴포넌트 언마운트 시 인터벌 정리
   if (intervalId) {
-    clearInterval(intervalId);
+    clearInterval(intervalId)
   }
-});
+})
 
 // selectedStyle 변화 감지
-watch(() => chat.selectedStyle, (newStyle) => {
-  updateImage();
-});
+watch(
+  () => chat.selectedStyle,
+  (newStyle) => {
+    updateImage()
+  },
+)
 
 // isChatOpen 변화 감지 (챗봇이 닫힐 때 selectedStyle 초기화)
-watch(() => chat.isChatOpen, (isOpen) => {
-  if (!isOpen && chat.selectedStyle) {
-    chat.selectedStyle = null; // 챗봇이 닫히면 선택된 스타일 초기화
-    updateImage(); // 이미지 다시 랜덤으로 변경
-  }
-});
+watch(
+  () => chat.isChatOpen,
+  (isOpen) => {
+    if (!isOpen && chat.selectedStyle) {
+      chat.selectedStyle = null // 챗봇이 닫히면 선택된 스타일 초기화
+      updateImage() // 이미지 다시 랜덤으로 변경
+    }
+  },
+)
 </script>
 
 <style scoped lang="scss">
@@ -93,14 +111,12 @@ watch(() => chat.isChatOpen, (isOpen) => {
 .layout-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* height 대신 min-height 사용 */
+  min-height: 100vh;
 }
 
 .content-area {
   flex: 1;
-  padding-top: 60px; /* 네비게이션 바 높이만큼 패딩 추가 */
-  /* height: 100%; */ /* RouterView가 렌더링되는 영역이 높이를 꽉 채우도록 */
-  overflow-y: auto; /* 필요한 경우에만 세로 스크롤 허용 */
+  overflow-y: auto;
   background: var(--bg-color);
 }
 

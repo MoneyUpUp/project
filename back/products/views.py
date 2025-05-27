@@ -27,8 +27,6 @@ class CommodityHistoryView(APIView):
     def get(self, request, commodity_name):
         from django.utils import timezone
 
-        today = timezone.now().date()
-
         if commodity_name not in TICKER_MAP:
             return Response(
                 {"error": "Unsupported commodity."}, status=status.HTTP_400_BAD_REQUEST

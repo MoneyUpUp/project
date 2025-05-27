@@ -19,6 +19,7 @@ recommend_products_swagger = swagger_auto_schema(
             ),
         ),
         401: "인증되지 않은 사용자",
+        500: "서버 오류 (AI 응답 실패)",
     },
     tags=TAG,
 )
@@ -58,6 +59,7 @@ chat_bot_swagger = swagger_auto_schema(
             ),
         ),
         400: "잘못된 요청 (메시지 누락)",
+        500: "서버 오류 (챗봇 응답 실패)",
     },
     tags=TAG,
 )

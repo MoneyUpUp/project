@@ -1,9 +1,6 @@
 <template>
   <div class="container spot-container">
-
-
-
-        <div class="spot-header">
+    <div class="spot-header">
       <BaseSelect
         v-model="store.selectedCommodity"
         placeholder="원자재 명"
@@ -13,96 +10,56 @@
 
       <div class="date-range">
         <div class="datepicker-button">
-          <label for="startday">시작일</label>
+          <label>시작일</label>
           <Datepicker v-model="store.startDate" />
         </div>
         <div class="datepicker-button">
-          <label for="endday">종료일</label>
+          <label>종료일</label>
           <Datepicker v-model="store.endDate" />
         </div>
       </div>
     </div>
 
     <div class="chart-wrapper">
-      <silverGraph v-show="store.selectedData.length > 0" />
-      <p v-if="store.selectedData.length === 0" class="no-data-message">선택된 기간에 대한 데이터가 없습니다.</p>
+      <SpotAssetGraph v-if="store.selectedData.length > 0" />
+      <p
+        v-if="store.selectedData.length === 0"
+        class="no-data-message"
+      >
+        선택된 기간에 대한 데이터가 없습니다.
+      </p>
     </div>
   </div>
 </template>
 
 <script setup>
 import BaseSelect from '@/components/base/BaseSelect.vue'
-import silverGraph from '@/components/silver/silverGraph.vue' // silverGraph 주석 해제
-import Datepicker from 'vue3-datepicker'
+import SpotAssetGraph from '@/components/spotAsset/SpotAssetGraph.vue'
 import { useSpotAssetStore } from '@/stores/spotAssetStore'
-import { computed, onMounted } from 'vue' // watch 제거
+import { watchEffect } from 'vue'
+import Datepicker from 'vue3-datepicker'
 
 const store = useSpotAssetStore()
 
-// 주요 원자재 데이터를 계산하는 computed 속성
-const mainCommodities = computed(() => {
-  return store.commodityOptions.map(option => {
-    const data = store.spotAssetPrices[option.value];
-
-    let price = 'N/A';
-    let change = 'N/A';
-
-    if (data && data.length > 0) {
-      const latestPrice = data[data.length - 1]?.close_price; // price 대신 close_price 사용
-      if (typeof latestPrice === 'number') {
-        price = `${latestPrice.toFixed(2)} USD`;
-      }
-
-      if (data.length > 1) {
-        const previousPrice = data[data.length - 2]?.close_price; // price 대신 close_price 사용
-        if (typeof latestPrice === 'number' && typeof previousPrice === 'number' && previousPrice !== 0) {
-          const calculatedChange = ((latestPrice - previousPrice) / previousPrice) * 100;
-          change = calculatedChange.toFixed(2);
-        }
-      }
-    } else {
-      // console.log(`Returning N/A for commodity: ${option.value} due to no data.`); // 디버깅 로그 제거
-    }
-
-    return {
-      name: option.label.split(' ')[0], // "금 가격 (USD)"에서 "금"만 추출
-      value: option.value, // option.value 추가
-      price: price,
-      change: change,
-    };
-  });
-});
-
-const selectCommodityFromTable = (commodityValue) => {
-  store.selectedCommodity = commodityValue;
-  // 선택된 원자재의 데이터를 다시 가져올 필요는 없습니다.
-  // store의 watchEffect가 selectedCommodity 변경을 감지하여 자동으로 fetchSpotAssetPrices를 호출합니다.
-};
-
-onMounted(() => {
-  // 모든 주요 원자재 데이터를 미리 가져옵니다.
-  store.commodityOptions.forEach(option => {
-    store.fetchSpotAssetPrices(option.value);
-  });
-});
+watchEffect(() => {
+  if (store.selectedCommodity) {
+    store.fetchSpotAssetPrices(store.selectedCommodity)
+  }
+})
 </script>
 
 <style scoped lang="scss">
 .spot-container {
-  // margin-top: 3rem;
+  // TODO: 디자인 확정 후 box-shadow, border 추가 고려
   padding: 2rem; /* 패딩 증가 */
   width: 100%;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  // background-color: #f9f9f9; /* ProductView의 사이드바와 유사한 배경색 */
-  border-radius: 12px;
-  // box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08); /* 그림자 강조 */
-  // border: 1px solid #e0e0e0; /* 테두리 추가 */
 
   display: flex;
   flex-direction: column;
-  gap: 3rem; /* 요소 간 간격 증가 */
+  gap: 3rem;
 }
 
 .spot-header {
@@ -110,14 +67,14 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 2rem; /* 헤더 내부 간격 증가 */
+  gap: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e0e0e0; /* 구분선 색상 조정 */
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .date-range {
   display: flex;
-  gap: 1.2rem; /* 날짜 범위 간격 조정 */
+  gap: 1.2rem;
 }
 
 .datepicker-button {
@@ -132,7 +89,7 @@ onMounted(() => {
     padding: 0.6rem 1rem;
     border: 1px solid #d1d5db;
     border-radius: 8px;
-    background-color: #ffffff; /* 배경색을 흰색으로 변경 */
+    background-color: #ffffff;
     color: #374151;
     font-weight: 500;
     cursor: pointer;
@@ -143,7 +100,7 @@ onMounted(() => {
       box-shadow 0.2s ease;
 
     &:hover {
-      background-color: #f0f0f0; /* 호버 배경색 조정 */
+      background-color: #f0f0f0;
       border-color: #9ca3af;
     }
 
@@ -157,86 +114,19 @@ onMounted(() => {
 }
 
 .chart-wrapper {
-  padding-top: 2.5rem; /* 상단 패딩 증가 */
-}
-
-.commodity-list-wrapper {
-  h2 {
-    font-size: 1.8rem;
-    color: #2c3e50;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    font-weight: 700;
-  }
-}
-
-.commodity-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #ffffff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-
-  .table-header, .table-row {
-    display: flex;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #f0f0f0;
-    align-items: center;
-  }
-
-  .table-header {
-    background-color: #eef2f7;
-    font-weight: 700;
-    color: #555;
-    font-size: 1rem;
-    text-transform: uppercase;
-  }
-
-  .table-row {
-    font-size: 0.95rem;
-    color: #333;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #f8fafd;
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  .header-item, .row-item {
-    flex: 1;
-    text-align: center;
-
-    &:nth-child(1) { text-align: left; flex: 1.5; }
-    &:nth-child(2) { text-align: right; }
-    &:nth-child(3) { text-align: right; flex: 0.8; }
-  }
-
-  .positive {
-    color: #28a745; /* Green for positive change */
-    font-weight: 600;
-  }
-
-  .negative {
-    color: #dc3545; /* Red for negative change */
-    font-weight: 600;
-  }
+  padding-top: 2.5rem;
 }
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .spot-container {
-    padding: 1rem; /* 모바일 패딩 조정 */
+    padding: 1rem;
     margin-top: 2rem;
   }
   .spot-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem; /* 모바일 헤더 내부 간격 조정 */
+    gap: 1rem;
   }
 
   .date-range {
@@ -247,18 +137,6 @@ onMounted(() => {
 
   .datepicker-button {
     width: 100%;
-  }
-
-  .commodity-table {
-    .table-header, .table-row {
-      padding: 0.8rem 1rem;
-      font-size: 0.85rem;
-    }
-    .header-item, .row-item {
-      &:nth-child(1) { flex: 1.2; }
-      &:nth-child(2) { flex: 1; }
-      &:nth-child(3) { flex: 0.8; }
-    }
   }
 }
 </style>

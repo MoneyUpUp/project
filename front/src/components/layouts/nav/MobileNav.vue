@@ -1,32 +1,93 @@
 <template>
-  <nav class="mobile-navbar">
+  <nav :class="['mobile-navbar', { transparent: isHome, fixed: isHome, bordered: !isHome }]">
     <div class="mobile-header">
-      <RouterLink to="/" class="logo-link">
+      <RouterLink
+        to="/"
+        class="logo-link"
+        @click="closeMenu"
+      >
         <div class="logo">MoneyUp</div>
       </RouterLink>
-      <button class="hamburger" @click="isOpen = !isOpen">☰</button>
+      <div class="nav-actions">
+        <button
+          class="hamburger"
+          @click="isOpen = !isOpen"
+        >
+          ☰
+        </button>
+        <img
+          class="avatar-icon"
+          src="@/assets/icon/basicprofile.png"
+          alt="avatar"
+          @click="onclick"
+        />
+      </div>
     </div>
 
     <transition name="fade">
-      <ul v-if="isOpen" class="mobile-menu">
-        <li><RouterLink to="/product">상품</RouterLink></li>
-        <li><RouterLink to="/spotAsset">현물</RouterLink></li>
-        <li><RouterLink to="/map">지도</RouterLink></li>
-        <li><RouterLink to="/article">커뮤니티</RouterLink></li>
-        <li><RouterLink to="/searchproduct">관심종목검색</RouterLink></li>
-        <li><BaseButton to="/login">로그인</BaseButton></li>
-        <li><BaseButton to="/signup" variant="secondary">가입하기</BaseButton></li>
+      <ul
+        v-if="isOpen"
+        class="mobile-menu"
+      >
+        <li>
+          <RouterLink
+            to="/product"
+            @click="closeMenu"
+            >상품</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink
+            to="/spotAsset"
+            @click="closeMenu"
+            >현물</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink
+            to="/map"
+            @click="closeMenu"
+            >지도</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink
+            to="/article"
+            @click="closeMenu"
+            >커뮤니티</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink
+            to="/searchproduct"
+            @click="closeMenu"
+            >관심종목검색</RouterLink
+          >
+        </li>
       </ul>
     </transition>
   </nav>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import BaseButton from '@/components/base/BaseButton.vue'
+import { computed, ref } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 
 const isOpen = ref(false)
+const route = useRoute()
+const router = useRouter()
+const isHome = computed(() => route.path === '/')
+const isLoggedIn = ref(false) // Replace with real auth logic later
+
+const onclick = () => {
+  const destination = isLoggedIn.value ? '/profile' : '/login'
+  closeMenu()
+  router.push(destination)
+}
+
+const closeMenu = () => {
+  isOpen.value = false
+}
 </script>
 
 <style scoped lang="scss">
@@ -34,27 +95,37 @@ const isOpen = ref(false)
 
 .mobile-navbar {
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.3); /* 흰색 배경에 30% 투명도 적용 */
-  border-bottom: 1px solid #e0e0e0;
   font-family: $font-base;
-  position: fixed; /* 내비게이션 바 고정 */
-  top: 0;
-  left: 0;
-  z-index: 1000; /* 다른 콘텐츠 위에 오도록 z-index 설정 */
+  z-index: 1000;
 
+  &.transparent {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  &.bordered {
+    border-bottom: 1px solid #e0e0e0;
+  }
 }
 
 .mobile-header {
+  position: relative;
+  height: 56px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  justify-content: center;
 }
 
 .logo {
   font-weight: 900;
   font-size: 20px;
   color: $primary-500;
+  text-align: center;
 }
 
 .logo-link {
@@ -62,6 +133,8 @@ const isOpen = ref(false)
 }
 
 .hamburger {
+  position: absolute;
+  left: 1rem;
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -95,5 +168,21 @@ const isOpen = ref(false)
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.avatar-icon {
+  position: absolute;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-left: auto;
+  cursor: pointer;
 }
 </style>
