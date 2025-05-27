@@ -6,7 +6,7 @@
       @update:selected-items="handleSelectedItemsChange"
     />
     <div class="button-right">
-      <DeleteButton />
+      <DeleteButton @click="handleDeleteSelected" />
     </div>
 
     <hr />
@@ -36,6 +36,18 @@ const selectedFavoriteItems = ref([])
 const handleSelectedItemsChange = (items) => {
   selectedFavoriteItems.value = items
   console.log('AccessionProduct - selectedFavoriteItems updated:', selectedFavoriteItems.value)
+}
+
+const handleDeleteSelected = async () => {
+  try {
+    console.log('선택된 아이템')
+    console.log(selectedFavoriteItems.value)
+    await store.deleteFavorites(selectedFavoriteItems.value)
+    alert('선택한 관심 상품이 삭제되었습니다.')
+    selectedFavoriteItems.value = []
+  } catch (err) {
+    alert('삭제 중 오류가 발생했습니다.')
+  }
 }
 
 const interestRateChartData = computed(() => {
