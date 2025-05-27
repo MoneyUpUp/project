@@ -6,6 +6,7 @@
   <button
     class="search-button"
     @click="mapStore.onSearch"
+    v-show="mapStore.showSearchButton"
   >
     현 지도에서 검색
   </button>
@@ -26,6 +27,8 @@ const mapStore = useMapStore()
 .map-box {
   width: 100%;
   height: 100%;
+  border-radius: 12px; /* 부모의 border-radius와 일치 */
+  overflow: hidden; /* 지도가 둥근 모서리 밖으로 나가지 않도록 */
 }
 
 .search-button {

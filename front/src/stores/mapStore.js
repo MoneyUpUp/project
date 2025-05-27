@@ -1,5 +1,5 @@
 // stores/mapStore.js
-import { searchPlace } from '@/utils/map/mapHandler'
+import { searchPlace, displayPlaceInfo } from '@/utils/map/mapHandler'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
@@ -12,6 +12,9 @@ export const useMapStore = defineStore('map', () => {
   const map = ref(null)
   const myLocation = ref(null)
   const searchResults = ref([])
+  const showSearchButton = ref(false) // 현 지도에서 검색 버튼 가시성
+
+
 
   const states = computed(() => data.value?.mapInfo.map((e) => e.name) || [])
   const cities = computed(() => {
@@ -47,6 +50,12 @@ export const useMapStore = defineStore('map', () => {
     }
   }
 
+  const relayoutMap = () => {
+    if (map.value) {
+      map.value.relayout();
+    }
+  };
+
   return {
     selectedState,
     selectedCity,
@@ -55,11 +64,13 @@ export const useMapStore = defineStore('map', () => {
     map,
     myLocation,
     searchResults,
+    showSearchButton,
     states,
     cities,
     banks,
     onSearch,
     onStateChange,
     setMyLocationOnce,
+    relayoutMap,
   }
 })

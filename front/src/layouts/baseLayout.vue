@@ -93,12 +93,13 @@ watch(() => chat.isChatOpen, (isOpen) => {
 .layout-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh; /* height 대신 min-height 사용 */
 }
 
 .content-area {
   flex: 1;
-  overflow-y: auto;
+  /* height: 100%; */ /* RouterView가 렌더링되는 영역이 높이를 꽉 채우도록 */
+  overflow-y: auto; /* 필요한 경우에만 세로 스크롤 허용 */
   background: var(--bg-color);
 }
 

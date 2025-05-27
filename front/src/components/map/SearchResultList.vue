@@ -7,6 +7,7 @@
       <li
         v-for="place in searchResults"
         :key="place.name"
+        style="cursor: pointer;"
       >
         <BaseCard>
           <div class="result-title">{{ place.name }}</div>

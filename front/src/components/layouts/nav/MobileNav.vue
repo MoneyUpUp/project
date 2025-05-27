@@ -37,6 +37,10 @@ const isOpen = ref(false)
   background-color: white;
   border-bottom: 1px solid #e0e0e0;
   font-family: $font-base;
+  position: fixed; /* 내비게이션 바 고정 */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* 다른 콘텐츠 위에 오도록 z-index 설정 */
 }
 
 .mobile-header {

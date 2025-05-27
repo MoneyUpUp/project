@@ -19,3 +19,13 @@
 // // pages
 // @import "pages/home";
 // @import "pages/profile";
+
+html,
+body,
+#app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    /* 세로 스크롤 허용 */
+}

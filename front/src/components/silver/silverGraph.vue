@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed, nextTick } from 'vue' // nextTick 임포트 추가
 import { Chart, registerables } from 'chart.js'
 import { useSpotAssetStore } from '@/stores/spotAssetStore'
 
@@ -53,56 +53,114 @@ const percentChange = computed(() => {
 
 function renderChart() {
   if (chartInstance.value) {
-    chartInstance.value.destroy()
+    chartInstance.value.destroy();
   }
 
-  const labels = store.selectedData.map((item) => item.date)
-  const prices = store.selectedData.map((item) => item.close_price)
+  // nextTick을 사용하여 DOM 업데이트가 완료된 후에 차트 렌더링 시도
+  nextTick(() => {
+    if (!chartCanvas.value) {
+      console.warn('Chart canvas is not available.');
+      return;
+    }
 
-  chartInstance.value = new Chart(chartCanvas.value, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: `${store.selectedCommodity.toUpperCase()} 가격`,
-          data: prices,
-          borderColor: 'rgba(54, 162, 235, 1)',
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          fill: true,
-          tension: 0.4,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: { mode: 'index', intersect: false },
+    const labels = store.selectedData.map((item) => item.date);
+    const prices = store.selectedData.map((item) => item.close_price);
+
+    chartInstance.value = new Chart(chartCanvas.value, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: `${store.selectedCommodity.toUpperCase()} 가격`,
+            data: prices,
+            borderColor: 'rgb(75, 192, 192)', // 더 부드러운 색상
+            backgroundColor: (context) => {
+              const chart = context.chart;
+              const { ctx, chartArea } = chart;
+              if (!chartArea) {
+                // chartArea가 정의되지 않았을 경우 기본 색상 반환
+                return 'rgba(75, 192, 192, 0.2)';
+              }
+              const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+              gradient.addColorStop(0, 'rgba(75, 192, 192, 0.1)');
+              gradient.addColorStop(1, 'rgba(75, 192, 192, 0.4)');
+              return gradient;
+            },
+            fill: false, // fill 옵션을 false로 변경
+            tension: 0.3, // 곡선 부드럽게
+            pointRadius: 0, // 포인트 숨기기
+            pointHoverRadius: 5, // 호버 시 포인트 표시
+          },
+        ],
       },
-      interaction: {
-        mode: 'index',
-        intersect: false,
-      },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: '날짜',
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, // 부모 요소에 맞게 크기 조절
+        clip: false, // 데이터셋 클리핑 비활성화
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            titleFont: { size: 14, weight: 'bold' },
+            bodyFont: { size: 12 },
+            padding: 10,
+            cornerRadius: 8,
           },
         },
-        y: {
-          title: {
-            display: true,
-            text: '가격 (USD)',
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: '날짜',
+              color: '#555',
+              font: { size: 14, weight: 'bold' },
+            },
+            ticks: {
+              color: '#666',
+            },
+            grid: {
+              display: true,
+              drawBorder: false,
+              color: 'rgba(0, 0, 0, 0.05)', // 그리드 라인 연하게
+            },
           },
-          beginAtZero: false,
+          y: {
+            title: {
+              display: true,
+              text: '가격 (USD)',
+              color: '#555',
+              font: { size: 14, weight: 'bold' },
+            },
+            ticks: {
+              color: '#666',
+            },
+            grid: {
+              display: true,
+              drawBorder: false,
+              color: 'rgba(0, 0, 0, 0.05)', // 그리드 라인 연하게
+            },
+            beginAtZero: false,
+          },
         },
       },
-    },
-  })
+    });
+  });
 }
 
 onMounted(renderChart)
 watch(() => store.selectedData, renderChart, { deep: true })
 </script>
+
+<style scoped>
+canvas {
+  max-height: 400px; /* 그래프의 최대 높이 설정 */
+  width: 100%; /* 너비는 부모에 맞게 */
+}
+</style>

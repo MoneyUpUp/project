@@ -60,8 +60,8 @@ watch(selectedItem, (newVal) => {
 </script>
 
 <style scoped>
-:root {
-  --offset-top: 160px;
+.container {
+  padding-top: 60px; /* 네비게이션 바와의 간격 확보 */
 }
 .scroll-area {
   flex: 1;
@@ -71,7 +71,8 @@ watch(selectedItem, (newVal) => {
 .main-content {
   display: flex;
   gap: 32px;
-  height: calc(100vh - var(--offset-top));
+  height: calc(100vh - 60px); /* padding-top 만큼 높이 조정 */
+  /* align-items: flex-start; 제거 */
 }
 
 .filter-sidebar {
@@ -81,6 +82,8 @@ watch(selectedItem, (newVal) => {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 1rem;
+  max-height: calc(100vh - 60px); /* 고급 필터 높이 제한 */
+  overflow-y: auto; /* 고급 필터 내부 스크롤 */
 }
 .product-list-section {
   flex: 1;
