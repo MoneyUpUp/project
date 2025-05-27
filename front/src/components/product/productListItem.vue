@@ -1,5 +1,5 @@
 <template>
-  <BaseCard style="cursor: pointer;">
+  <BaseCard style="cursor: pointer">
     <div class="item">
       <div class="left">
         <img
@@ -10,7 +10,15 @@
         <div class="info">
           <h4>{{ item.fin_prdt_nm }}</h4>
           <p>{{ item.bank.kor_co_nm }} · {{ item.join_member }}</p>
-          <span class="tag">방문없이가입</span>
+          <div class="tags">
+            <span
+              v-for="(way, index) in Array.isArray(item.join_way) ? item.join_way : [item.join_way]"
+              :key="index"
+              class="tag"
+            >
+              {{ way }}
+            </span>
+          </div>
         </div>
       </div>
       <div class="right">
@@ -93,13 +101,20 @@ const maxRate = computed(() => {
   color: #444;
 }
 
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
 .tag {
   font-size: 12px;
   background-color: #eee;
   padding: 2px 6px;
   border-radius: 4px;
   display: inline-block;
-  margin-top: 4px;
+  margin: 4px 4px 0 0;
 }
 
 .right {

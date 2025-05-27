@@ -59,15 +59,20 @@
         @click="$emit('close')"
         >닫기</BaseButton
       >
-      <BaseButton type="primary" @click="handleFavoriteClick">장바구니 추가</BaseButton>
+      <BaseButton
+        type="primary"
+        @click="handleFavoriteClick"
+        >장바구니 추가</BaseButton
+      >
     </div>
   </BaseModal>
 </template>
 
 <script setup>
 import BaseModal from '@/components/base/BaseModal.vue'
-import BaseButton from '../base/BaseButton.vue'
 import { useFavoriteStore } from '@/stores/favorite'
+import { ref } from 'vue'
+import BaseButton from '../base/BaseButton.vue'
 const favoriteStore = useFavoriteStore()
 
 const props = defineProps({
@@ -76,20 +81,20 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-const bankColorMap = {
-  우리은행: 'bg-woori',
-  국민은행: 'bg-kb',
-  신한은행: 'bg-shinhan',
-  하나은행: 'bg-hana',
-  농협은행: 'bg-nh',
-  // 추가 은행은 여기에...
-}
+const isProcessing = ref(false)
 
-const handleFavoriteClick = () => {
-  favoriteStore.addFavorite(props.product)
+const handleFavoriteClick = async () => {
+  if (isProcessing.value) return
+  isProcessing.value = true
+  try {
+    await favoriteStore.addFavorite(props.product)
+    window.alert('장바구니에 추가되었습니다.')
+  } catch (e) {
+    console.error('찜 실패:', e)
+  } finally {
+    isProcessing.value = false
+  }
 }
-
-// const bankColorClass = computed(() => bankColorMap[props.product?.bank.kor_co_nm] || 'bg-default')
 </script>
 
 <style scoped>

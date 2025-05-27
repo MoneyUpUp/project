@@ -34,6 +34,7 @@ const route = useRoute()
 const selectedFavoriteItems = ref([])
 
 const handleSelectedItemsChange = (items) => {
+  console.log(`--------------------items: ${items}`)
   selectedFavoriteItems.value = items
   console.log('AccessionProduct - selectedFavoriteItems updated:', selectedFavoriteItems.value)
 }

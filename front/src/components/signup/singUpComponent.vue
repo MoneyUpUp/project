@@ -1,43 +1,63 @@
 <template>
   <div class="signup-box">
     <div class="signup-left">
-      <img src="@/assets/signup.png" alt="signup mascot" class="signup-image" />
+      <img
+        src="@/assets/signup.png"
+        alt="signup mascot"
+        class="signup-image"
+      />
     </div>
     <form @submit.prevent="onSignup">
-        <div class="signup-right">
-          <label>Name</label>
-          <input type="text" placeholder="Value" v-model="name"/>
-          <label>Email</label>
-          <input type="email" placeholder="Value" v-model="email"/>
-          <label>Password</label>
-          <input type="password" placeholder="Value" v-model="password"/>
-          <label>Age</label>
-          <input type="number" placeholder="Value" v-model="age"/>
-          <button>Sign up</button>
+      <div class="signup-right">
+        <label>이름</label>
+        <input
+          type="text"
+          placeholder="이름을 입력해주세요."
+          v-model="name"
+        />
+        <label>이메일</label>
+        <input
+          type="email"
+          placeholder="이메일을 입력해주세요."
+          v-model="email"
+        />
+        <label>비밀번호</label>
+        <input
+          type="password"
+          placeholder="비밀번호을 입력해주세요."
+          v-model="password"
+        />
+        <label>나이</label>
+        <input
+          type="number"
+          placeholder="나이를 입력해주세요."
+          v-model="age"
+        />
+        <button>회원가입</button>
       </div>
-      </form>
+    </form>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { useAccountStore } from '@/stores/accounts'
+import { ref } from 'vue'
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
-const age= ref(0)
+const age = ref(0)
 
 const store = useAccountStore()
-const onSignup = function() {
-    const userInfo = {
-        name : name.value,
-        email : email.value,
-        password : password.value,
-        age: age.value
-    }
+const onSignup = function () {
+  const userInfo = {
+    name: name.value,
+    email: email.value,
+    password: password.value,
+    age: age.value,
+  }
 
-    store.createUser(userInfo)
+  store.createUser(userInfo)
 }
 </script>
 
@@ -72,7 +92,7 @@ form {
 
 .signup-image {
   width: 388px;
-	height: 491px;
+  height: 491px;
   margin-top: 20px;
 }
 
@@ -93,7 +113,7 @@ form {
 
 .signup-right button {
   margin-top: 8px;
-  background-color: #43B883;
+  background-color: #43b883;
   color: white;
   border: none;
   padding: 10px;
@@ -102,11 +122,11 @@ form {
 }
 
 .green {
-  color: #43B883;
+  color: #43b883;
 }
 
 .bold-green {
   font-weight: 800;
-  color: #43B883;
+  color: #43b883;
 }
 </style>

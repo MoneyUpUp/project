@@ -19,22 +19,11 @@
       >
         MoneyUp
       </div>
-      <div class="scroll-indicator">↓</div>
     </div>
-    <main>
-      <section class="home-section">
-        <homeService />
-      </section>
-      <section class="home-section alt">
-        <homehotarticle />
-      </section>
-    </main>
   </div>
 </template>
 
 <script setup>
-import homehotarticle from '@/components/home/homeHotArticle.vue'
-import homeService from '@/components/home/homeService.vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 import banner2 from '@/assets/banner/393174217783407.6796c20101198.gif'
