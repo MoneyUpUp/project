@@ -21,7 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "id",
-            "username",
             "email",
             "name",
             "nickname",
@@ -36,9 +35,16 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
 
+import uuid  # uuid 모듈 추가
+
+
 class CustomRegisterSerializer(RegisterSerializer):
+    # username 필드를 제거
+    username = None
+
     age = serializers.IntegerField(required=False, allow_null=True)
-    name = serializers.CharField(max_length=30, required=False, allow_blank=True)
+    # name 필드를 필수로 받도록 변경
+    name = serializers.CharField(max_length=30, required=True)
     nickname = serializers.CharField(max_length=30, required=False, allow_blank=True)
     password2 = serializers.CharField(write_only=True, required=False)
 
@@ -54,14 +60,23 @@ class CustomRegisterSerializer(RegisterSerializer):
     def get_cleaned_data(self):
         data = super().get_cleaned_data()
         data["age"] = self.validated_data.get("age", None)  # age가 없으면 None으로 설정
-        # name과 nickname이 제공되지 않으면 username으로 설정
-        data["name"] = self.validated_data.get("name", data.get("username"))
-        data["nickname"] = self.validated_data.get("nickname", data.get("username"))
+        # nickname을 name과 동일하게 설정
+        data["name"] = self.validated_data.get("name")
+        data["nickname"] = self.validated_data.get(
+            "name"
+        )  # nickname을 name과 동일하게 설정
         return data
 
     def save(self, request):
         logger.info("📌 CustomRegisterSerializer.save() 호출됨")
         try:
+            # super().save() 호출 전에 username을 설정
+            # AbstractUser의 username 필드는 필수이므로, 임시로 고유한 값을 할당
+            # 이 값은 이후에 실제 uid로 대체될 수 있음
+            # 여기서는 uuid를 사용하여 고유한 username을 생성
+            temp_username = str(uuid.uuid4())
+            self.validated_data["username"] = temp_username
+
             user = super().save(request)
             logger.info(f"📌 save() - super().save() 후 user.username: {user.username}")
             logger.info(f"📌 save() - super().save() 후 user.name: {user.name}")
@@ -71,13 +86,22 @@ class CustomRegisterSerializer(RegisterSerializer):
             logger.info(f"📌 save() - age_value: {age_value}")
             user.age = age_value
 
-            # name과 nickname을 validated_data에서 가져오거나 username으로 설정
-            user.name = self.validated_data.get("name", user.username)
-            user.nickname = self.validated_data.get("nickname", user.username)
+            # name과 nickname을 validated_data에서 가져오거나 name으로 설정
+            user.name = self.validated_data.get("name")
+            user.nickname = self.validated_data.get(
+                "name"
+            )  # nickname을 name과 동일하게 설정
+
+            # username을 uid로 설정 (예: email을 기반으로 한 uid)
+            # 여기서는 간단하게 email을 username으로 사용하거나, uuid를 다시 생성
+            # 사용자의 요청에 따라 카카오 로그인처럼 uid로 만드는 것이 베스트이므로,
+            # 여기서는 email을 기반으로 한 uid를 생성하거나, uuid를 사용
+            # 일단은 email을 username으로 설정하고, 필요시 uid 생성 로직 추가
+            user.username = user.email  # 또는 str(uuid.uuid4())
 
             user.save()
             logger.info(
-                f"📌 save() - 사용자 저장 완료: {user.username}, name: {user.name}, nickname: {user.nickname}, age: {user.age}"
+                f"📌 save() - 사용자 저장 완료: {user.email}, name: {user.name}, nickname: {user.nickname}, age: {user.age}"
             )
             # dj_rest_auth의 RegisterSerializer가 기대하는 형식으로 반환
             # Token을 직접 생성하여 반환 딕셔너리에 포함

@@ -168,8 +168,11 @@ AUTH_USER_MODEL = "accounts.User"
 #     "password1": {"required": True},
 #     "password2": {"required": False},
 # }
+ACCOUNT_AUTHENTICATION_METHOD = "email"  # 로그인 시 이메일 사용
+ACCOUNT_USERNAME_REQUIRED = False  # 사용자 이름 필수로 요구하지 않음
+ACCOUNT_EMAIL_REQUIRED = True  # 이메일 필수
+ACCOUNT_UNIQUE_EMAIL = True  # 이메일 고유성 보장
 ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_EMAIL_REQUIRED = True
 
 # 비밀번호 재설정 이후 자동 로그인
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
@@ -182,7 +185,12 @@ REST_FRAMEWORK = {
 REST_AUTH_REGISTER_SERIALIZERS = {
     "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer"
 }
-ACCOUNT_SIGNUP_FIELDS = ["username", "email", "password1"]
+ACCOUNT_SIGNUP_FIELDS = [
+    "email",
+    "name",  # name 추가
+    "nickname",
+    "password1",
+]
 
 
 # django-allauth 경고 무시

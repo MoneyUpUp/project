@@ -5,10 +5,10 @@ from .constants import INVEST_TYPE_CHOICES, PREFERRED_TERM_CHOICES
 
 class User(AbstractUser):
     # 필수 정보
-    username = models.CharField(max_length=150, unique=True, null=True, blank=True)
+    username = models.CharField(max_length=150, unique=False, null=True, blank=True)
     name = models.CharField(max_length=30, blank=True)
     nickname = models.CharField(max_length=30, blank=True)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     age = models.PositiveIntegerField(null=True, blank=True)
     profile_image = models.ImageField(
         upload_to="profile_images/", null=True, blank=True
@@ -39,5 +39,8 @@ class User(AbstractUser):
         "products.SpotAssetProduct", blank=True, related_name="liked_by_users"
     )
 
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["name", "nickname"]
+
     def __str__(self):
-        return self.username
+        return self.email
