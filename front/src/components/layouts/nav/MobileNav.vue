@@ -4,6 +4,7 @@
       <RouterLink
         to="/"
         class="logo-link"
+        @click="closeMenu"
       >
         <div class="logo">MoneyUp</div>
       </RouterLink>
@@ -28,17 +29,39 @@
         v-if="isOpen"
         class="mobile-menu"
       >
-        <li><RouterLink to="/product">상품</RouterLink></li>
-        <li><RouterLink to="/spotAsset">현물</RouterLink></li>
-        <li><RouterLink to="/map">지도</RouterLink></li>
-        <li><RouterLink to="/article">커뮤니티</RouterLink></li>
-        <li><RouterLink to="/searchproduct">관심종목검색</RouterLink></li>
-        <li><BaseButton to="/login">로그인</BaseButton></li>
         <li>
-          <BaseButton
-            to="/signup"
-            variant="secondary"
-            >가입하기</BaseButton
+          <RouterLink
+            to="/product"
+            @click="closeMenu"
+            >상품</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink
+            to="/spotAsset"
+            @click="closeMenu"
+            >현물</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink
+            to="/map"
+            @click="closeMenu"
+            >지도</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink
+            to="/article"
+            @click="closeMenu"
+            >커뮤니티</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink
+            to="/searchproduct"
+            @click="closeMenu"
+            >관심종목검색</RouterLink
           >
         </li>
       </ul>
@@ -47,7 +70,6 @@
 </template>
 
 <script setup>
-import BaseButton from '@/components/base/BaseButton.vue'
 import { computed, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 
@@ -59,7 +81,12 @@ const isLoggedIn = ref(false) // Replace with real auth logic later
 
 const onclick = () => {
   const destination = isLoggedIn.value ? '/profile' : '/login'
+  closeMenu()
   router.push(destination)
+}
+
+const closeMenu = () => {
+  isOpen.value = false
 }
 </script>
 
@@ -87,16 +114,18 @@ const onclick = () => {
 }
 
 .mobile-header {
+  position: relative;
+  height: 56px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  justify-content: center;
 }
 
 .logo {
   font-weight: 900;
   font-size: 20px;
   color: $primary-500;
+  text-align: center;
 }
 
 .logo-link {
@@ -104,6 +133,8 @@ const onclick = () => {
 }
 
 .hamburger {
+  position: absolute;
+  left: 1rem;
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -146,6 +177,8 @@ const onclick = () => {
 }
 
 .avatar-icon {
+  position: absolute;
+  right: 1rem;
   width: 32px;
   height: 32px;
   border-radius: 50%;
