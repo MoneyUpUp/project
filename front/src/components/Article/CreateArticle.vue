@@ -22,7 +22,6 @@ import { useArticleStore } from '@/stores/Articles'
 
 const title = ref('')
 const content = ref('')
-let cnt = ref(0)
 
 const articleStore = useArticleStore()
 
@@ -31,9 +30,7 @@ const articleStore = useArticleStore()
 // 이렇게 받을 수 있으면 딱 좋을 듯
 // author 때문에 자꾸 에러남;;
 const onSubmit = async (e) => {
-  e.preventDefault()
-  cnt++
-  const userId = localStorage.getItem('username')  // author ID가 필요하다면
+  const userId = localStorage.getItem('userId')  // author ID가 필요하다면
 
   if (!title.value || !content.value) {
     alert('제목과 내용을 모두 입력해주세요.')
@@ -43,7 +40,7 @@ const onSubmit = async (e) => {
   await articleStore.addArticle({
     title: title.value,
     content: content.value,
-    author: cnt
+    author: 1
   })
 }
 </script>
