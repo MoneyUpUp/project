@@ -11,6 +11,8 @@ import ChatConversation from './ChatConversation.vue'
 import { useChatStore } from '@/stores/chatStore'
 
 const ai = useChatStore()
+
+const styles = ai.styles
 </script>
 
 <style scoped lang="scss">

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import BaseLayout from '@/layouts/BaseLayout.vue'
+import BaseLayout from '@/layouts/baseLayout.vue'
 
 import ArticleView from '@/views/ArticleView.vue'
 import HomeView from '@/views/HomeView.vue'
@@ -16,7 +16,8 @@ import depositList from '@/components/deposit/depositList.vue'
 import savingView from '@/components/saving/savingView.vue'
 
 import ArticleComponent from '@/components/Article/ArticleComponent.vue'
-import ArticleDetail from '@/components/Article/ArticleDetail.vue'
+import ArticleDetail from '@/components/Article/ArticleDetailView.vue'
+import ArticleDetailUpdate from '@/components/Article/AriticleDetailUpdate.vue'
 import CreateArticle from '@/components/Article/CreateArticle.vue'
 
 import searchList from '@/components/search/searchList.vue'
@@ -48,7 +49,7 @@ const router = createRouter({
           children: [
             {
               path: '',
-              name: '',
+              name: 'articleList',
               component: ArticleComponent,
             },
             {
@@ -57,10 +58,15 @@ const router = createRouter({
               component: CreateArticle,
             },
             {
-              path: 'detail',
-              name: 'article-detail',
+              path: 'detail/:articleId', // 동적 파라미터 추가
+              name: 'ArticleDetailView', // 이름 변경
               component: ArticleDetail,
             },
+            {
+              path: 'detail/:articleId/update',
+              name: 'article-update',
+              component: ArticleDetailUpdate,
+            }
           ],
         },
         {

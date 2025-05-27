@@ -12,8 +12,35 @@ $primary-800: #156A5D !default;
 $primary-900: #0C5854 !default;
 
 /* =========================
+   Red Colors
+   ========================= */
+$red-100: #ffebee !default;
+$red-200: #ffcdd2 !default;
+$red-300: #ef9a9a !default;
+$red-400: #e57373 !default;
+$red-500: #f44336 !default; // 에러, 경고 등
+$red-600: #e53935 !default;
+$red-700: #d32f2f !default;
+$red-800: #c62828 !default;
+$red-900: #b71c1c !default;
+
+/* =========================
+   Green Colors
+   ========================= */
+$green-100: #e8f5e9 !default;
+$green-200: #c8e6c9 !default;
+$green-300: #a5d6a7 !default;
+$green-400: #81c784 !default;
+$green-500: #4caf50 !default; // 성공, 긍정 등
+$green-600: #43a047 !default;
+$green-700: #388e3c !default;
+$green-800: #2e7d32 !default;
+$green-900: #1b5e20 !default;
+
+/* =========================
    Grayscale Colors
    ========================= */
+$gray-50: #fdfdfe !default; // 추가
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
 $gray-300: #dee2e6 !default;
@@ -34,7 +61,7 @@ $bg-gradient-main: linear-gradient(to top, primary-100, #FFFFFF) !default;
    폰트
    ========================= */
 $font-base: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont,
-  'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans KR', sans-serif !default;
+   'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans KR', sans-serif !default;
 $font-size-sm: 0.875rem !default;
 $font-size-base: 1rem !default;
 $font-size-lg: 1.25rem !default;
