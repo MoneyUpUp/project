@@ -23,27 +23,33 @@ class SavingOptionSerializer(serializers.ModelSerializer):
 class DepositProductSerializer(serializers.ModelSerializer):
     bank = BankSerializer()
     options = DepositOptionSerializer(many=True)
+    type = serializers.CharField(default="deposit")
 
     class Meta:
         model = DepositProduct
         fields = "__all__"
+        extra_fields = ["type"]
 
 
 class SavingProductSerializer(serializers.ModelSerializer):
     bank = BankSerializer()
     options = SavingOptionSerializer(many=True)
+    type = serializers.CharField(default="saving")
 
     class Meta:
         model = SavingProduct
         fields = "__all__"
+        extra_fields = ["type"]
 
 
 class SpotAssetProductSerializer(serializers.ModelSerializer):
     # bank = BankSerializer()
+    type = serializers.CharField(default="spotAsset")
 
     class Meta:
         model = SpotAssetProduct
         fields = "__all__"
+        extra_fields = ["type"]
 
 
 class ProductListResponseSerializer(serializers.Serializer):
