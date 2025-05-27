@@ -6,7 +6,8 @@ from accounts.views import (
     KakaoLogin,
     GoogleLogin,
     CustomRegisterView,
-)  # CustomRegisterView 임포트
+    CustomLoginView,  # CustomLoginView 임포트
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -16,8 +17,10 @@ urlpatterns = [
     path("products/", include("products.urls")),
     path("ai/", include("ai.urls")),
     # 인증 관련 (로그인, 회원가입, 소셜 로그인 등)
-    path("auth/", include("dj_rest_auth.urls")),
+    # Custom 뷰를 먼저 정의하여 dj_rest_auth의 기본 뷰를 오버라이드
+    path("auth/login/", CustomLoginView.as_view()),  # CustomLoginView 사용
     path("auth/signup/", CustomRegisterView.as_view()),  # CustomRegisterView 사용
+    path("auth/", include("dj_rest_auth.urls")),  # dj_rest_auth의 나머지 URL 포함
     path("auth/kakao/login/", KakaoLogin.as_view()),
     path("auth/google/login/", GoogleLogin.as_view()),
     # swagger

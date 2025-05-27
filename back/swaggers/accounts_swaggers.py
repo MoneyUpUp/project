@@ -1,9 +1,13 @@
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-from accounts.serializers import UserSerializer, UserFavoriteProductsSerializer
+from accounts.serializers import (
+    UserSerializer,
+    UserFavoriteProductsSerializer,
+    CustomRegisterSerializer,
+)
 
-TAG = ["accounts/me"]
+TAG = ["accounts/me", "auth"]
 
 me_get_swagger = swagger_auto_schema(
     operation_summary="유저 정보 조회 (GET)",
@@ -125,6 +129,28 @@ favorite_post_swagger = swagger_auto_schema(
         404: "존재하지 않는 상품",
     },
     tags=TAG,
+)
+
+register_post_swagger = swagger_auto_schema(
+    operation_summary="회원가입 (POST)",
+    operation_description="사용자 정보를 받아 회원가입을 처리하고, 성공 시 사용자 정보와 JWT 토큰을 반환합니다.",
+    request_body=CustomRegisterSerializer,
+    responses={
+        201: openapi.Response(
+            description="회원가입 성공",
+            schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "message": openapi.Schema(type=openapi.TYPE_STRING),
+                    "user": openapi.Schema(type=openapi.TYPE_OBJECT),  # 간단화
+                    "token": openapi.Schema(type=openapi.TYPE_STRING),
+                },
+            ),
+        ),
+        400: "잘못된 요청",
+        500: "서버 오류",
+    },
+    tags=["auth"],
 )
 
 favorite_delete_swagger = swagger_auto_schema(

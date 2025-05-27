@@ -18,6 +18,31 @@ from dj_rest_auth.registration.views import RegisterView
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
 
+    def perform_create(self, serializer):
+        response_data = serializer.save(self.request)
+        self.user_data = response_data
+        self.user = response_data["user"]
+
+    @register_post_swagger
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        headers = self.get_success_headers(self.user_data)
+        token = self.user_data.get("key")
+
+        user_data = UserSerializer(self.user).data
+        return Response(
+            {
+                "message": "회원가입 성공",
+                "user": user_data,
+                "token": token,
+            },
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
+
 
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
@@ -41,6 +66,25 @@ class MeView(APIView):
     def delete(self, request):
         request.user.delete()
         return Response({"message": "회원 탈퇴 완료"})
+
+
+from dj_rest_auth.views import LoginView  # LoginView 임포트
+
+
+class CustomLoginView(LoginView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == status.HTTP_200_OK:
+            user_data = UserSerializer(request.user).data
+            return Response(
+                {
+                    "message": "로그인 성공",
+                    "user": user_data,
+                    "token": response.data.get("key"),
+                },
+                status=status.HTTP_200_OK,
+            )
+        return response
 
 
 class KakaoLogin(SocialLoginView):

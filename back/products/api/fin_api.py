@@ -2,6 +2,7 @@ import requests
 import os
 from datetime import datetime
 from products.utils.parse_time import parse_aware_datetime
+from products.utils.update_checker import mark_updated
 from products.models import (
     Bank,
     DepositProduct,
@@ -20,6 +21,7 @@ def fetch_financial_products(product_type):
 
 
 def get_saving_api():
+    print("적금 데이터 api 요청")
     data = fetch_financial_products("saving")
     base_list = data["result"]["baseList"]
     option_list = data["result"]["optionList"]
@@ -78,8 +80,14 @@ def get_saving_api():
                 f"[오류] SavingProduct 또는 Bank 없음 - {opt['fin_prdt_cd']} / {opt['fin_co_no']}"
             )
 
+    # ✅ 업데이트 시간 기록 추가
+    mark_updated("saving")
+
+    print("적금 데이터 api 완료")
+
 
 def get_deposit_api():
+    print("예금 데이터 api 요청")
     data = fetch_financial_products("deposit")
     base_list = data["result"]["baseList"]
     option_list = data["result"]["optionList"]
@@ -135,3 +143,6 @@ def get_deposit_api():
             print(
                 f"[오류] DepositProduct 또는 Bank 없음 - {opt['fin_prdt_cd']} / {opt['fin_co_no']}"
             )
+    # ✅ 업데이트 시간 기록 추가
+    mark_updated("deposit")
+    print("예금 데이터 api 완료")

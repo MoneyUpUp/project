@@ -2,14 +2,13 @@ import logging
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from rest_framework import serializers
-from rest_framework import serializers
 from .models import User
 from products.serializers import (
     DepositProductSerializer,
     SavingProductSerializer,
     SpotAssetProductSerializer,
 )
+from rest_framework.authtoken.models import Token
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
+            "id",
             "username",
             "email",
             "name",
@@ -79,7 +79,10 @@ class CustomRegisterSerializer(RegisterSerializer):
             logger.info(
                 f"📌 save() - 사용자 저장 완료: {user.username}, name: {user.name}, nickname: {user.nickname}, age: {user.age}"
             )
-            return user
+            # dj_rest_auth의 RegisterSerializer가 기대하는 형식으로 반환
+            # Token을 직접 생성하여 반환 딕셔너리에 포함
+            token, created = Token.objects.get_or_create(user=user)
+            return {"user": user, "token": token, "key": token.key}
         except Exception as e:
             logger.error(f"❌ 예외 발생: {e}", exc_info=True)
             raise e
@@ -89,14 +92,6 @@ class UserFavoriteProductsSerializer(serializers.ModelSerializer):
     favorite_deposits = DepositProductSerializer(many=True, read_only=True)
     favorite_savings = SavingProductSerializer(many=True, read_only=True)
     favorite_assets = SpotAssetProductSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = User
-        fields = ["favorite_deposits", "favorite_savings", "favorite_assets"]
-
-    class Meta:
-        model = User
-        fields = ["favorite_deposits", "favorite_savings", "favorite_assets"]
 
     class Meta:
         model = User

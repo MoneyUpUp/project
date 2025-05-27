@@ -1,16 +1,21 @@
 from rest_framework import serializers
 from community.models import *
+from accounts.models import User
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source="author.name", read_only=True)
 
     class Meta:
         model = Article
-        fields = "__all__"
+        fields = ["id", "title", "content", "created_at", "updated_at", "author_name"]
+        read_only_fields = ["author", "created_at", "updated_at"]
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source="author.name", read_only=True)
+
     class Meta:
         model = Comment
-        fields = "__all__"
+        fields = ["id", "article", "content", "created_at", "updated_at", "author_name"]
         read_only_fields = ["author", "article", "created_at", "updated_at"]
