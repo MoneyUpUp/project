@@ -38,6 +38,16 @@ export const useChatStore = defineStore('chat', () => {
 
         isLoading.value = false
     }
+    const styles = {
+        default: { name: '기본 챗봇', default: 'default' },
+        loopy: { name: '잔망루피', default: 'loopy' },
+        granny: { name: '욕쟁이 할머니', default: 'granny' },
+        cat: { name: '나대는 고양이', default: 'cat' },
+        assistant: { name: '상냥한 비서', default: 'assistant' },
+        idol: { name: '하이텐션 아이돌', default: 'idol' },
+        edgelord: { name: '중2병 천재', default: 'edgelord' },
+        cold: { name: '시크한 상담사', default: 'cold' },
+    }
 
     return {
         isChatOpen,
@@ -45,6 +55,7 @@ export const useChatStore = defineStore('chat', () => {
         input,
         messages,
         isLoading,
+        styles,
         toggleChat,
         selectStyle,
         sendMessage,

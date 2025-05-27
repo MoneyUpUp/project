@@ -13,10 +13,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { useArticleStore } from '@/stores/Articles';
 const router = useRouter()
 const onclick = () => {
-  router.push('/article/detail');
+  router.push({ name: 'ArticleDetailView', params: { articleId: props.article.id } });
 };
 
-defineProps({
+const props = defineProps({
   article: Object
 })
 

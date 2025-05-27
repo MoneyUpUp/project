@@ -9,7 +9,7 @@ export const useArticleStore = defineStore('article', () => {
   const router = useRouter()
 
   const getArticleList = async () => {
-    try{
+    try {
       const token = localStorage.getItem('token')
       const res = await axios.get(`${API_URL}articles/`, {
         headers: {
@@ -20,14 +20,18 @@ export const useArticleStore = defineStore('article', () => {
       console.log('게시글 조회 성공')
       console.log(res.data)
       articleList.value = res.data
-    } catch(err){
+    } catch (err) {
       console.log('게시글 조회 실패')
       console.log(err)
     }
   }
+  const routeCommunity = () => {
 
-  const addArticle = async ({title, content, author}) => {
-    try{
+    router.push({ name: 'article' })
+  }
+
+  const addArticle = async ({ title, content, author }) => {
+    try {
       const token = localStorage.getItem('token')
       const res = await axios.post(
         `${API_URL}articles/`,
@@ -39,12 +43,12 @@ export const useArticleStore = defineStore('article', () => {
           },
         },
       )
-        console.log('게시글 생성 성공')
-        console.log(res.data)
-        getArticleList()
-        router.push({ name: 'article' })
+      console.log('게시글 생성 성공')
+      console.log(res.data)
+      getArticleList()
+      router.push({ name: 'articleList' })
 
-    }catch(err){
+    } catch (err) {
       console.log('게시글 생성 실패')
       console.log(err)
     }
@@ -52,6 +56,6 @@ export const useArticleStore = defineStore('article', () => {
   return {
     articleList,
     getArticleList,
-    addArticle,
+    addArticle, routeCommunity,
   }
 })
