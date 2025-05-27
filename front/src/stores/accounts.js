@@ -33,7 +33,8 @@ export const useAccountStore = defineStore(
         .then((res) => {
           console.log('회원가입 성공!')
           console.log(res.data)
-          token.value = res.data.key
+          token.value = res.data.toekn
+          localStorage.setItem('token', res.data.toekn)
           router.push({ name: 'home' })
         })
         .catch((err) => console.log(err))
@@ -52,8 +53,8 @@ export const useAccountStore = defineStore(
           },
         )
 
-        token.value = res.data.key
-        localStorage.setItem('token', res.data.key)
+        token.value = res.data.toekn
+        localStorage.setItem('token', res.data.toekn)
         return true
       } catch (err) {
         console.log('로그인 실패:', err.response?.data || err.message)
