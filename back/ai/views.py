@@ -44,8 +44,11 @@ def recommend_products_view(request):
         {
             "name": opt.product.fin_prdt_nm,
             "bank": opt.product.bank.kor_co_nm,
+            "bank_id": opt.product.bank.fin_co_no,
             "save_trm": opt.save_trm,
             "interest_rate": str(opt.intr_rate2),
+            "type": "deposit" if isinstance(opt, DepositOption) else "saving",
+            "id": opt.product.id,
         }
         for opt in top_options
     ]
@@ -53,7 +56,22 @@ def recommend_products_view(request):
     # GPT로 추천 이유 생성
     recommendations = generate_reasons_from_gpt(user, products)
 
-    return Response({"recommendations": recommendations})
+    final_response = []
+    for base, rec in zip(products, recommendations):
+        final_response.append(
+            {
+                "type": rec["type"],
+                "id": rec["id"],
+                "bank": rec["bank"],
+                "bank_id": rec["bank_id"],
+                "name": base["name"],
+                "save_trm": base["save_trm"],
+                "interest_rate": base["interest_rate"],
+                "reason": rec["reason"],
+            }
+        )
+
+    return Response({"recommendations": final_response})
 
 
 @api_view(["POST"])

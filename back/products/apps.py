@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 import threading
-
+import certifi
 import os
 import logging
 
@@ -12,6 +12,7 @@ class ProductsConfig(AppConfig):
     name = "products"
 
     def ready(self):
+        os.environ["SSL_CERT_FILE"] = certifi.where()
         if os.environ.get("RUN_MAIN") != "true":
             return
 
