@@ -36,14 +36,17 @@ class CommodityHistoryView(APIView):
 
         spot_asset, _ = SpotAssetProduct.objects.get_or_create(name=commodity_name)
 
-        spot_price_qs = SpotAssetPrice.objects.filter(product=spot_asset, date=today)
-        if not spot_price_qs.exists():
-            try:
-                save_asset_prices(commodity_name)
-            except ValueError as e:
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
+        # DB에서 데이터를 조회합니다.
         prices = SpotAssetPrice.objects.filter(product=spot_asset).order_by("date")
+
+        # 만약 오늘 날짜의 데이터가 없다면, 빈 응답을 반환하거나 적절히 처리합니다.
+        # 서버 시작 시 데이터가 채워지므로, 여기서는 추가 API 호출을 하지 않습니다.
+        if not prices.exists():
+            return Response(
+                {"error": f"No historical data found for {commodity_name} in DB."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
         data = [
             {"date": price.date, "close_price": price.close_price} for price in prices
         ]
@@ -56,16 +59,7 @@ class ProductListView(APIView):
 
     @product_list_view
     def get(self, request):
-        # 필요한 경우 API에서 최신 데이터를 받아옵니다.
-        if should_update("deposit"):
-            get_deposit_api()
-            mark_updated("deposit")
-
-        if should_update("saving"):
-            get_saving_api()
-            mark_updated("saving")
-
-        # DB에서 모든 예금/적금 상품을 조회합니다.
+        # DB에서 모든 예금/적금 상품을 조회합니다. (API 호출 로직 제거)
         deposits = DepositProduct.objects.all().prefetch_related("options", "bank")
         savings = SavingProduct.objects.all().prefetch_related("options", "bank")
 
