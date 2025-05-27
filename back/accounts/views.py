@@ -5,14 +5,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from accounts.adapters import KakaoOAuth2Adapter, CustomGoogleOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
+from dj_rest_auth.views import LoginView  # LoginView 임포트
+from dj_rest_auth.registration.views import RegisterView
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+
 from accounts.serializers import (
     UserSerializer,
     UserFavoriteProductsSerializer,
     CustomRegisterSerializer,
 )
 from swaggers.accounts_swaggers import *
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from dj_rest_auth.registration.views import RegisterView
 
 
 class CustomRegisterView(RegisterView):
@@ -68,10 +70,8 @@ class MeView(APIView):
         return Response({"message": "회원 탈퇴 완료"})
 
 
-from dj_rest_auth.views import LoginView  # LoginView 임포트
-
-
 class CustomLoginView(LoginView):
+    @login_post_swagger
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         if response.status_code == status.HTTP_200_OK:

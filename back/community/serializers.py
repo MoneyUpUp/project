@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from community.models import *
+from community.models import Article, Comment
 from accounts.models import User
 
 
@@ -18,4 +18,4 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ["id", "article", "content", "created_at", "updated_at", "author_name"]
-        read_only_fields = ["author", "article", "created_at", "updated_at"]
+        read_only_fields = ["author", "created_at", "updated_at"]

@@ -10,9 +10,6 @@ client = OpenAI(api_key=settings.OPENAI_API_KEY)
 def generate_reasons_from_gpt(user, product_options):
     invest_type_display = user.get_invest_type_display()
     preferred_term_display = user.get_preferred_term_display()
-    print(f"✅ settings.OPENAI_API_KEY: {settings.OPENAI_API_KEY}")
-    # OPENAI_API_KEY = "..."
-    # client = OpenAI(api_key=OPENAI_API_KEY)
 
     prompt = f"""
     사용자 정보:
@@ -53,5 +50,7 @@ def generate_reasons_from_gpt(user, product_options):
         max_tokens=256,
     )
 
-    # 응답 추출 방식 업데이트
-    return json.loads(response.choices[0].message.content)
+    try:
+        return json.loads(response.choices[0].message.content)
+    except json.JSONDecodeError:
+        return []
