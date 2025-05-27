@@ -17,11 +17,32 @@
                 </tr>
             </thead>
             <tbody>
-                <AccessionListItem
-                v-for="item in items"
-                :key="`${item.bank.fin_co_no}-${item.fin_prdt_cd}`"
-                :item="item"
-                />
+                <!-- 예금 리스트 -->
+                <template v-if="items.favorite_deposits?.length">
+                    <AccessionListItem
+                    v-for="item in items.favorite_deposits"
+                    :key="`deposit-${item.bank.fin_co_no}-${item.fin_prdt_cd}`"
+                    :item="{ ...item, type: 'deposit' }"
+                    />
+                </template>
+
+                <!-- 적금 리스트 -->
+                <template v-if="items.favorite_savings?.length">
+                    <AccessionListItem
+                    v-for="item in items.favorite_savings"
+                    :key="`saving-${item.bank.fin_co_no}-${item.fin_prdt_cd}`"
+                    :item="{ ...item, type: 'saving' }"
+                    />
+                </template>
+
+                <!-- 자산 리스트 -->
+                <template v-if="items.favorite_assets?.length">
+                    <AccessionListItem
+                    v-for="item in items.favorite_assets"
+                    :key="`asset-${item.bank?.fin_co_no || 'none'}-${item.fin_prdt_cd}`"
+                    :item="{ ...item, type: 'asset' }"
+                    />
+                </template>
             </tbody>
         </table>
     </div>
@@ -30,8 +51,9 @@
 <script setup>
 import AccessionListItem from './AccessionListItem.vue';
 defineProps({
-  items: Array
+  items: Object
 })
+
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 <template>
 	<div class="full-width">
 		<h3>찜 목록</h3>
-		<AccessionList :items="store.favoriteList_deposits"/>
+		<AccessionList :items="store.favoriteList"/>
 		<div class="button-right">
 			<DeleteButton />
 		</div>
@@ -27,7 +27,7 @@ const route = useRoute();
 
 onMounted(()=> {
 	store.getFavoriteList()
-	console.log(store.favoriteList_deposits)
+	console.log(store.favoriteList)
 })
 
 </script>
